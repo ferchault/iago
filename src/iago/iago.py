@@ -3,8 +3,11 @@ import os
 import re
 import json
 import glob
-import cp2k
 
+import cp2k
+import DatabaseProvider
+import LocationProvider
+import StorageProvider
 
 class Config(dict):
 	def __init__(self):
