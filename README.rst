@@ -36,5 +36,6 @@ This file holds the configuration options where to look for buckets on both loca
   url=file:///home/username/data/
   [remoteserver]
   url=ssh://username@hostname:/path
+  skip=True
 
 This file must reside in the user's home directory under the name *.iago.conf*.

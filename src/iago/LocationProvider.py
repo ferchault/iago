@@ -28,7 +28,13 @@ class LocationGroup(object):
 
 		self._hosts = dict()
 		for hostalias in config.sections():
-			self._hosts[hostalias] = config.get(hostalias, 'url')
+			skip = False
+			try:
+				skip = config.getboolean(hostalias, 'skip')
+			except cp.NoOptionError:
+				pass
+			if not skip:
+				self._hosts[hostalias] = config.get(hostalias, 'url')
 
 	def get_bucket_list(self, force_update=False):
 		for hostalias, host in self._hosts.iteritems():
@@ -49,6 +55,8 @@ class LocationGroup(object):
 			else:
 				self._buckets = self._buckets[self._buckets.hostalias != hostalias]
 				self._buckets = self._buckets.append(df)
+		if self._buckets is None:
+			return None
 		self._buckets = self._buckets.reset_index(drop=True)
 		return self._buckets
 
