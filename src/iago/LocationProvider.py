@@ -61,12 +61,13 @@ class LocationGroup(object):
 		if bucket_list is None:
 			bucket_list = self.get_bucket_list()
 
-		bucket_list['hasDB'] = False
+		bucket_list['hasMeta'] = False
 		for idx, bucket in bucket_list.iterrows():
 			lp = self._hosts[bucket.hostalias]
-			if lp.has_file(bucket.rawname, 'db.json'):
-				bucket_list.loc[idx, 'hostalias'] = True
+			if lp.has_file(bucket.rawname, '.iago.conf'):
+				bucket_list.loc[idx, 'hasMeta'] = True
 
+		return bucket_list
 
 
 class LocationProvider(object):
@@ -98,6 +99,9 @@ class LocationProvider(object):
 	def __init__(self):
 		self._buckets = None
 
+	def has_file(self, bucket, filename):
+		raise NotImplementedError()
+
 
 class FileLocationProvider(LocationProvider):
 	""" Location class for raw file access on the local machine.
@@ -112,6 +116,9 @@ class FileLocationProvider(LocationProvider):
 			raise ValueError('Folder does not exist')
 		self._buckets = [os.path.basename(_) for _ in directories if re.match('^.*-[0-9a-f]{32}$', _)]
 		return self._buckets_to_df()
+
+	def has_file(self, bucket, filename):
+		return os.path.isfile(os.path.join(self._basepath, bucket, filename))
 
 
 class SSHLocationProvider(LocationProvider):
@@ -139,13 +146,13 @@ class SSHLocationProvider(LocationProvider):
 		if self._sftp is not None:
 			return
 		self._sftp = self._client.open_sftp()
-
-	def get_bucket_list(self):
-		self._connect_sftp()
 		try:
 			self._sftp.chdir(self._basepath)
 		except IOError:
 			raise ValueError('Path does not exist on SFTP server. Check your SSH URL.')
+
+	def get_bucket_list(self):
+		self._connect_sftp()
 
 		directories = []
 		for inode in self._sftp.listdir_attr():
@@ -153,3 +160,10 @@ class SSHLocationProvider(LocationProvider):
 				directories.append(inode.filename)
 		self._buckets = [_ for _ in directories if re.match('^.*-[0-9a-f]{32}$', _)]
 		return self._buckets_to_df()
+
+	def has_file(self, bucket, filename):
+		self._connect_sftp()
+		for inode in self._sftp.listdir_attr(bucket):
+			if inode.filename == filename:
+				return stat.S_IFREG(inode.st_mode)
+		return False
