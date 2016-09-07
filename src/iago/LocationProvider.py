@@ -1,6 +1,7 @@
 import os
 import re
 import stat
+import warnings
 try:
 	import ConfigParser as cp
 except:
@@ -37,16 +38,35 @@ class LocationGroup(object):
 			else:
 				if not force_update:
 					continue
+			try:
+				df = host.get_bucket_list()
+			except ValueError as e:
+				warnings.warn('Unable to load host %s: %s' % (hostalias, str(e)))
 
-			df = host.get_bucket_list()
 			df['hostalias'] = hostalias
 			if self._buckets is None:
 				self._buckets = df
 			else:
 				self._buckets = self._buckets[self._buckets.hostalias != hostalias]
 				self._buckets = self._buckets.append(df)
-		self._buckets.reset_index()
+		self._buckets = self._buckets.reset_index(drop=True)
 		return self._buckets
+
+	def get_bucket_status(self, bucket_list=None):
+		""" Checks for bucket database status.
+
+		:param bucket_list: Pandas dataframe with buckets to query.
+		:return: Pandas dataframe.
+		"""
+		if bucket_list is None:
+			bucket_list = self.get_bucket_list()
+
+		bucket_list['hasDB'] = False
+		for idx, bucket in bucket_list.iterrows():
+			lp = self._hosts[bucket.hostalias]
+			if lp.has_file(bucket.rawname, 'db.json'):
+				bucket_list.loc[idx, 'hostalias'] = True
+
 
 
 class LocationProvider(object):
@@ -86,7 +106,10 @@ class FileLocationProvider(LocationProvider):
 		self._basepath = path
 
 	def get_bucket_list(self):
-		directories = [os.path.join(self._basepath, o) for o in os.listdir(self._basepath) if os.path.isdir(os.path.join(self._basepath, o))]
+		try:
+			directories = [os.path.join(self._basepath, o) for o in os.listdir(self._basepath) if os.path.isdir(os.path.join(self._basepath, o))]
+		except OSError:
+			raise ValueError('Folder does not exist')
 		self._buckets = [os.path.basename(_) for _ in directories if re.match('^.*-[0-9a-f]{32}$', _)]
 		return self._buckets_to_df()
 
