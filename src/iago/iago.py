@@ -57,3 +57,9 @@ class Store(object):
 			dfs.append(r)
 		df = pd.concat(dfs).reset_index(drop=True)
 		return data, df
+
+
+def get_location_group():
+	lg = LocationProvider.LocationGroup()
+	lg.from_file()
+	return lg
