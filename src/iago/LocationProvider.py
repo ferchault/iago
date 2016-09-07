@@ -34,12 +34,16 @@ class LocationGroup(object):
 			if not isinstance(host, LocationProvider):
 				host = LocationProvider.create(host)
 				self._hosts[hostalias] = host
+			else:
+				if not force_update:
+					continue
 
 			df = host.get_bucket_list()
 			df['hostalias'] = hostalias
 			if self._buckets is None:
 				self._buckets = df
 			else:
+				self._buckets = self._buckets[self._buckets.hostalias != hostalias]
 				self._buckets = self._buckets.append(df)
 		self._buckets.reset_index()
 		return self._buckets
