@@ -5,10 +5,10 @@ Supported Files and Services
 ================= ====================
 Type              Supported
 ================= ====================
-Storage           Local filesystem, SSH, Amazon S3 [1]_, Openstack Swift / Rackspace cloud files / Memset Memstore [1]_, Dropbox [1]_, Google Cloud Storage [1]_, Amazon Drive [1]_, Microsoft One Drive [1]_, Hubic [1]_, Backblaze B2 [1]_, Yandex Disk [1]_
+Storage           Local filesystem, SSH [1]_, Amazon S3 [2]_, Openstack Swift / Rackspace cloud files / Memset Memstore [2]_, Dropbox [2]_, Google Cloud Storage [2]_, Amazon Drive [2]_, Microsoft One Drive [2]_, Hubic [2]_, Backblaze B2 [2]_, Yandex Disk [2]_
 ================= ====================
-
-.. [1] Requires `rclone <http://rclone.org/>`_ to be installed.
+.. [1] Requires `paramiko <http://www.paramiko.org>`_ to be installed.
+.. [2] Requires `rclone <http://rclone.org/>`_ to be installed.
 ===========
 Terminology
 ===========
