@@ -41,25 +41,33 @@ class Store(object):
 	def get_basepath(self):
 		return self._basepath
 
-	def find_runs(self):
-		runs = glob.glob(os.path.join(self._basepath, 'run-*'))
-		return [os.path.basename(_) for _ in runs if os.path.isdir(_)]
 
-	def load_cp2k(self, data, df):
-		cp = cp2k.LogFileReader()
-		ci = cp2k.InputFileReader()
-		data['input'] = {}
-		dfs = [df]
-		for run in self.find_runs():
-			r = cp.read_run(self, run)
-			i = ci.read_run(self, run)
-			data['input'][run] = i
-			dfs.append(r)
-		df = pd.concat(dfs).reset_index(drop=True)
-		return data, df
 
 
 def get_location_group():
 	lg = LocationProvider.LocationGroup()
 	lg.from_file()
 	return lg
+
+# def _load_cp2k(self, data, df):
+# 	cp = cp2k.LogFileReader()
+# 	ci = cp2k.InputFileReader()
+# 	data['input'] = {}
+# 	dfs = [df]
+# 	for run in _find_runs():
+# 		r = cp.read_run(self, run)
+# 		i = ci.read_run(self, run)
+# 		data['input'][run] = i
+# 		dfs.append(r)
+# 	df = pd.concat(dfs).reset_index(drop=True)
+# 	return data, df
+
+#def _find_runs():
+#	runs = glob.glob(os.path.join(self._basepath, 'run-*'))
+#	return [os.path.basename(_) for _ in runs if os.path.isdir(_)]
+
+def parse(code_type):
+	if code_type == 'cp2k':
+		pass
+	else:
+		raise NotImplementedError()

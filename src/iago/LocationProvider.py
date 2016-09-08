@@ -1,6 +1,8 @@
 import os
 import re
 import stat
+import shlex
+import subprocess
 import warnings
 try:
 	import ConfigParser as cp
@@ -70,10 +72,13 @@ class LocationGroup(object):
 			bucket_list = self.get_bucket_list()
 
 		bucket_list['hasMeta'] = False
+		bucket_list['hasDB'] = False
 		for idx, bucket in bucket_list.iterrows():
 			lp = self._hosts[bucket.hostalias]
 			if lp.has_file(bucket.rawname, '.iago.conf'):
 				bucket_list.loc[idx, 'hasMeta'] = True
+			if lp.has_file(bucket.rawname, 'iagodb.json'):
+				bucket_list.loc[idx, 'hasDB'] = True
 
 		return bucket_list
 
@@ -90,7 +95,7 @@ class LocationProvider(object):
 		except:
 			raise ValueError('Invalid location URL.')
 
-		links = {'file': FileLocationProvider, 'ssh': SSHLocationProvider}
+		links = {'file': FileLocationProvider, 'ssh': SSHLocationProvider, 'cloud': CloudLocationProvider}
 		if protocol not in links:
 			raise NotImplementedError()
 
@@ -166,7 +171,7 @@ class SSHLocationProvider(LocationProvider):
 		for inode in self._sftp.listdir_attr():
 			if stat.S_ISDIR(inode.st_mode):
 				directories.append(inode.filename)
-		self._buckets = [_ for _ in directories if re.match('^.*-[0-9a-f]{32}$', _)]
+		self._buckets = [_ for _ in directories if re.match(r'^.*-[0-9a-f]{32}$', _)]
 		return self._buckets_to_df()
 
 	def has_file(self, bucket, filename):
@@ -174,4 +179,46 @@ class SSHLocationProvider(LocationProvider):
 		for inode in self._sftp.listdir_attr(bucket):
 			if inode.filename == filename:
 				return stat.S_IFREG(inode.st_mode)
+		return False
+
+
+class CloudLocationProvider(LocationProvider):
+	""" Location class for remote file access using rclone.
+	"""
+	def __init__(self, path):
+		# cloud://remote:folder
+		match = re.match(r'^(.+):(.*)$', path)
+		if match is None:
+			raise ValueError('Incorrect cloud URL.')
+
+		self._remote, self._basepath = match.groups()
+
+	def get_bucket_list(self):
+		directories = []
+
+		command = 'rclone -q --max-depth 1 lsd %s:%s' % (self._remote, self._basepath)
+		command = shlex.split(command)
+		try:
+			output = subprocess.check_output(command)
+		except subprocess.CalledProcessError:
+			raise RuntimeError('rclone not installed or not configured properly.')
+
+		lines = output.splitlines()
+		for line in lines:
+			directories.append(line.split()[-1])
+		self._buckets = [_ for _ in directories if re.match(r'^.*-[0-9a-f]{32}$', _)]
+		return self._buckets_to_df()
+
+	def has_file(self, bucket, filename):
+		command = 'rclone -q --max-depth 1 ls %s:%s/%s' % (self._remote, self._basepath, bucket)
+		command = shlex.split(command)
+		try:
+			output = subprocess.check_output(command)
+		except subprocess.CalledProcessError:
+			raise RuntimeError('rclone not installed or not configured properly.')
+
+		lines = output.splitlines()
+		for line in lines:
+			if line.split()[-1] == filename:
+				return True
 		return False
