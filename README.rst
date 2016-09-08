@@ -1,3 +1,14 @@
+====
+Supported Files and Services
+====
+
+================= ====================
+Type              Supported
+================= ====================
+Storage           Local filesystem, SSH, Amazon S3 [1]_, Openstack Swift / Rackspace cloud files / Memset Memstore [1]_, Dropbox [1]_, Google Cloud Storage [1]_, Amazon Drive [1]_, Microsoft One Drive [1]_, Hubic [1]_, Backblaze B2 [1]_, Yandex Disk [1]_
+================= ====================
+
+.. [1] Requires `rclone <http://rclone.org/>`_ to be installed.
 ===========
 Terminology
 ===========
