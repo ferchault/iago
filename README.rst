@@ -48,5 +48,7 @@ This file holds the configuration options where to look for buckets on both loca
   [remoteserver]
   url=ssh://username@hostname:/path
   skip=True
+  [cloudstorage]
+  url=cloud://rcloneremotename:path
 
 This file must reside in the user's home directory under the name *.iago.conf*.
