@@ -39,11 +39,16 @@ class JSONProvider(StorageProvider):
 		return db
 
 	def save(self, db, stream=None):
+		fn = None
 		if stream is None:
 			fh = open(self._get_default_filename(), 'w')
+			fn = self._get_default_filename()
 		else:
+			fn = stream.filename
 			fh = stream
 
 		data = {'run': db.run, 'atom': db.atom, 'atomframe': db.atomframe, 'frame': db.frame}
 		for collection in dp.DatabaseProvider.get_annotated_collections():
 			data[collection] = {k: pickle.dumps(v.to_tuple()) for k, v in getattr(db, collection)}
+
+		return fn

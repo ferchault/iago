@@ -1,6 +1,13 @@
 import pandas as pd
 
 
+class FrameBase(pd.DataFrame):
+	#: The kinetic energy in Hartree
+	ekin = None
+	#: The potential energy in Hartree
+	epot = None
+
+
 class Map(dict):
 	def __init__(self, *args, **kwargs):
 		super(Map, self).__init__(*args, **kwargs)
