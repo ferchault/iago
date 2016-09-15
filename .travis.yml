@@ -1,7 +1,7 @@
 language: python
+cache: pip
 python:
   - "2.7"
-  - "2.6"
 install:
   - pip install -e src
   - pip install -q -r config/requirements.txt --use-mirrors
