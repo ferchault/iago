@@ -7,7 +7,7 @@ import os
 sys.path.append(os.path.abspath('..'))
 
 setup(name='iago',
-      version='0.dev',
+      version='0.0',
       description='Implicit Archiver for Generated Observables',
       author='Guido Falk von Rudorff',
       author_email='guido@vonrudorff.de',
