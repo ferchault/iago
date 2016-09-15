@@ -1,3 +1,14 @@
+====
+Supported Files and Services
+====
+
+================= ====================
+Type              Supported
+================= ====================
+Storage           Local filesystem, SSH [1]_, Amazon S3 [2]_, Openstack Swift / Rackspace cloud files / Memset Memstore [2]_, Dropbox [2]_, Google Cloud Storage [2]_, Amazon Drive [2]_, Microsoft One Drive [2]_, Hubic [2]_, Backblaze B2 [2]_, Yandex Disk [2]_
+================= ====================
+.. [1] Requires `paramiko <http://www.paramiko.org>`_ to be installed.
+.. [2] Requires `rclone <http://rclone.org/>`_ to be installed.
 ===========
 Terminology
 ===========
@@ -37,5 +48,7 @@ This file holds the configuration options where to look for buckets on both loca
   [remoteserver]
   url=ssh://username@hostname:/path
   skip=True
+  [cloudstorage]
+  url=cloud://rcloneremotename:path
 
 This file must reside in the user's home directory under the name *.iago.conf*.
