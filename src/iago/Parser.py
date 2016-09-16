@@ -1,5 +1,7 @@
 import Reader
 import os
+import MDAnalysis as mda
+
 
 class Parser(object):
 	def __init__(self):
@@ -11,7 +13,8 @@ class Parser(object):
 		:param selector: Valid selection string.
 		:return: List of 0-based atom indices.
 		"""
-		raise NotImplementedError()
+		ag = self._readers.itervalues().next().get_universe().select_atoms(selector)
+		return [_.index for _ in ag]
 
 	def get_runs(self):
 		"""

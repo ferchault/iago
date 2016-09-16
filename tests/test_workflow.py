@@ -22,19 +22,19 @@ class Analyser(iago.Analyser):
 			'group O3A',
 			normal=(0, 0, 1),
 			comment='Plane defined by the last triply coordinated oxygens on the A side.')
-		self.dynamic_distance(
-			'O3A',
-			'plane O3A',
-			where='element O',
-			comment='Height above dynamic surface.')
-		self.dynamic_hbonds(
-			'all',
-			'element O',
-			'element O',
-			comment='All hydrogen bonds.')
+		#self.dynamic_distance(
+		#	'O3A',
+		#	'plane O3A',
+		#	where='element O',
+		#	comment='Height above dynamic surface.')
+		#self.dynamic_hbonds(
+		#	'all',
+		#	'element O',
+		#	'element O',
+		#	comment='All hydrogen bonds.')
 
 
 class TestUtils(TestCase):
 	def test_create_analyser(self):
 		a = Analyser()
-		a.run()
+		print a.run()

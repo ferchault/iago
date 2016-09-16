@@ -48,12 +48,14 @@ class Analyser(object):
 		# selector string or list of elements
 		if len(args) == 2:
 			if isinstance(args[1], types.StringTypes):
-				self._parser.get_atom_indices(args[1])
+				idx = self.parser.get_atom_indices(args[1])
 			else:
-				self._db.groups.update({first: args[1]})
+				idx = args[1:]
+			self._db.groups.update({first: idx})
 
 		# list of elements
-		self._db.groups.update({first: rest})
+		if len(args) > 2:
+			self._db.groups.update({first: rest})
 
 	def get_groups(self):
 		return self._db.groups
@@ -99,7 +101,7 @@ class Analyser(object):
 		self.parser.run(self.path)
 		self.define_groups()
 		self.calculated_columns()
-		return self.storage_provider.save(self._db)
+		return self._db
 
 	def _compare_predicate(self, a, p, b):
 		return (p == 'eq' and a == b) or (p == 'gt' and a > b) or (p == 'lt' and a < b) or (p == 'ge' and a >= b) or (p == 'le' and a <= b)
