@@ -4,8 +4,8 @@ from setuptools import setup
 import sys
 import os
 
-sys.path.append(os.path.abspath('../src'))
-sys.path.append(os.path.abspath('..'))
+sys.path.append(os.path.abspath(os.path.join(os.pardir, 'src')))
+sys.path.append(os.path.abspath(os.pardir))
 
 setup(name='iago',
       version='0.0',
