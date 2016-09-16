@@ -1,0 +1,295 @@
+&GLOBAL
+  PROJECT hematite
+  RUN_TYPE MD
+  OUTPUT_FILE_NAME ./out/base
+&END GLOBAL
+
+&MOTION
+  &MD
+    ENSEMBLE NPT_F
+    STEPS 10000
+    TEMPERATURE 330
+    TIMESTEP 0.5
+
+    &THERMOSTAT
+      TYPE CSVR
+      REGION GLOBAL
+
+      &CSVR
+        TIMECON 10
+      &END CSVR
+    &END THERMOSTAT
+
+    &BAROSTAT
+      PRESSURE 1.013
+    &END BAROSTAT
+  &END MD
+
+  &PRINT
+    &RESTART ON
+      FILENAME ./restart/base
+
+      &EACH
+        MD 5
+      &END EACH
+    &END RESTART
+
+    &TRAJECTORY ON
+      FILENAME ./traj/pos
+      FORMAT DCD_ALIGNED_CELL
+
+      &EACH 
+        MD 1
+      &END EACH
+    &END TRAJECTORY
+
+    &VELOCITIES ON
+      FILENAME ./traj/vel
+      FORMAT DCD
+
+      &EACH 
+        MD 1
+      &END EACH
+    &END VELOCITIES
+
+    &FORCES ON
+      FILENAME ./traj/for
+      FORMAT DCD
+
+      &EACH 
+        MD 1
+      &END EACH
+    &END FORCES
+  &END PRINT
+&END MOTION
+
+#&EXT_RESTART
+#  RESTART_DEFAULT     TRUE
+#  RESTART_FILE_NAME   ./run.base
+#&END EXT_RESTART
+
+&FORCE_EVAL
+  METHOD              Quickstep
+  STRESS_TENSOR       ANALYTICAL
+
+  &DFT
+    UKS T
+    CHARGE 0
+    BASIS_SET_FILE_NAME ../input/BASIS_ADMM
+    BASIS_SET_FILE_NAME ../input/BASIS_MOLOPT
+    POTENTIAL_FILE_NAME ../input/GTH_POTENTIALS
+
+    &AUXILIARY_DENSITY_MATRIX_METHOD
+      METHOD BASIS_PROJECTION
+      ADMM_PURIFICATION_METHOD MO_DIAG
+    &END AUXILIARY_DENSITY_MATRIX_METHOD
+
+    &MGRID
+      CUTOFF 400
+    &END MGRID
+
+    &QS
+      EPS_DEFAULT 1.00E-12
+    &END QS
+
+    &SCF
+      SCF_GUESS  ATOMIC
+      MAX_SCF 40
+      EPS_SCF     1E-05
+
+      &OT
+        PRECONDITIONER FULL_SINGLE_INVERSE
+        MINIMIZER DIIS
+      &END OT
+
+      &OUTER_SCF
+        MAX_SCF 600
+        EPS_SCF     1E-05
+      &END OUTER_SCF
+    &END SCF
+
+     &XC
+       DENSITY_CUTOFF     1.0000000000000000E-10
+       GRADIENT_CUTOFF     1.0000000000000000E-10
+       TAU_CUTOFF     1.0000000000000000E-10
+       &XC_FUNCTIONAL  NO_SHORTCUT
+         &PBE  T
+           SCALE_X     0.0000000000000000E+00
+           SCALE_C     1.0000000000000000E+00
+         &END PBE
+         &XWPBE  T
+           SCALE_X    -1.2000000000000000E-01
+           SCALE_X0     1.0000000000000000E+00
+           OMEGA     1.1000000000000000E-01
+         &END XWPBE
+       &END XC_FUNCTIONAL
+       &HF
+         FRACTION     1.2000000000000000E-01
+         &SCREENING
+           EPS_SCHWARZ     1.0000000000000000E-04
+           SCREEN_ON_INITIAL_P  F
+         &END SCREENING
+         &INTERACTION_POTENTIAL
+           POTENTIAL_TYPE  SHORTRANGE
+           OMEGA     1.1000000000000000E-01
+         &END INTERACTION_POTENTIAL
+         &MEMORY
+           EPS_STORAGE_SCALING     1.0000000000000001E-01
+           MAX_MEMORY  2400
+         &END MEMORY
+       &END HF
+       &VDW_POTENTIAL
+         POTENTIAL_TYPE  PAIR_POTENTIAL
+         &PAIR_POTENTIAL
+           TYPE  DFTD3
+           PARAMETER_FILE_NAME ../input/dftd3.dat
+           REFERENCE_FUNCTIONAL PBE0
+         &END PAIR_POTENTIAL
+       &END VDW_POTENTIAL
+     &END XC
+
+    &PRINT
+      #&V_HARTREE_CUBE ON
+      #  FILENAME ./cubes/VHAR
+      #  STRIDE 1 1 1
+
+      #  &EACH
+      #    MD 1
+      #  &END EACH
+      #&END V_HARTREE_CUBE
+
+      #&E_DENSITY_CUBE ON
+      #  FILENAME ./cubes/EDEN
+      #  STRIDE 1 1 1
+
+      #  &EACH
+      #    MD 1
+      #  &END EACH
+      #&END E_DENSITY_CUBE
+
+      #&PDOS ON
+      #  COMPONENTS
+      #  FILENAME ./pdos/pdos
+      #  APPEND True
+      #  NLUMO -1
+      #  &EACH
+      #    MD 1
+      #  &END EACH
+        # hydrogen top
+      #&END PDOS
+
+#      &MO_CUBES ON
+#        FILENAME ./cubes/MOLO
+#        STRIDE 1 1 1
+#        NHOMO 3
+#        NLUMO 3
+#
+#        &EACH
+#          MD 2
+#        &END EACH
+#      &END MO_CUBES
+    &END PRINT
+  &END DFT
+
+  &SUBSYS
+    &CELL
+      ABC 7.41  7.41 45 
+      ALPHA_BETA_GAMMA 85.66 94.34 94.34
+      PERIODIC XYZ
+
+      &CELL_REF
+        ABC 7.41 7.41 45
+        ALPHA_BETA_GAMMA 85.66 94.34 94.34
+      &END CELL_REF
+    &END CELL
+
+    &TOPOLOGY
+      COORD_FILE_FORMAT XYZ
+      COORD_FILE_NAME ../input/input.xyz
+    &END TOPOLOGY
+
+    &KIND Fe1
+      ELEMENT Fe
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      AUX_FIT_BASIS_SET cFIT11
+      POTENTIAL GTH-PBE-q16
+
+      &BS
+        &ALPHA
+          NEL -6  -2
+          L    2   0
+          N    3   4
+        &END ALPHA
+
+        &BETA
+          NEL +4  -2
+          L    2   0
+          N    3   4
+        &END BETA
+      &END BS
+    &END KIND
+
+    &KIND Fe2
+      ELEMENT Fe
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      AUX_FIT_BASIS_SET cFIT11
+      POTENTIAL GTH-PBE-q16
+
+      &BS
+        &ALPHA
+          NEL +4  -2
+          L    2   0
+          N    3   4
+        &END ALPHA
+
+        &BETA
+          NEL -6  -2
+          L    2   0
+          N    3   4
+        &END BETA
+      &END BS
+    &END KIND
+
+    &KIND O
+      AUX_FIT_BASIS_SET cpFIT3
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q6
+
+      &BS
+        &ALPHA
+          NEL +2
+          L    1
+          N    2
+        &END ALPHA
+
+        &BETA
+          NEL +2
+          L    1
+          N    2
+        &END BETA
+      &END BS
+    &END KIND
+
+    &KIND OW
+      ELEMENT O
+      AUX_FIT_BASIS_SET cpFIT3
+      BASIS_SET DZVP-MOLOPT-SR-GTH
+      POTENTIAL GTH-PBE-q6
+    &END KIND
+
+    &KIND HW
+      ELEMENT H
+      BASIS_SET TZVP-MOLOPT-GTH
+      AUX_FIT_BASIS_SET cpFIT3
+      POTENTIAL GTH-PBE-q1
+    &END KIND
+
+    &KIND H
+      ELEMENT H
+      BASIS_SET TZVP-MOLOPT-GTH
+      AUX_FIT_BASIS_SET cpFIT3
+      POTENTIAL GTH-PBE-q1
+    &END KIND
+  &END SUBSYS
+&END FORCE_EVAL
+
