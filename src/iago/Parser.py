@@ -4,6 +4,7 @@ import os
 class Parser(object):
 	def __init__(self):
 		self._readers = dict()
+		self.path = None
 
 	def get_atom_indices(self, selector):
 		"""
@@ -13,7 +14,13 @@ class Parser(object):
 		raise NotImplementedError()
 
 	def get_runs(self):
-		raise NotImplementedError()
+		"""
+		:return: List of run names available in this bucket.
+		"""
+		inodes = os.listdir(self.path)
+		directories = [_ for _ in inodes if os.path.isdir(os.path.join(self.path, _))]
+		runs = [_ for _ in directories if _.startswith('run-')]
+		return runs
 
 	def get_universe(self, run):
 		raise NotImplementedError()
@@ -28,6 +35,8 @@ class Parser(object):
 		""" Parses all runs of a certain bucket.
 		:return:
 		"""
+		self.path = path
+
 		for run in self.get_runs():
 			code = self.get_run_code(run)
 			if code == 'cp2k':

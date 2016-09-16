@@ -11,6 +11,7 @@ class Analyser(object):
 	def __init__(self):
 		self._db = DatabaseProvider.DB()
 		self.parser = Parser.Parser()
+		self.path = None
 
 	def setup(self):
 		""" Points out the required settings and parsers. Has to be user-defined."""
@@ -25,6 +26,8 @@ class Analyser(object):
 		pass
 
 	def static_load_groups(self, filename):
+		if not os.path.isabs(filename):
+			filename = os.path.abspath(os.path.join(self.path, filename))
 		try:
 			lines = open(filename).readlines()
 		except:
@@ -36,7 +39,7 @@ class Analyser(object):
 		if len(args) < 1:
 			raise RuntimeError('No empty groups allowed.')
 
-		first, rest = args[:1], args[1:]
+		first, rest = args[0], args[1:]
 
 		# only dict given as argument
 		if len(args) == 1:
@@ -51,6 +54,9 @@ class Analyser(object):
 
 		# list of elements
 		self._db.groups.update({first: rest})
+
+	def get_groups(self):
+		return self._db.groups
 
 	def dynamic_plane(self, name, selector, normal=None, comment=None):
 		""" Not suitable for wrapped trajectories.
@@ -90,7 +96,7 @@ class Analyser(object):
 
 	def run(self):
 		self.setup()
-		self.parser.run(os.getcwd())
+		self.parser.run(self.path)
 		self.define_groups()
 		self.calculated_columns()
 		return self.storage_provider.save(self._db)

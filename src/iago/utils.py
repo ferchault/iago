@@ -76,12 +76,13 @@ class SafeDict(dict):
 
 	def __setitem__(self, key, value):
 		if key in self:
-			raise ValueError('Overwriting an existing entry is prohibited.')
+			print self
+			raise ValueError('Overwriting an existing entry (%s) is prohibited.' % key)
 		super(SafeDict, self).__setitem__(key, value)
 
 	def update(self, other=None, **kwargs):
 		if other is not None:
-			for k, v in other:
+			for k, v in other.iteritems():
 				self[k] = v
 		for k, v in kwargs.items():
 			self[k] = v
