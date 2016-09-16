@@ -3,11 +3,14 @@ import pandas as pd
 import types
 import itertools as it
 import utils
+import os
 import DatabaseProvider
+import Parser
 
 class Analyser(object):
 	def __init__(self):
 		self._db = DatabaseProvider.DB()
+		self.parser = Parser.Parser()
 
 	def setup(self):
 		""" Points out the required settings and parsers. Has to be user-defined."""
@@ -85,13 +88,9 @@ class Analyser(object):
 				}
 				maxidx += 1
 
-
-
-
-
 	def run(self):
 		self.setup()
-		self.parser.run()
+		self.parser.run(os.getcwd())
 		self.define_groups()
 		self.calculated_columns()
 		return self.storage_provider.save(self._db)

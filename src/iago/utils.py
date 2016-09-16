@@ -69,7 +69,6 @@ def fit_plane(positions, normal=None):
 	return normal_vector, center_of_geometry
 
 
-
 class SafeDict(dict):
 	def __init__(self, other=None, **kwargs):
 		super(SafeDict, self).__init__()
@@ -90,18 +89,17 @@ class SafeDict(dict):
 
 class AnnotatedDataFrame(pd.DataFrame):
 	def __init__(self, labels, data=None):
+		if data is None:
+			super(AnnotatedDataFrame, self).__init__(columns=labels.keys())
+		else:
+			super(AnnotatedDataFrame, self).__init__(data)
+
 		self._comments = dict()
 		self._units = dict()
-
-		for k, v in labels:
+		for k, v in labels.iteritems():
 			comment, unit = v
 			self._comments[k] = comment
 			self._units[k] = unit
-
-		if data is None:
-			super(AnnotatedDataFrame, self).__init__(columns=self._comments.keys())
-		else:
-			super(AnnotatedDataFrame, self).__init__(data)
 
 	def explain(self, columnnames):
 		if isinstance(columnnames, types.StringTypes):
