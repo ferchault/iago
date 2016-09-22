@@ -6,8 +6,6 @@ import pint
 
 class DB(object):
 	def __init__(self):
-		ureg = pint.UnitRegistry()
-
 		self._groups = utils.SafeDict()
 		self.planes = utils.AnnotatedDataFrame({
 			'run': ('Run', None),
@@ -16,9 +14,9 @@ class DB(object):
 			'normal_x': ('Normal vector: x component', None),
 			'normal_y': ('Normal vector: y component', None),
 			'normal_z': ('Normal vector: z component', None),
-			'support_x': ('Support point: x component', ureg.angstrom),
-			'support_y': ('Support point: y component', ureg.angstrom),
-			'support_z': ('Support point: z component', ureg.angstrom),
+			'support_x': ('Support point: x component', 'angstrom'),
+			'support_y': ('Support point: y component', 'angstrom'),
+			'support_z': ('Support point: z component', 'angstrom'),
 		})
 
 	@property
@@ -45,7 +43,7 @@ class DB(object):
 		data['planes-meta'] = self.planes.annotations_to_dict()
 
 		# finalise
-		fh.write(json.dumps(data, separators=(',',':')))
+		fh.write(json.dumps(data, separators=(',', ':')))
 
 	def read(self, fh):
 		""" Reads the database from disk or stream.

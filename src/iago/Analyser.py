@@ -103,7 +103,7 @@ class Analyser(object):
 		self.parser.run(self.path)
 		self.define_groups()
 		self.calculated_columns()
-		return self._db
+		self._db.write(os.path.join(self.path, 'iagodb.json'))
 
 	def _compare_predicate(self, a, p, b):
 		return (p == 'eq' and a == b) or (p == 'gt' and a > b) or (p == 'lt' and a < b) or (p == 'ge' and a >= b) or (p == 'le' and a <= b)

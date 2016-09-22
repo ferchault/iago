@@ -2,6 +2,7 @@ import re
 import types
 import pandas as pd
 import numpy as np
+import pint
 
 
 class Map(dict):
@@ -122,6 +123,8 @@ class SafeDict(dict):
 
 class AnnotatedDataFrame(pd.DataFrame):
 	def __init__(self, labels, data=None):
+		ureg = pint.UnitRegistry()
+
 		if data is None:
 			super(AnnotatedDataFrame, self).__init__(columns=labels.keys())
 		else:
@@ -132,7 +135,7 @@ class AnnotatedDataFrame(pd.DataFrame):
 		for k, v in labels.iteritems():
 			comment, unit = v
 			self._comments[k] = comment
-			self._units[k] = unit
+			self._units[k] = ureg(unit)
 
 	def explain(self, columnnames):
 		if isinstance(columnnames, types.StringTypes):
@@ -156,3 +159,7 @@ class AnnotatedDataFrame(pd.DataFrame):
 			units.append(units)
 
 		return pd.DataFrame({'Name': columnnames, 'Comment': comments, 'Unit': units})
+
+	def annotations_to_dict(self):
+		columns = self._units.keys()
+		return {column: (self._comments[column], str(self._units[column])) for column in columns}
