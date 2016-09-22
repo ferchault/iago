@@ -18,6 +18,9 @@ class Reader(object):
 	def get_universe(self):
 		return self._universe
 
+	def get_trajectory_frames(self):
+		return range(len(self._universe.trajectory))
+
 
 class CP2KReader(Reader):
 	def __init__(self, *args, **kwargs):

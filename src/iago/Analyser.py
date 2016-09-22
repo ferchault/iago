@@ -50,12 +50,12 @@ class Analyser(object):
 			if isinstance(args[1], types.StringTypes):
 				idx = self.parser.get_atom_indices(args[1])
 			else:
-				idx = args[1:]
+				idx = args[1:][0]
 			self._db.groups.update({first: idx})
 
 		# list of elements
 		if len(args) > 2:
-			self._db.groups.update({first: rest})
+			self._db.groups.update({first: list(rest)})
 
 	def get_groups(self):
 		return self._db.groups
@@ -76,12 +76,14 @@ class Analyser(object):
 			try:
 				u = self.parser.get_universe(run)
 			except:
+				raise
 				continue
 
 			steps = self.parser.get_trajectory_frames(run)
+			tgroups = self.parser.get_groups(run, self.get_groups())
 
 			for step, frame in it.izip(steps, u.trajectory):
-				ag = u.selectAtoms(selector)
+				ag = u.select_atoms(selector, **tgroups)
 				normal_vector, center_of_geometry = utils.fit_plane(ag.positions, normal=normal)
 				self._db.planes.loc[maxidx] = {
 					'run': run,

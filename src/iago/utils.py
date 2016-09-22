@@ -36,6 +36,7 @@ class Map(dict):
 	def traverse(self, keys):
 		return reduce(lambda d, k: d[k], keys, self)
 
+
 def parse_ndx(lines):
 	""" Parses a GROMACS ndx file.
 	:param lines: Iterable of strings.
@@ -64,7 +65,7 @@ def parse_ndx(lines):
 			if lastgroup is None:
 				raise ValueError('First non-comment line has to contain a group definition.')
 			try:
-				new = map(lambda _: int(_)-1, line.split())
+				new = map(lambda _: int(_) - 1, line.split())
 				if len([_ for _ in new if _ < 0]) > 0:
 					raise ValueError('Only non-negative and one-based indices supported.')
 				thisvalues += new

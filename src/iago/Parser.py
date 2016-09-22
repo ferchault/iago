@@ -1,6 +1,7 @@
 import Reader
 import os
 import MDAnalysis as mda
+import utils
 
 
 class Parser(object):
@@ -26,10 +27,14 @@ class Parser(object):
 		return runs
 
 	def get_universe(self, run):
-		raise NotImplementedError()
+		return self._readers[run].get_universe()
+
+	def get_groups(self, run, groups):
+		u = self.get_universe(run)
+		return {key: u.atoms[value] for (key, value) in groups.iteritems()}
 
 	def get_trajectory_frames(self, run):
-		raise NotImplementedError()
+		return self._readers[run].get_trajectory_frames()
 
 	def get_run_code(self, run):
 		return 'cp2k'
