@@ -50,6 +50,7 @@ class LocationGroup(object):
 				df = host.get_bucket_list()
 			except ValueError as e:
 				warnings.warn('Unable to load host %s: %s' % (hostalias, str(e)))
+				continue
 
 			df['hostalias'] = hostalias
 			if self._buckets is None:
