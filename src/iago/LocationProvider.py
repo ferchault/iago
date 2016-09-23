@@ -15,6 +15,8 @@ try:
 except:
 	HAS_PARAMIKO = False
 	pass
+import numpy as np
+import DatabaseProvider
 
 
 class LocationGroup(object):
@@ -38,7 +40,7 @@ class LocationGroup(object):
 			if not skip:
 				self._hosts[hostalias] = config.get(hostalias, 'url')
 
-	def get_bucket_list(self, force_update=False):
+	def get_bucket_list(self, force_update=False, with_status=False):
 		for hostalias, host in self._hosts.iteritems():
 			if not isinstance(host, LocationProvider):
 				host = LocationProvider.create(host)
@@ -61,9 +63,13 @@ class LocationGroup(object):
 		if self._buckets is None:
 			return None
 		self._buckets = self._buckets.reset_index(drop=True)
-		return self._buckets
 
-	def get_bucket_status(self, bucket_list=None):
+		if with_status:
+			return self._get_bucket_status(self._buckets)
+		else:
+			return self._buckets
+
+	def _get_bucket_status(self, bucket_list=None):
 		""" Checks for bucket database status.
 
 		:param bucket_list: Pandas dataframe with buckets to query.
@@ -82,6 +88,26 @@ class LocationGroup(object):
 				bucket_list.loc[idx, 'hasDB'] = True
 
 		return bucket_list
+
+	def fetch_database(self, bucket):
+		if bucket in self._buckets.id.values:
+			rows = self._buckets[self._buckets.id == bucket]
+		elif bucket in self._buckets.name.values:
+			rows = self._buckets[self._buckets.name == bucket]
+
+		if len(rows) > 1:
+			raise ValueError('Bucket name or id %s is not unique' % bucket)
+		if len(rows) == 0:
+			raise ValueError('No bucket with this id or name: %s' % bucket)
+
+		try:
+			fh = self._hosts[rows.iloc[0].hostalias].open_file(rows.iloc[0].rawname, 'iagodb.json')
+		except:
+			raise RuntimeError('Unable to open remote database.')
+
+		db = DatabaseProvider.DB()
+		db.read(fh)
+		return db
 
 
 class LocationProvider(object):
@@ -133,6 +159,9 @@ class FileLocationProvider(LocationProvider):
 
 	def has_file(self, bucket, filename):
 		return os.path.isfile(os.path.join(self._basepath, bucket, filename))
+
+	def open_file(self, bucket, filename):
+		return open(os.path.join(self._basepath, bucket, filename))
 
 
 class SSHLocationProvider(LocationProvider):

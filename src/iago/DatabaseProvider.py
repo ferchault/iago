@@ -58,7 +58,7 @@ class DB(object):
 		# groups
 		self._groups = utils.SafeDict(data['groups'])
 		# planes
-		self.planes = pd.DataFrame(data['planes-meta'], data['planes'])
+		self.planes = utils.AnnotatedDataFrame(data['planes-meta'], data['planes'])
 
 
 class DatabaseProvider(object):

@@ -137,9 +137,12 @@ class AnnotatedDataFrame(pd.DataFrame):
 			self._comments[k] = comment
 			self._units[k] = ureg(unit)
 
-	def explain(self, columnnames):
+	def explain(self, columnnames=None):
 		if isinstance(columnnames, types.StringTypes):
 			columnnames = [columnnames]
+
+		if columnnames is None:
+			columnnames = self.columns
 
 		comments, units = [], []
 		for columnname in columnnames:
@@ -156,7 +159,7 @@ class AnnotatedDataFrame(pd.DataFrame):
 				unit = 'No unit available.'
 
 			comments.append(comment)
-			units.append(units)
+			units.append(unit)
 
 		return pd.DataFrame({'Name': columnnames, 'Comment': comments, 'Unit': units})
 
