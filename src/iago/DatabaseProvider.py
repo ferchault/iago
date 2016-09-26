@@ -61,8 +61,8 @@ class DB(object):
 		:param fh: File handle or filename.
 		:return:
 		"""
-		if not hasattr(fh, 'write'):
-			fh = open(fh, 'w')
+		if not hasattr(fh, 'read'):
+			fh = open(fh)
 
 		data = json.load(fh)
 
