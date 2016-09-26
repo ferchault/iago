@@ -49,6 +49,9 @@ class DB(object):
 		# planes
 		data['planes'] = self.planes.to_dict()
 		data['planes-meta'] = self.planes.annotations_to_dict()
+		# distances
+		data['distances'] = self.distances.to_dict()
+		data['distances-meta'] = self.distances.annotations_to_dict()
 
 		# finalise
 		fh.write(json.dumps(data, separators=(',', ':')))
@@ -67,6 +70,8 @@ class DB(object):
 		self._groups = utils.SafeDict(data['groups'])
 		# planes
 		self.planes = utils.AnnotatedDataFrame(data['planes-meta'], data['planes'])
+		# distances
+		self.distances = utils.AnnotatedDataFrame(data['distances-meta'], data['distances'])
 
 		# cleanup
 		fh.close()
