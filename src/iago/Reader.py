@@ -3,6 +3,14 @@ import os
 import MDAnalysis as mda
 
 
+class EmptyUniverse(object):
+	def __len__(self):
+		return 0
+
+	def __init__(self):
+		self.trajectory = []
+
+
 class Reader(object):
 	def __init__(self, path):
 		self._path = path
@@ -75,6 +83,9 @@ class CP2KReader(Reader):
 		self._config = self._parse_input_file(fh.readlines())
 
 		# load universe
-		outputfile = os.path.join(self._path, self._config.MOTION.PRINT.TRAJECTORY.FILENAME + '-pos-1.dcd')
-		self._universe = mda.Universe(psffile, outputfile)
+		outputfile = os.path.join(self._path, self._config.MOTION.PRINT.TRAJECTORY.FILENAME + '-poss-1.dcd')
+		try:
+			self._universe = mda.Universe(psffile, outputfile)
+		except OSError:
+			self._universe = EmptyUniverse()
 

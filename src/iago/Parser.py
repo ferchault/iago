@@ -14,7 +14,11 @@ class Parser(object):
 		:param selector: Valid selection string.
 		:return: List of 0-based atom indices.
 		"""
-		ag = self._readers.itervalues().next().get_universe().select_atoms(selector)
+		u = self._readers.itervalues().next().get_universe()
+		if isinstance(u, Reader.EmptyUniverse):
+			return []
+
+		ag = u.select_atoms(selector)
 		return [_.index for _ in ag]
 
 	def get_runs(self):
@@ -31,6 +35,8 @@ class Parser(object):
 
 	def get_groups(self, run, groups):
 		u = self.get_universe(run)
+		if isinstance(u, Reader.EmptyUniverse):
+			return {key: [] for (key, value) in groups.iteritems()}
 		return {key: u.atoms[value] for (key, value) in groups.iteritems()}
 
 	def get_trajectory_frames(self, run):
