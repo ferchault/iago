@@ -15,8 +15,9 @@ try:
 except:
 	HAS_PARAMIKO = False
 	pass
-import numpy as np
 import DatabaseProvider
+import shutil
+import tempfile
 
 
 class LocationGroup(object):
@@ -142,6 +143,9 @@ class LocationProvider(object):
 	def has_file(self, bucket, filename):
 		raise NotImplementedError()
 
+	def open_file(self, bucket, filename):
+		raise NotImplementedError()
+
 
 class FileLocationProvider(LocationProvider):
 	""" Location class for raw file access on the local machine.
@@ -187,6 +191,7 @@ class SSHLocationProvider(LocationProvider):
 
 	def _connect_sftp(self):
 		if self._sftp is not None:
+			self._sftp.chdir(self._basepath)
 			return
 		self._sftp = self._client.open_sftp()
 		try:
@@ -211,6 +216,26 @@ class SSHLocationProvider(LocationProvider):
 				return stat.S_IFREG(inode.st_mode)
 		return False
 
+	def open_file(self, bucket, filename):
+		self._connect_sftp()
+		self._sftp.chdir(bucket)
+		return self._sftp.file(filename)
+
+
+class CloudDelegatedFile(object):
+	def __init__(self, fh, cloudtemppath):
+		self.__dict__['file'] = fh
+		self._cloudtemppath = cloudtemppath
+
+	def __close__(self):
+		self.file.close(self)
+		shutil.rmtree(self._cloudtemppath)
+
+	def __getattr__(self, attr):
+		return getattr(self.file, attr)
+
+	def __setattr__(self, attr, value):
+		return setattr(self.file, attr, value)
 
 class CloudLocationProvider(LocationProvider):
 	""" Location class for remote file access using rclone.
@@ -252,3 +277,10 @@ class CloudLocationProvider(LocationProvider):
 			if line.split()[-1] == filename:
 				return True
 		return False
+
+	def open_file(self, bucket, filename):
+		tdir = tempfile.mkdtemp()
+
+		raise NotImplementedError()
+
+		return CloudDelegatedFile(fh, tdir)

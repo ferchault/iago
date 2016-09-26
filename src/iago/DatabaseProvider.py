@@ -60,6 +60,9 @@ class DB(object):
 		# planes
 		self.planes = utils.AnnotatedDataFrame(data['planes-meta'], data['planes'])
 
+		# cleanup
+		fh.close()
+
 
 class DatabaseProvider(object):
 	@staticmethod
