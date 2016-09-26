@@ -83,7 +83,7 @@ class CP2KReader(Reader):
 		self._config = self._parse_input_file(fh.readlines())
 
 		# load universe
-		outputfile = os.path.join(self._path, self._config.MOTION.PRINT.TRAJECTORY.FILENAME + '-poss-1.dcd')
+		outputfile = os.path.join(self._path, self._config.MOTION.PRINT.TRAJECTORY.FILENAME + '-pos-1.dcd')
 		try:
 			self._universe = mda.Universe(psffile, outputfile)
 		except OSError:
