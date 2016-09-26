@@ -18,6 +18,7 @@ except:
 import DatabaseProvider
 import shutil
 import tempfile
+import time
 
 
 class LocationGroup(object):
@@ -90,7 +91,7 @@ class LocationGroup(object):
 
 		return bucket_list
 
-	def fetch_database(self, bucket):
+	def _get_bucket_from_name_or_id(self, bucket):
 		if bucket in self._buckets.id.values:
 			rows = self._buckets[self._buckets.id == bucket]
 		elif bucket in self._buckets.name.values:
@@ -101,14 +102,22 @@ class LocationGroup(object):
 		if len(rows) == 0:
 			raise ValueError('No bucket with this id or name: %s' % bucket)
 
+		return rows.iloc[0]
+
+	def fetch_database(self, bucket):
+		row = self._get_bucket_from_name_or_id(bucket)
 		try:
-			fh = self._hosts[rows.iloc[0].hostalias].open_file(rows.iloc[0].rawname, 'iagodb.json')
+			fh = self._hosts[row.hostalias].open_file(row.rawname, 'iagodb.json')
 		except:
 			raise RuntimeError('Unable to open remote database.')
 
 		db = DatabaseProvider.DB()
 		db.read(fh)
 		return db
+
+	def build_database(self, bucket):
+		row = self._get_bucket_from_name_or_id(bucket)
+		self._hosts[row.hostalias].build_database(row.rawname)
 
 
 class LocationProvider(object):
@@ -144,6 +153,9 @@ class LocationProvider(object):
 		raise NotImplementedError()
 
 	def open_file(self, bucket, filename):
+		raise NotImplementedError()
+
+	def build_database(self, bucket):
 		raise NotImplementedError()
 
 
@@ -211,15 +223,25 @@ class SSHLocationProvider(LocationProvider):
 
 	def has_file(self, bucket, filename):
 		self._connect_sftp()
-		for inode in self._sftp.listdir_attr(bucket):
-			if inode.filename == filename:
-				return stat.S_IFREG(inode.st_mode)
-		return False
+		try:
+			s = self._sftp.stat(bucket + '/' + filename)
+			return True
+		except:
+			return False
 
 	def open_file(self, bucket, filename):
 		self._connect_sftp()
 		self._sftp.chdir(bucket)
 		return self._sftp.file(filename)
+
+	def build_database(self, bucket):
+		if not self.has_file(bucket, 'iago-analysis.py'):
+			raise RuntimeError('No analysis script specified for this bucket.')
+
+		stdin, stdout, stderr = self._client.exec_command('cd %s; cd %s; python iago-analysis.py' % (self._basepath, bucket))
+		if stdout.channel.recv_exit_status() != 0:
+			print stderr.read()
+			raise RuntimeError('Remote analysis failed.')
 
 
 class CloudDelegatedFile(object):
