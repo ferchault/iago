@@ -6,6 +6,8 @@ import utils
 import os
 import DatabaseProvider
 import Parser
+import MDAnalysis as mda
+import MDAnalysis.analysis.distances as mdaad
 
 class Analyser(object):
 	def __init__(self):
@@ -60,7 +62,7 @@ class Analyser(object):
 	def get_groups(self):
 		return self._db.groups
 
-	def dynamic_plane(self, name, selector, normal=None, comment=None):
+	def dynamic_plane(self, name, selector, normal=None, comment=None, framesel=None):
 		""" Not suitable for wrapped trajectories.
 		:param name: Name of the plane.
 		:param selector: Which atoms are to be approximated by a plane.
@@ -76,13 +78,15 @@ class Analyser(object):
 			try:
 				u = self.parser.get_universe(run)
 			except:
-				raise
 				continue
 
 			steps = self.parser.get_trajectory_frames(run)
 			tgroups = self.parser.get_groups(run, self.get_groups())
 
-			for step, frame in it.izip(steps, u.trajectory):
+			if framesel is None:
+				framesel = slice(None)
+
+			for step, frame in it.izip(steps[framesel], u.trajectory[framesel]):
 				ag = u.select_atoms(selector, **tgroups)
 				normal_vector, center_of_geometry = utils.fit_plane(ag.positions, normal=normal)
 				self._db.planes.loc[maxidx] = {
@@ -97,6 +101,48 @@ class Analyser(object):
 					'support_z': center_of_geometry[2],
 				}
 				maxidx += 1
+
+	def dynamic_distance(self, name, selectorA, selectorB, cutoff=None, comment=None, framesel=None):
+		"""
+		:param name: Name of the distance set between groups A and B
+		:param selectorA: Selector for the group A
+		:param selectorB: Selector for the grouop B
+		:param cutoff: Maximum included distance in Angstrom. None to disable.
+		:param comment: Description of the distance set
+		:return:
+		"""
+		try:
+			maxidx = max(self._db.distances.index)
+		except:
+			maxidx = 0
+		for run in self.parser.get_runs():
+			try:
+				u = self.parser.get_universe(run)
+			except:
+				continue
+
+			steps = self.parser.get_trajectory_frames(run)
+			tgroups = self.parser.get_groups(run, self.get_groups())
+
+			if framesel is None:
+				framesel = slice(None)
+
+			for step, frame in it.izip(steps[framesel], u.trajectory[framesel]):
+				agA = u.select_atoms(selectorA, **tgroups)
+				agB = u.select_atoms(selectorB, **tgroups)
+				distances = mdaad.distance_array(agA.positions, agB.positions, box=frame.dimensions)
+				for iidx, i in enumerate([_.id for _ in agA]):
+					for jidx, j in enumerate([_.id for _ in agB]):
+						if cutoff is None or distances[iidx, jidx] < cutoff:
+							self._db.distances.loc[maxidx] = {
+								'run': run,
+								'frame': step,
+								'name': name,
+								'atom1': iidx,
+								'atom2': jidx,
+								'dist': distances[iidx, jidx],
+							}
+							maxidx += 1
 
 	def run(self):
 		self.setup()

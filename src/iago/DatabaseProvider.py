@@ -18,6 +18,14 @@ class DB(object):
 			'support_y': ('Support point: y component', 'angstrom'),
 			'support_z': ('Support point: z component', 'angstrom'),
 		})
+		self.distances = utils.AnnotatedDataFrame({
+			'run': ('Run', None),
+			'frame': ('Frame number', None),
+			'name': ('Plane name', None),
+			'atom1': ('First atom index', None),
+			'atom2': ('Second atom index', None),
+			'dist': ('Distance', 'angstrom')
+		})
 
 	@property
 	def groups(self):

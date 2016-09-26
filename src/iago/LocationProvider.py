@@ -237,6 +237,7 @@ class CloudDelegatedFile(object):
 	def __setattr__(self, attr, value):
 		return setattr(self.file, attr, value)
 
+
 class CloudLocationProvider(LocationProvider):
 	""" Location class for remote file access using rclone.
 	"""
