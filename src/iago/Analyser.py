@@ -75,7 +75,7 @@ class Analyser(object):
 		:return:
 		"""
 		try:
-			maxidx = max(self._db.planes.index)
+			maxidx = max(self._db.planes.index) + 1
 		except ValueError:
 			maxidx = 0
 		for run in self.parser.get_runs():
@@ -116,8 +116,8 @@ class Analyser(object):
 		:return:
 		"""
 		try:
-			maxidx = max(self._db.distances.index)
-		except:
+			maxidx = max(self._db.distances.index) + 1
+		except ValueError:
 			maxidx = 0
 		for run in self.parser.get_runs():
 			try:
