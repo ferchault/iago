@@ -26,6 +26,9 @@ class Reader(object):
 	def read(self):
 		raise NotImplementedError()
 
+	def get_config(self):
+		raise NotImplementedError()
+
 	def get_universe(self):
 		return self._universe
 
@@ -37,6 +40,9 @@ class CP2KReader(Reader):
 	def __init__(self, *args, **kwargs):
 		super(CP2KReader, self).__init__(*args, **kwargs)
 		self._config = None
+
+	def get_config(self):
+		return self._config
 
 	@staticmethod
 	def _recognize_line(line):
@@ -106,4 +112,3 @@ class CP2KReader(Reader):
 			self._universe = mda.Universe(psffile, outputfile)
 		except OSError:
 			self._universe = EmptyUniverse()
-

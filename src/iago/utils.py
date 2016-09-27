@@ -28,6 +28,8 @@ class Map(dict):
 
 	def __setitem__(self, key, value):
 		super(Map, self).__setitem__(key, value)
+		if type(value) is dict:
+			value = Map(value)
 		self.__dict__.update({key: value})
 
 	def __delattr__(self, item):

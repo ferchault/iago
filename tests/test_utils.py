@@ -106,3 +106,9 @@ class TestUtils(TestCase):
 		q = m.traverse('foo'.split())
 		q.bar = 5
 		self.assertEqual(m.foo[1].bar, 5)
+
+	def test_map_dict_assignment(self):
+		m = u.Map()
+		m.foo = 3
+		m.bar = {'foo': 4}
+		self.assertTrue(isinstance(m.bar, u.Map))
