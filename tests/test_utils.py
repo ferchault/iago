@@ -70,3 +70,26 @@ class TestUtils(TestCase):
 	def test_plane_point_distance_multiple(self):
 		nv, pp, dp = (0, 0, 2), (0, 0, 0), ((0, 0, 1), (0, 0, -1))
 		self.assertTrue(np.allclose(u.plane_point_distance(nv, pp, dp), np.array((1., -1.))))
+
+	def test_map(self):
+		m = u.Map()
+		m['foo'] = 3
+		self.assertEqual(m['foo'], 3)
+		self.assertEqual(m.foo, 3)
+		m.foo = 4
+		self.assertEqual(m['foo'], 4)
+		self.assertEqual(m.foo, 4)
+		m = u.Map({'foo': 2})
+		self.assertEqual(m, {'foo': 2})
+		m = u.Map(foo=2)
+		self.assertEqual(m, {'foo': 2})
+		m = u.Map(foo=2, bar=3)
+		del m.bar
+		self.assertEqual(m, {'foo': 2})
+		m = u.Map(foo=2, bar=3)
+		del m['bar']
+		self.assertEqual(m, {'foo': 2})
+		self.assertRaises(KeyError, m.__getattr__('bar'))
+		m = u.Map(foo=u.Map({'bar': 3}))
+		self.assertEqual(m.foo.bar, 3)
+		self.assertEqual(m.traverse('foo bar'.split()), 3)
