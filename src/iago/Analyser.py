@@ -174,7 +174,7 @@ class Analyser(object):
 						ds = abs(ds)
 					for iidx, i in enumerate([_.id for _ in ag]):
 						if cutoff is None or ds[iidx] < cutoff:
-							self._db.distances.loc[maxidx] = {
+							self._db.planedistances.loc[maxidx] = {
 								'run': run,
 								'frame': step,
 								'name': name,
