@@ -3,6 +3,7 @@ import pandas as pd
 import types
 import itertools as it
 import utils
+import sympy
 import os
 import DatabaseProvider
 import Parser
@@ -102,7 +103,7 @@ class Analyser(object):
 				}
 				maxidx += 1
 
-	def dynamic_distance(self, name, selectorA, selectorB, cutoff=None, comment=None, framesel=None):
+	def dynamic_distance(self, name, selectorA, selectorB, cutoff=None, comment=None, framesel=None, signed=False):
 		"""
 		:param name: Name of the distance set between groups A and B
 		:param selectorA: Selector for the group A
@@ -127,20 +128,57 @@ class Analyser(object):
 			if framesel is None:
 				framesel = slice(None)
 
-			for step, frame in it.izip(steps[framesel], u.trajectory[framesel]):
-				agA = u.select_atoms(selectorA, **tgroups)
-				agB = u.select_atoms(selectorB, **tgroups)
-				distances = mdaad.distance_array(agA.positions, agB.positions, box=frame.dimensions)
-				for iidx, i in enumerate([_.id for _ in agA]):
-					for jidx, j in enumerate([_.id for _ in agB]):
-						if cutoff is None or distances[iidx, jidx] < cutoff:
+			if not (utils.is_plane_selector(selectorA) or utils.is_plane_selector(selectorB)):
+				# simple atom-atom distance
+				for step, frame in it.izip(steps[framesel], u.trajectory[framesel]):
+					agA = u.select_atoms(selectorA, **tgroups)
+					agB = u.select_atoms(selectorB, **tgroups)
+					distances = mdaad.distance_array(agA.positions, agB.positions, box=frame.dimensions)
+					for iidx, i in enumerate([_.id for _ in agA]):
+						for jidx, j in enumerate([_.id for _ in agB]):
+							if cutoff is None or distances[iidx, jidx] < cutoff:
+								self._db.distances.loc[maxidx] = {
+									'run': run,
+									'frame': step,
+									'name': name,
+									'atom1': iidx,
+									'atom2': jidx,
+									'dist': distances[iidx, jidx],
+								}
+								maxidx += 1
+			elif utils.is_plane_selector(selectorA) and utils.is_plane_selector(selectorB):
+				raise ValueError('Distance between planes not defined.')
+			else:
+				# atom-plane distances
+				if utils.is_plane_selector(selectorB):
+					planeselector, atomselector = selectorB, selectorA
+				else:
+					planeselector, atomselector = selectorA, selectorB
+
+				planename = planeselector.split()[1]
+				df = self._db.planes[(self._db.planes.run == run) & (self._db.planes.name == planename)]
+				for step, frame in it.izip(steps[framesel], u.trajectory[framesel]):
+					ag = u.select_atoms(atomselector, **tgroups)
+
+					# fetch plane
+					try:
+						s = df[df.frame == step].iloc[0]
+					except IndexError:
+						# no entry, no data
+						continue
+					p = sympy.Plane(sympy.Point3D(s.support_x, s.support_y, s.support_z), normal_vector=tuple([s.normal_x, s.normal_y, s.normal_z]))
+					ds = utils.plane_point_distance([s.normal_x, s.normal_y, s.normal_z], (s.support_x, s.support_y, s.support_z), ag.positions)
+					if signed is False:
+						ds = abs(ds)
+					for iidx, i in enumerate([_.id for _ in ag]):
+						if cutoff is None or ds[iidx] < cutoff:
 							self._db.distances.loc[maxidx] = {
 								'run': run,
 								'frame': step,
 								'name': name,
+								'plane': planename,
 								'atom1': iidx,
-								'atom2': jidx,
-								'dist': distances[iidx, jidx],
+								'dist': ds[iidx],
 							}
 							maxidx += 1
 

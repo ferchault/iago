@@ -103,6 +103,18 @@ def fit_plane(positions, normal=None):
 	return normal_vector, center_of_geometry
 
 
+def is_plane_selector(selector):
+	return re.match('^plane [^ ]+$', selector)
+
+
+def plane_point_distance(normal_vector, plane_point, data_point):
+	nv = np.array(normal_vector)
+	pp = np.array(plane_point)
+	d = -np.dot(nv, pp)
+	signed_distance = (np.dot(normal_vector, np.array(data_point).T) + d)/np.linalg.norm(nv)
+	return signed_distance
+
+
 class SafeDict(dict):
 	def __init__(self, other=None, **kwargs):
 		super(SafeDict, self).__init__()

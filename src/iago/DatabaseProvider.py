@@ -21,9 +21,17 @@ class DB(object):
 		self.distances = utils.AnnotatedDataFrame({
 			'run': ('Run', None),
 			'frame': ('Frame number', None),
-			'name': ('Plane name', None),
+			'name': ('Distance set name', None),
 			'atom1': ('First atom index', None),
 			'atom2': ('Second atom index', None),
+			'dist': ('Distance', 'angstrom')
+		})
+		self.planedistances = utils.AnnotatedDataFrame({
+			'run': ('Run', None),
+			'frame': ('Frame number', None),
+			'name': ('Distance set name', None),
+			'plane': ('Plane name', None),
+			'atom1': ('First atom index', None),
 			'dist': ('Distance', 'angstrom')
 		})
 
@@ -52,6 +60,8 @@ class DB(object):
 		# distances
 		data['distances'] = self.distances.to_dict()
 		data['distances-meta'] = self.distances.annotations_to_dict()
+		data['planedistances'] = self.planedistances.to_dict()
+		data['planedistances-meta'] = self.planedistances.annotations_to_dict()
 
 		# finalise
 		fh.write(json.dumps(data, separators=(',', ':')))
@@ -72,6 +82,7 @@ class DB(object):
 		self.planes = utils.AnnotatedDataFrame(data['planes-meta'], data['planes'])
 		# distances
 		self.distances = utils.AnnotatedDataFrame(data['distances-meta'], data['distances'])
+		self.planedistances = utils.AnnotatedDataFrame(data['planedistances-meta'], data['planedistances'])
 
 		# cleanup
 		fh.close()
