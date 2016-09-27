@@ -67,12 +67,25 @@ class CP2KReader(Reader):
 				continue
 			if line.startswith('&'):
 				section = (line.split()[0][1:]).strip()
-				result.traverse(sections)[section] = utils.Map()
+				if section in result.traverse(sections):
+					if isinstance(result.traverse(sections)[section], utils.Map):
+						result.traverse(sections)[section] = [result.traverse(sections)[section], utils.Map()]
+					else:
+						result.traverse(sections)[section].append(utils.Map())
+				else:
+					result.traverse(sections)[section] = utils.Map()
 				sections.append(section)
 				continue
 			if not (line.startswith('#') or line.startswith('!')):
 				k, v = self._recognize_line(line)
-				result.traverse(sections)[k] = v
+				q = result.traverse(sections)
+				if k in q:
+					if isinstance(q[k], list):
+						q[k].append(v)
+					else:
+						q[k] = [q[k], v]
+				else:
+					q[k] = v
 				continue
 		return result
 
