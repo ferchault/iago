@@ -144,6 +144,8 @@ class AnnotatedDataFrame(pd.DataFrame):
 			super(AnnotatedDataFrame, self).__init__(columns=labels.keys())
 		else:
 			super(AnnotatedDataFrame, self).__init__(data)
+			self.index = self.index.astype(int)
+			self.sort_index(inplace=True)
 
 		self._comments = dict()
 		self._units = dict()
