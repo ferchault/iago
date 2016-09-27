@@ -25,10 +25,11 @@ class TestCP2KReader(TestCase):
 			&DFT
 				BASIS_SET_FILE_NAME a
 				BASIS_SET_FILE_NAME b
+				BASIS_SET_FILE_NAME c
 			&END
 		&END'''.split('\n')
 		r = c._parse_input_file(lines)
-		self.assertEqual(r, {'FORCE_EVAL': {'DFT': {'BASIS_SET_FILE_NAME': ['a', 'b']}}})
+		self.assertEqual(r, {'FORCE_EVAL': {'DFT': {'BASIS_SET_FILE_NAME': ['a', 'b', 'c']}}})
 
 		# duplicate tree
 		lines = '''
@@ -37,6 +38,18 @@ class TestCP2KReader(TestCase):
 		&END
 		&FORCE_EVAL
 			METHOD QuickstepB
+		&END
+		&FORCE_EVAL
+			METHOD QuickstepC
 		&END'''.split('\n')
 		r = c._parse_input_file(lines)
-		self.assertEqual(r, {'FORCE_EVAL': [{'METHOD': 'QuickstepA'}, {'METHOD': 'QuickstepB'}]})
+		self.assertEqual(r, {'FORCE_EVAL': [{'METHOD': 'QuickstepA'}, {'METHOD': 'QuickstepB'}, {'METHOD': 'QuickstepC'}]})
+
+		# mismatching end clause
+		lines = '''
+		&MOTION
+			&MD
+				STEPS 42
+			&END FOOBAR
+		&END'''.split('\n')
+		self.assertRaises(ValueError, c._parse_input_file, lines)
