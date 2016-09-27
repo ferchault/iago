@@ -38,7 +38,12 @@ class Map(dict):
 		del self.__dict__[key]
 
 	def traverse(self, keys):
-		return reduce(lambda d, k: d[k], keys, self)
+		r = self
+		for k in keys:
+			r = r[k]
+			if isinstance(r, list):
+				r = r[-1]
+		return r
 
 
 def parse_ndx(lines):

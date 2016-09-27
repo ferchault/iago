@@ -90,6 +90,19 @@ class TestUtils(TestCase):
 		del m['bar']
 		self.assertEqual(m, {'foo': 2})
 		self.assertRaises(KeyError, m.__getattr__('bar'))
+
+	def test_map_traverse(self):
 		m = u.Map(foo=u.Map({'bar': 3}))
 		self.assertEqual(m.foo.bar, 3)
 		self.assertEqual(m.traverse('foo bar'.split()), 3)
+
+		m = u.Map()
+		m.foo = [u.Map(bar=3), u.Map(bar=4)]
+		self.assertEqual(m.traverse('foo bar'.split()), 4)
+
+	def test_map_traverse_assignment(self):
+		m = u.Map()
+		m.foo = [u.Map(bar=3), u.Map(bar=4)]
+		q = m.traverse('foo'.split())
+		q.bar = 5
+		self.assertEqual(m.foo[1].bar, 5)
