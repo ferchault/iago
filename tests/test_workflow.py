@@ -49,4 +49,4 @@ class Analyser(iago.Analyser):
 class TestUtils(TestCase):
 	def test_create_analyser(self):
 		a = Analyser()
-		print a.run()
+		a.run()
