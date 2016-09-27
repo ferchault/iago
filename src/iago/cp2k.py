@@ -40,7 +40,6 @@ class LogFileReader(object):
 
 class LogFile(object):
 	def __init__(self, *args, **kwargs):
-
 		self._skip = []
 		self._framedata = None
 		self._noatoms = None
@@ -75,15 +74,13 @@ class LogFile(object):
 			('globaleri', 'Global ERI counter')
 		))
 
-	def read_run(self, store, run='run-0'):
-		self._basepath = store.get_basepath()
-		self._run = run
-		self._loglines = open(os.path.join(store.get_basepath(), run, 'run.log')).readlines()
+	def read_run(self, loglines):
+		self._loglines = loglines
 
 		self.skip_header()
 		results = []
 		while self.find_next_frame():
-			rowdata = {'run': self._run}
+			rowdata = {}
 			for keyword in self._keywords:
 				retval = self.get_frame_desired(keyword)
 				if retval is not None:

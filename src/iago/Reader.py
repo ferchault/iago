@@ -1,9 +1,14 @@
 # standard modules
 import os
 import utils
+import gzip
+
+# third-party modules
+import MDAnalysis as mda
+import pandas as pd
 
 # custom modules
-import MDAnalysis as mda
+import cp2k
 
 
 class EmptyUniverse(object):
@@ -26,7 +31,10 @@ class Reader(object):
 	def read(self):
 		raise NotImplementedError()
 
-	def get_config(self):
+	def get_input(self):
+		raise NotImplementedError()
+
+	def get_output(self):
 		raise NotImplementedError()
 
 	def get_universe(self):
@@ -40,9 +48,13 @@ class CP2KReader(Reader):
 	def __init__(self, *args, **kwargs):
 		super(CP2KReader, self).__init__(*args, **kwargs)
 		self._config = None
+		self._output = pd.DataFrame()
 
-	def get_config(self):
+	def get_input(self):
 		return self._config
+
+	def get_output(self):
+		return self._output
 
 	@staticmethod
 	def _recognize_line(line):
@@ -101,6 +113,7 @@ class CP2KReader(Reader):
 		# TODO make configurable
 		configname = 'run.inp'
 		psffile = os.path.join(self._path, '../input/input.psf')
+		logfile = 'run.log.gz'
 
 		# parse input
 		fh = open(os.path.join(self._path, configname))
@@ -112,3 +125,13 @@ class CP2KReader(Reader):
 			self._universe = mda.Universe(psffile, outputfile)
 		except OSError:
 			self._universe = EmptyUniverse()
+
+		# parse logfile
+		logpath = os.path.join(self._path, logfile)
+		if logfile[-3:] == '.gz':
+			fh = gzip.GzipFile(logpath)
+		else:
+			fh = open(logpath)
+		lines = fh.readlines()
+		c = cp2k.LogFile()
+		self._output = c.read_run(lines)

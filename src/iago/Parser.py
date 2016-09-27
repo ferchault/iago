@@ -34,6 +34,14 @@ class Parser(object):
 	def get_universe(self, run):
 		return self._readers[run].get_universe()
 
+	def get_input(self, run):
+		return self._readers[run].get_input()
+
+	def get_output(self, run):
+		o = self._readers[run].get_output()
+		o['run'] = run
+		return o
+
 	def get_groups(self, run, groups):
 		u = self.get_universe(run)
 		if isinstance(u, Reader.EmptyUniverse):

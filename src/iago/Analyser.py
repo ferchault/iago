@@ -184,11 +184,29 @@ class Analyser(object):
 							}
 							maxidx += 1
 
+	def collect_input_output(self):
+		input = utils.Map()
+		output = []
+		for run in self.parser.get_runs():
+			try:
+				input[run] = self.parser.get_input(run)
+			except NotImplementedError:
+				continue
+			try:
+				output.append(self.parser.get_output(run))
+			except NotImplementedError:
+				continue
+
+		output = pd.concat(output, ignore_index=True)
+		self._db.input = input
+		self._db.output = output
+
 	def run(self):
 		self.setup()
 		self.parser.run(self.path)
 		self.define_groups()
 		self.calculated_columns()
+		self.collect_input_output()
 		self._db.write(os.path.join(self.path, 'iagodb.json'))
 
 	def _compare_predicate(self, a, p, b):

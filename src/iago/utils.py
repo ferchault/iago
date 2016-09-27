@@ -144,7 +144,7 @@ class SafeDict(dict):
 
 
 class AnnotatedDataFrame(pd.DataFrame):
-	def __init__(self, labels, data=None):
+	def __init__(self, labels={}, data=None):
 		ureg = pint.UnitRegistry()
 
 		if data is None:

@@ -36,6 +36,8 @@ class DB(object):
 			'atom1': ('First atom index', None),
 			'dist': ('Distance', 'angstrom')
 		})
+		self.input = utils.Map()
+		self.output = utils.AnnotatedDataFrame()
 
 	@property
 	def groups(self):
@@ -64,6 +66,10 @@ class DB(object):
 		data['distances-meta'] = self.distances.annotations_to_dict()
 		data['planedistances'] = self.planedistances.to_dict()
 		data['planedistances-meta'] = self.planedistances.annotations_to_dict()
+		# input / output
+		data['input'] = self.input
+		data['output'] = self.output.to_dict()
+		#data['output-meta'] = self.output.annotations_to_dict()
 
 		# finalise
 		fh.write(json.dumps(data, separators=(',', ':')))
@@ -85,6 +91,10 @@ class DB(object):
 		# distances
 		self.distances = utils.AnnotatedDataFrame(data['distances-meta'], data['distances'])
 		self.planedistances = utils.AnnotatedDataFrame(data['planedistances-meta'], data['planedistances'])
+		# input / output
+		self.input = utils.Map(data['input'])
+		#self.output = utils.AnnotatedDataFrame(data['output-meta'], data['output'])
+		self.output = pd.DataFrame.from_dict(data['output'])
 
 		# cleanup
 		fh.close()
