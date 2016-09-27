@@ -1,7 +1,8 @@
-import Reader
+# standard modules
 import os
-import MDAnalysis as mda
-import utils
+
+# custom modules
+import Reader
 
 
 class Parser(object):

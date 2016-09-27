@@ -1,5 +1,8 @@
-import utils
+# standard modules
 import os
+import utils
+
+# custom modules
 import MDAnalysis as mda
 
 

@@ -1,14 +1,17 @@
-import StorageProvider
-import pandas as pd
-import types
+# standard modules
 import itertools as it
-import utils
-import sympy
 import os
+import types
+import utils
+
+# third-party modules
+import MDAnalysis.analysis.distances as mdaad
+import pandas as pd
+
+# custom modules
 import DatabaseProvider
 import Parser
-import MDAnalysis as mda
-import MDAnalysis.analysis.distances as mdaad
+
 
 class Analyser(object):
 	def __init__(self):
@@ -166,7 +169,6 @@ class Analyser(object):
 					except IndexError:
 						# no entry, no data
 						continue
-					p = sympy.Plane(sympy.Point3D(s.support_x, s.support_y, s.support_z), normal_vector=tuple([s.normal_x, s.normal_y, s.normal_z]))
 					ds = utils.plane_point_distance([s.normal_x, s.normal_y, s.normal_z], (s.support_x, s.support_y, s.support_z), ag.positions)
 					if signed is False:
 						ds = abs(ds)

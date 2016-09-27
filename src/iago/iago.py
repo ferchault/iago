@@ -1,13 +1,14 @@
-import pandas as pd
+# standard modules
+import json
 import os
 import re
-import json
-import glob
 
-import cp2k
-import DatabaseProvider
+# third-party modules
+import pandas as pd
+
+# custom modules
 import LocationProvider
-import StorageProvider
+
 
 class Config(dict):
 	def __init__(self):

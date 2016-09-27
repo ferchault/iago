@@ -1,13 +1,18 @@
+# standard modules
 import os
 import re
 import stat
 import shlex
+import shutil
 import subprocess
+import tempfile
 import warnings
 try:
 	import ConfigParser as cp
 except:
 	import configparser as cp
+
+# third-party modules
 import pandas as pd
 try:
 	import paramiko
@@ -15,10 +20,9 @@ try:
 except:
 	HAS_PARAMIKO = False
 	pass
+
+# custom modules
 import DatabaseProvider
-import shutil
-import tempfile
-import time
 
 
 class LocationGroup(object):

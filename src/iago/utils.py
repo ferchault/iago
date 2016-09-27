@@ -1,7 +1,10 @@
+# standard modules
 import re
 import types
-import pandas as pd
+
+# third-party modules
 import numpy as np
+import pandas as pd
 import pint
 
 

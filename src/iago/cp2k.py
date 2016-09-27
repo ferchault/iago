@@ -1,4 +1,7 @@
+# system modules
 import os
+
+# third-party modules
 import pandas as pd
 import numpy as np
 

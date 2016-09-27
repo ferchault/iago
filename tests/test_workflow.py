@@ -1,5 +1,8 @@
+# standard modules
 import os
 from unittest import TestCase
+
+# custom modules
 import iago
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

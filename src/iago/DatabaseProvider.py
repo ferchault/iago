@@ -1,7 +1,9 @@
-import pandas as pd
+# standard modules
 import utils
 import json
-import pint
+
+# third-party modules
+import pandas as pd
 
 
 class DB(object):

@@ -1,7 +1,13 @@
+# standard modules
 from unittest import TestCase
-import iago.utils as u
 import math
+
+# third-party modules
 import numpy as np
+
+# custom modules
+import iago.utils as u
+
 
 class TestUtils(TestCase):
 	def test_parse_ndx_basic_load(self):
