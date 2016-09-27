@@ -38,21 +38,23 @@ class CP2KReader(Reader):
 		super(CP2KReader, self).__init__(*args, **kwargs)
 		self._config = None
 
-	def _recognize_line(self, line):
+	@staticmethod
+	def _recognize_line(line):
 		parts = line.split()
 		if len(parts) == 1:
-			return parts, None
+			return parts[0], None
 		if len(parts) == 2:
 			try:
 				return parts[0], float(parts[1])
-			except:
-				return parts
+			except ValueError:
+				return tuple(parts)
 		try:
-			return parts[0], map(float, parts[1:])
-		except:
-			return parts[0], parts[1:]
+			return parts[0], tuple(map(float, parts[1:]))
+		except ValueError:
+			return parts[0], tuple(parts[1:])
 
-	def _parse_input_file(self, lines):
+	@staticmethod
+	def _parse_input_file(lines):
 		sections = []
 		result = utils.Map()
 		for no, line in enumerate(lines):
@@ -77,7 +79,7 @@ class CP2KReader(Reader):
 				sections.append(section)
 				continue
 			if not (line.startswith('#') or line.startswith('!')):
-				k, v = self._recognize_line(line)
+				k, v = CP2KReader._recognize_line(line)
 				q = result.traverse(sections)
 				if k in q:
 					if isinstance(q[k], list):
