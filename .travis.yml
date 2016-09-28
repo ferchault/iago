@@ -11,7 +11,7 @@ script:
   - coverage run --rcfile=../config/coverage.conf setup.py test
   - cd ../docs
   - sphinx-apidoc -o iago/ ../src/iago/
-  - travis-sphinx --source=. build
+  - travis-sphinx --nowarn --source=. build
 after_script:
   - cd src
   - coveralls

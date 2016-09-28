@@ -12,6 +12,10 @@ import cp2k
 
 
 class EmptyUniverse(object):
+	""" Class for calculations that do not have trajectory data.
+
+	Mimics the 'MDAnalysis.Universe' interface as far as necessary to be a drop-in replacement for an empty Universe.
+	"""
 	def __len__(self):
 		return 0
 
@@ -20,32 +24,69 @@ class EmptyUniverse(object):
 
 
 class Reader(object):
+	""" Base class for any reader. Defines the API the rest of iago is expecting."""
 	def __init__(self, path):
+		""" Prepares the data structure.
+		:param path: Absolute path to the single run.
+		"""
+		#: Absolute path to the run directory.
 		self._path = path
+		#: Holds options of the subclass. No relevance to the base class.
 		self._options = dict()
+		#: MDAnalysis.Universe instance for trajectory data.
 		self._universe = None
 
 	def set_options(self, **kwargs):
+		""" Updates the internally used options for the reader subclass.
+		:param kwargs: Any options the user may want to configure for the reader subclass.
+		:return:
+		"""
 		self._options.update(kwargs)
 
 	def read(self):
+		""" Parse the input and output as well as load the trajectory.
+
+		Any data accessible in the run directory should be stored in attributes of the subclass.
+		"""
 		raise NotImplementedError()
 
 	def get_input(self):
+		""" Fetch the parsed input file data.
+		:return: Dict-like or 'utils.Map' instance.
+		"""
 		raise NotImplementedError()
 
 	def get_output(self):
+		""" Fetch the parsed output file data.
+		:return: 'pandas.DataFrame'
+		"""
 		raise NotImplementedError()
 
 	def get_universe(self):
+		""" Fetch the trajectory data.
+
+		When no trajectory data is present, this function must return an EmptyUniverse instance.
+		:return: 'MDAnalysis.Universe' instance or 'EmptyUniverse' instance.
+		"""
 		return self._universe
 
 	def get_trajectory_frames(self):
+		""" Fetch a list of frame numbers for the trajectory.
+
+		Particularly helpful if the log file and the trajectory data are written in different intervals. Frame numbers
+		should be consistently one-based or zero-based. Frame numbers coincide with time steps from molecular dynamics
+		calculations.
+		:return: Iterable.
+		"""
 		return range(len(self._universe.trajectory))
 
 
 class CP2KReader(Reader):
+	""" Parses CP2K Quickstep runs.
+	"""
 	def __init__(self, *args, **kwargs):
+		""" Prepare internal data structure.
+		"""
 		super(CP2KReader, self).__init__(*args, **kwargs)
 		self._config = None
 		self._output = pd.DataFrame()
