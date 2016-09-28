@@ -1,3 +1,8 @@
+.. image:: https://travis-ci.org/ferchault/iago.svg?branch=master
+    :target: https://travis-ci.org/ferchault/iago
+.. image:: https://coveralls.io/repos/github/ferchault/iago/badge.svg?branch=master
+    :target: https://coveralls.io/github/ferchault/iago?branch=master
+
 ====
 Supported Files and Services
 ====

@@ -5,7 +5,7 @@ python:
 install:
   - pip install -e src
   - pip install -q -r config/requirements.txt --use-mirrors
-  - pip install --user travis-sphinx
+  - pip install travis-sphinx
 script:
   - cd src
   - coverage run --rcfile=../config/coverage.conf setup.py test
