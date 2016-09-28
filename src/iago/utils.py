@@ -143,50 +143,12 @@ class SafeDict(dict):
 			self[k] = v
 
 
-class AnnotatedDataFrame(pd.DataFrame):
-	def __init__(self, labels={}, data=None):
-		ureg = pint.UnitRegistry()
-
-		if data is None:
-			super(AnnotatedDataFrame, self).__init__(columns=labels.keys())
-		else:
-			super(AnnotatedDataFrame, self).__init__(data)
-			self.index = self.index.astype(int)
-			self.sort_index(inplace=True)
-
-		self._comments = dict()
-		self._units = dict()
-		for k, v in labels.iteritems():
-			comment, unit = v
-			self._comments[k] = comment
-			self._units[k] = ureg(unit)
-
-	def explain(self, columnnames=None):
-		if isinstance(columnnames, types.StringTypes):
-			columnnames = [columnnames]
-
-		if columnnames is None:
-			columnnames = self.columns
-
-		comments, units = [], []
-		for columnname in columnnames:
-			try:
-				comment = self._comments[columnname]
-			except KeyError:
-				comment = 'No description available.'
-
-			try:
-				unit = self._units[columnname]
-				if unit is None:
-					unit = 'Dimensionless.'
-			except KeyError:
-				unit = 'No unit available.'
-
-			comments.append(comment)
-			units.append(unit)
-
-		return pd.DataFrame({'Name': columnnames, 'Comment': comments, 'Unit': units})
-
-	def annotations_to_dict(self):
-		columns = self._units.keys()
-		return {column: (self._comments[column], str(self._units[column])) for column in columns}
+def annotated_data_frame(definition, datadict=None):
+	columns = definition.keys()
+	if datadict is None:
+		df = pd.DataFrame(columns=columns)
+	else:
+		df = pd.DataFrame.from_dict(datadict)
+	df._iago_comments = {k: definition[k][0] for k in definition.iterkeys()}
+	df._iago_units = {k: definition[k][1] for k in definition.iterkeys()}
+	return df

@@ -9,7 +9,7 @@ import pandas as pd
 class DB(object):
 	def __init__(self):
 		self._groups = utils.SafeDict()
-		self.planes = utils.AnnotatedDataFrame({
+		self.planes = utils.annotated_data_frame({
 			'run': ('Run', None),
 			'frame': ('Frame number', None),
 			'name': ('Plane name', None),
@@ -20,7 +20,7 @@ class DB(object):
 			'support_y': ('Support point: y component', 'angstrom'),
 			'support_z': ('Support point: z component', 'angstrom'),
 		})
-		self.distances = utils.AnnotatedDataFrame({
+		self.distances = utils.annotated_data_frame({
 			'run': ('Run', None),
 			'frame': ('Frame number', None),
 			'name': ('Distance set name', None),
@@ -28,7 +28,7 @@ class DB(object):
 			'atom2': ('Second atom index', None),
 			'dist': ('Distance', 'angstrom')
 		})
-		self.planedistances = utils.AnnotatedDataFrame({
+		self.planedistances = utils.annotated_data_frame({
 			'run': ('Run', None),
 			'frame': ('Frame number', None),
 			'name': ('Distance set name', None),
@@ -37,7 +37,7 @@ class DB(object):
 			'dist': ('Distance', 'angstrom')
 		})
 		self.input = utils.Map()
-		self.output = utils.AnnotatedDataFrame()
+		self.output = pd.DataFrame()
 
 	@property
 	def groups(self):
@@ -91,16 +91,16 @@ class DB(object):
 			pass
 		# planes
 		try:
-			self.planes = utils.AnnotatedDataFrame(data['planes-meta'], data['planes'])
+			self.planes = utils.annotated_data_frame(data['planes-meta'], data['planes'])
 		except KeyError:
 			pass
 		# distances
 		try:
-			self.distances = utils.AnnotatedDataFrame(data['distances-meta'], data['distances'])
+			self.distances = utils.annotated_data_frame(data['distances-meta'], data['distances'])
 		except KeyError:
 			pass
 		try:
-			self.planedistances = utils.AnnotatedDataFrame(data['planedistances-meta'], data['planedistances'])
+			self.planedistances = utils.annotated_data_frame(data['planedistances-meta'], data['planedistances'])
 		except KeyError:
 			pass
 		# input / output

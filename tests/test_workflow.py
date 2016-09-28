@@ -24,14 +24,14 @@ class Analyser(iago.Analyser):
 			'O3A',
 			'group O3A',
 			normal=(0, 0, 1),
-			framesel=slice(2),
+			framesel=slice(100),
 			comment='Plane defined by the last triply coordinated oxygens on the A side.')
 		self.dynamic_distance(
 			'OH',
 			'type O',
 			'type H',
 			cutoff=1.25,
-			framesel=slice(2),
+			framesel=slice(100),
 			comment='OH-distances up to transition state bond length'
 		)
 		#self.dynamic_distance(
@@ -50,3 +50,4 @@ class TestUtils(TestCase):
 	def test_create_analyser(self):
 		a = Analyser()
 		a.run()
+		a._db.planes.explain()

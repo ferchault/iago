@@ -115,10 +115,7 @@ class Analyser(object):
 		:param comment: Description of the distance set
 		:return:
 		"""
-		try:
-			maxidx = max(self._db.distances.index) + 1
-		except ValueError:
-			maxidx = 0
+		resultdata = []
 		for run in self.parser.get_runs():
 			try:
 				u = self.parser.get_universe(run)
@@ -140,15 +137,16 @@ class Analyser(object):
 					for iidx, i in enumerate([_.id for _ in agA]):
 						for jidx, j in enumerate([_.id for _ in agB]):
 							if cutoff is None or distances[iidx, jidx] < cutoff:
-								self._db.distances.loc[maxidx] = {
+								resultdata.append({
 									'run': run,
 									'frame': step,
 									'name': name,
 									'atom1': iidx,
 									'atom2': jidx,
 									'dist': distances[iidx, jidx],
-								}
-								maxidx += 1
+								})
+				df = pd.DataFrame(resultdata)
+				self._db.distances.append(df, ignore_index=True)
 			elif utils.is_plane_selector(selectorA) and utils.is_plane_selector(selectorB):
 				raise ValueError('Distance between planes not defined.')
 			else:
@@ -174,15 +172,17 @@ class Analyser(object):
 						ds = abs(ds)
 					for iidx, i in enumerate([_.id for _ in ag]):
 						if cutoff is None or ds[iidx] < cutoff:
-							self._db.planedistances.loc[maxidx] = {
+							resultdata.append({
 								'run': run,
 								'frame': step,
 								'name': name,
 								'plane': planename,
 								'atom1': iidx,
 								'dist': ds[iidx],
-							}
-							maxidx += 1
+							})
+				df = pd.DataFrame(resultdata)
+				self._db.planedistances.append(df, ignore_index=True)
+
 
 	def collect_input_output(self):
 		input = utils.Map()
