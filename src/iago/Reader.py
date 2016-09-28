@@ -132,6 +132,5 @@ class CP2KReader(Reader):
 			fh = gzip.GzipFile(logpath)
 		else:
 			fh = open(logpath)
-		lines = fh.readlines()
-		c = cp2k.LogFile()
-		self._output = c.read_run(lines)
+		c = cp2k.LogFile(fh)
+		self._output = c.parse()
