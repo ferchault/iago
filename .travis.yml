@@ -9,7 +9,9 @@ install:
 script:
   - cd src
   - coverage run --rcfile=../config/coverage.conf setup.py test
-  - travis-sphinx --source=../docs build
+  - cd ../docs
+  - sphinx-apidoc -o iago/ ../src/iago/
+  - travis-sphinx --source=. build
 after_script:
   - cd src
   - coveralls

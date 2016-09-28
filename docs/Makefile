@@ -50,8 +50,6 @@ clean:
 	rm -rf $(BUILDDIR)/*
 
 html:
-	rm -rf iago/*
-	sphinx-apidoc -o iago/ ../src/iago/
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
