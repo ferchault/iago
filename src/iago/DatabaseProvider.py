@@ -69,7 +69,7 @@ class DB(object):
 		# input / output
 		data['input'] = self.input
 		data['output'] = self.output.to_dict()
-		#data['output-meta'] = self.output.annotations_to_dict()
+		# data['output-meta'] = self.output.annotations_to_dict()
 
 		# finalise
 		fh.write(json.dumps(data, separators=(',', ':')))
@@ -85,16 +85,34 @@ class DB(object):
 		data = json.load(fh)
 
 		# groups
-		self._groups = utils.SafeDict(data['groups'])
+		try:
+			self._groups = utils.SafeDict(data['groups'])
+		except KeyError:
+			pass
 		# planes
-		self.planes = utils.AnnotatedDataFrame(data['planes-meta'], data['planes'])
+		try:
+			self.planes = utils.AnnotatedDataFrame(data['planes-meta'], data['planes'])
+		except KeyError:
+			pass
 		# distances
-		self.distances = utils.AnnotatedDataFrame(data['distances-meta'], data['distances'])
-		self.planedistances = utils.AnnotatedDataFrame(data['planedistances-meta'], data['planedistances'])
+		try:
+			self.distances = utils.AnnotatedDataFrame(data['distances-meta'], data['distances'])
+		except KeyError:
+			pass
+		try:
+			self.planedistances = utils.AnnotatedDataFrame(data['planedistances-meta'], data['planedistances'])
+		except KeyError:
+			pass
 		# input / output
-		self.input = utils.Map(data['input'])
-		#self.output = utils.AnnotatedDataFrame(data['output-meta'], data['output'])
-		self.output = pd.DataFrame.from_dict(data['output'])
+		try:
+			self.input = utils.Map(data['input'])
+		except KeyError:
+			pass
+		# self.output = utils.AnnotatedDataFrame(data['output-meta'], data['output'])
+		try:
+			self.output = pd.DataFrame.from_dict(data['output'])
+		except KeyError:
+			pass
 
 		# cleanup
 		fh.close()
