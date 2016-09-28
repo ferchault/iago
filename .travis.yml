@@ -9,7 +9,7 @@ install:
 script:
   - cd src
   - coverage run --rcfile=../config/coverage.conf setup.py test
-  - travis-sphinx --source=docs build
+  - travis-sphinx --source=../docs build
 after_script:
   - cd src
   - coveralls
