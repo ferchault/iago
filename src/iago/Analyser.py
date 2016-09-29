@@ -132,10 +132,7 @@ class Analyser(object):
 		:param comment: Description of the plane.
 		:return:
 		"""
-		try:
-			maxidx = max(self._db.planes.index) + 1
-		except ValueError:
-			maxidx = 0
+		resultdata = []
 		for run in self.parser.get_runs():
 			try:
 				u = self.parser.get_universe(run)
@@ -151,7 +148,7 @@ class Analyser(object):
 			for step, frame in it.izip(steps[framesel], u.trajectory[framesel]):
 				ag = u.select_atoms(selector, **tgroups)
 				normal_vector, center_of_geometry = utils.fit_plane(ag.positions, normal=normal)
-				self._db.planes.loc[maxidx] = {
+				resultdata.append({
 					'run': run,
 					'frame': step,
 					'name': name,
@@ -161,8 +158,8 @@ class Analyser(object):
 					'support_x': center_of_geometry[0],
 					'support_y': center_of_geometry[1],
 					'support_z': center_of_geometry[2],
-				}
-				maxidx += 1
+				})
+		self._db.planes = self._db.planes.append(pd.DataFrame(resultdata), ignore_index=True)
 
 	def dynamic_distance(self, name, selectorA, selectorB, cutoff=None, comment=None, framesel=None, signed=False):
 		"""
@@ -204,7 +201,7 @@ class Analyser(object):
 									'dist': distances[iidx, jidx],
 								})
 				df = pd.DataFrame(resultdata)
-				self._db.distances.append(df, ignore_index=True)
+				self._db.distances = self._db.distances.append(df, ignore_index=True)
 			elif utils.is_plane_selector(selectorA) and utils.is_plane_selector(selectorB):
 				raise ValueError('Distance between planes not defined.')
 			else:
@@ -239,8 +236,7 @@ class Analyser(object):
 								'dist': ds[iidx],
 							})
 				df = pd.DataFrame(resultdata)
-				self._db.planedistances.append(df, ignore_index=True)
-
+				self._db.planedistances = self._db.planedistances.append(df, ignore_index=True)
 
 	def collect_input_output(self):
 		input = utils.Map()
