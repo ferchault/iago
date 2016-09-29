@@ -59,16 +59,16 @@ class DB(object):
 		# groups
 		data['groups'] = self.groups
 		# planes
-		data['planes'] = self.planes.to_dict()
+		data['planes'] = self.planes.to_dict('list')
 		data['planes-meta'] = self.planes.annotations_to_dict()
 		# distances
-		data['distances'] = self.distances.to_dict()
+		data['distances'] = self.distances.to_dict('list')
 		data['distances-meta'] = self.distances.annotations_to_dict()
-		data['planedistances'] = self.planedistances.to_dict()
+		data['planedistances'] = self.planedistances.to_dict('list')
 		data['planedistances-meta'] = self.planedistances.annotations_to_dict()
 		# input / output
 		data['input'] = self.input
-		data['output'] = self.output.to_dict()
+		data['output'] = self.output.to_dict('list')
 		# data['output-meta'] = self.output.annotations_to_dict()
 
 		# finalise
