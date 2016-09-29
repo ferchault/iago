@@ -8,11 +8,11 @@ install:
   - pip install travis-sphinx
   - pip install sphinx_rtd_theme
 script:
-  - cd src
-  - coverage run --rcfile=../config/coverage.conf setup.py test
-  - cd ../docs
+  - cd docs
   - sphinx-apidoc -o iago/ ../src/iago/
   - travis-sphinx --nowarn --source=. build
+  - cd ../src
+  - coverage run --rcfile=../config/coverage.conf setup.py test
 after_script:
   - cd src
   - coveralls
