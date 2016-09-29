@@ -36,7 +36,7 @@ class Reader(object):
 		#: Holds options of the subclass. No relevance to the base class.
 		self._options = dict()
 		#: MDAnalysis.Universe instance for trajectory data.
-		self._universe = None
+		self._universe = EmptyUniverse()
 
 	def get_options(self):
 		""" Lists all available options supported by this reader subclass.
