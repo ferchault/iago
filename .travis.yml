@@ -15,9 +15,9 @@ before_install:
   - sudo rm -rf /dev/shm
   - sudo ln -s /run/shm /dev/shm
 install:
-  - conda install --yes python=$TRAVIS_PYTHON_VERSION numpy scipy pandas
+  - conda install --yes python=$TRAVIS_PYTHON_VERSION numpy pandas
   - pip install -e src
-  - pip install -q coveralls MDAnalysis travis-sphinx sphinx_rtd_theme
+  - pip install -q coveralls MDAnalysis travis-sphinx sphinx_rtd_theme pint
   # debugging
   - conda list
   - python --version
