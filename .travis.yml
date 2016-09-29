@@ -6,6 +6,7 @@ install:
   - pip install -e src
   - pip install -q -r config/requirements.txt --use-mirrors
   - pip install travis-sphinx
+  - pip install sphinx_rtd_theme
 script:
   - cd src
   - coverage run --rcfile=../config/coverage.conf setup.py test
