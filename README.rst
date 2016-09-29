@@ -4,7 +4,7 @@
     :target: https://coveralls.io/github/ferchault/iago?branch=master
 
 
-`Documentation <http://docs.vonrudorff.de>`_
+`Documentation <https://ferchault.github.io/iago/>`_
 
 
 ====
