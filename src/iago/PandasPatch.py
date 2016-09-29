@@ -1,10 +1,11 @@
-# The purpose of this file is to monkey-patch the pandas.DataFrame class to include metadata about columns like units.
-import sys
+""" The purpose of this file is to monkey-patch the pandas.DataFrame class to include metadata about columns like
+units.
+"""
+
+# system modules
 import types
 
-# cannot monkey patch
-if 'pandas' in sys.modules:
-	raise RuntimeError('Pandas has been imported before iago. This is not supported.')
+# third-party modules
 import pandas as pd
 
 
@@ -35,12 +36,17 @@ def explain(self, columnnames=None):
 	return pd.DataFrame({'Name': columnnames, 'Comment': comments, 'Unit': units})
 
 
+def modified_init(self, *args, **kwargs):
+	self._iago_old_init(*args, **kwargs)
+	self._iago_comments = dict()
+	self._iago_units = dict()
+
 def annotations_to_dict(self):
 	columns = self._iago_units.keys()
 	return {column: (self._iago_comments[column], str(self._iago_units[column])) for column in columns}
 
 
-pd.DataFrame._iago_units = dict()
-pd.DataFrame._iago_comments = dict()
+pd.DataFrame._iago_old_init = pd.DataFrame.__init__
+pd.DataFrame.__init__ = modified_init
 pd.DataFrame.explain = explain
 pd.DataFrame.annotations_to_dict = annotations_to_dict

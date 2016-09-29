@@ -3,6 +3,9 @@
 .. image:: https://coveralls.io/repos/github/ferchault/iago/badge.svg?branch=master
     :target: https://coveralls.io/github/ferchault/iago?branch=master
 
+`Dokumentation <http://docs.vonrudorff.de>`_
+
+
 ====
 Supported Files and Services
 ====
