@@ -1,7 +1,9 @@
 # standard modules
-import os
-import utils
 import gzip
+import os
+import os.path
+import utils
+import warnings
 
 # third-party modules
 import MDAnalysis as mda
@@ -36,12 +38,11 @@ class Reader(object):
 		#: MDAnalysis.Universe instance for trajectory data.
 		self._universe = None
 
-	def set_options(self, **kwargs):
-		""" Updates the internally used options for the reader subclass.
-		:param kwargs: Any options the user may want to configure for the reader subclass.
-		:return:
+	def get_options(self):
+		""" Lists all available options supported by this reader subclass.
+		:return: List of strings.
 		"""
-		self._options.update(kwargs)
+		raise NotImplementedError()
 
 	def read(self):
 		""" Parse the input and output as well as load the trajectory.
@@ -80,16 +81,52 @@ class Reader(object):
 		"""
 		return range(len(self._universe.trajectory))
 
+	def _get_first_file_matching(self, filenames):
+		""" Helper function checking for the first existing file in a list.
+
+		Paths can be absolute or relative to the run path. If no file is found, function raises a 'KeyError'.
+
+		:param filenames: Iterable of strings. Filenames to check.
+		:return: First entry that points to an existing file as absolute path.
+		"""
+		for filename in filenames:
+			if os.path.isabs(filename):
+				mergepath = filename
+			else:
+				mergepath = os.path.join(self._path, filename)
+			if os.path.isfile(mergepath):
+				return mergepath
+		raise KeyError('No file matches.')
+
 
 class CP2KReader(Reader):
 	""" Parses CP2K Quickstep runs.
 	"""
 	def __init__(self, *args, **kwargs):
-		""" Prepare internal data structure.
+		""" Prepare internal data structure and set the default file paths.
 		"""
 		super(CP2KReader, self).__init__(*args, **kwargs)
-		self._config = None
+
+		#: List of supported options
+		self._options = 'inputnames topologies logs'
+
+		#: List of filenames to test for input files. Precedence in order of the list.
+		self.inputnames = ['run.inp', ]
+
+		#: List of topologies to test for input files. Precedence in order of the list.
+		self.topologies = ['input.psf', '../input/input.psf']
+
+		#: List of logfiles to test for input files. Precedence in order of the list.
+		self.logs = ['run.log', 'run.log.gz']
+
+		#: Holds the atom-frame table.
 		self._output = pd.DataFrame()
+
+		#: Holds the tree-based input file
+		self._config = utils.Map()
+
+	def get_options(self):
+		return self._options
 
 	def get_input(self):
 		return self._config
@@ -151,31 +188,43 @@ class CP2KReader(Reader):
 		return result
 
 	def read(self):
-		# TODO make configurable
-		configname = 'run.inp'
-		psffile = os.path.join(self._path, '../input/input.psf')
-		logfile = 'run.log.gz'
+		configname = None
+		try:
+			configname = self._get_first_file_matching(self.inputnames)
+		except KeyError:
+			warnings.warn('No input file for run in path %s' % self._path)
+
+		topname = None
+		try:
+			topname = self._get_first_file_matching(self.topologies)
+		except KeyError:
+			warnings.warn('No topology file for run in path %s' % self._path)
+
+		logname = None
+		try:
+			logname = self._get_first_file_matching(self.logs)
+		except KeyError:
+			warnings.warn('No log file for run in path %s' % self._path)
 
 		# parse input
-		fh = open(os.path.join(self._path, configname))
-		self._config = self._parse_input_file(fh.readlines())
+		if configname is not None:
+			fh = open(configname)
+			self._config = self._parse_input_file(fh.readlines())
 
 		# load universe
-		outputfile = os.path.join(self._path, self._config.MOTION.PRINT.TRAJECTORY.FILENAME + '-pos-1.dcd')
-		try:
-			self._universe = mda.Universe(psffile, outputfile)
-		except OSError:
-			self._universe = EmptyUniverse()
+		if topname is not None and configname is not None:
+			outputfile = os.path.join(self._path, self._config.MOTION.PRINT.TRAJECTORY.FILENAME + '-pos-1.dcd')
+			try:
+				self._universe = mda.Universe(topname, outputfile)
+			except OSError:
+				self._universe = EmptyUniverse()
 
 		# parse logfile
-		logpath = os.path.join(self._path, logfile)
-		openmethod = open
-		if logfile[-3:] == '.gz':
-			openmethod = gzip.GzipFile
-		try:
-			fh = openmethod(logpath)
-		except IOError:
-			fh = None
-		if fh is not None:
-			c = cp2k.LogFile(fh)
-			self._output = c.parse()
+		if logname is not None:
+			openmethod = open
+			if logname[-3:] == '.gz':
+				openmethod = gzip.GzipFile
+			fh = openmethod(logname)
+			if fh is not None:
+				c = cp2k.LogFile(fh)
+				self._output = c.parse()
