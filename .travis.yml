@@ -32,4 +32,5 @@ script:
 after_script:
   - coveralls
 after_success:
+  - cd ../docs
   - travis-sphinx deploy
