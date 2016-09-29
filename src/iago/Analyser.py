@@ -32,6 +32,21 @@ class Analyser(object):
 		pass
 
 	def static_load_groups(self, filename):
+		""" Reads groups of atoms from a GROMACS ndx file.
+
+		The 'ndx' file format looks like this:
+
+		.. code-block:: none
+
+			[ group_A ]
+			1 2 3
+			[ group_B ]
+			4 5 6
+
+		with indices being one-based. This group has the same composition for the whole simulation.
+
+		:param filename: Path or filename of the 'ndx' file to load.
+		"""
 		if not os.path.isabs(filename):
 			filename = os.path.abspath(os.path.join(self.path, filename))
 		try:
@@ -42,6 +57,49 @@ class Analyser(object):
 		self._db.groups.update(utils.parse_ndx(lines))
 
 	def static_group(self, *args):
+		""" Creates one or multiple static groups from an atom selector or indices list.
+
+		If a dictionary is the single argument, its keys are taken as group names while its values are considered to be
+		the zero-based atom index list. The following example creates the group 'cas' with atoms 1-3.
+
+		.. code-block:: python
+			:emphasize-lines: 3
+
+			import iago.Analyser as Analyser
+			c = Analyser()
+			c.static_group({'cas': (0, 1, 2)})
+
+		If the group is to be created by a atom selector string, then two arguments are required: a group name first
+		followed by the selection string. The following example groups all carbon atoms of atom type CA into one group
+		with the name cas:
+
+		.. code-block:: python
+			:emphasize-lines: 3
+
+			import iago.Analyser as Analyser
+			c = Analyser()
+			c.static_group('cas', 'type CA')
+
+		Instead of the selector, a list of zero-based atom indices is accepted, as well.
+
+		.. code-block:: python
+			:emphasize-lines: 3
+
+			import iago.Analyser as Analyser
+			c = Analyser()
+			c.static_group('cas', (1, 2, 3))
+
+		Finally, a list of atoms directly as parameters is accepted:
+
+		.. code-block:: python
+			:emphasize-lines: 3
+
+			import iago.Analyser as Analyser
+			c = Analyser()
+			c.static_group('cas', 1, 2, 3)
+
+		:param args: Dict or name and selector string or name and list of indices.
+		"""
 		if len(args) < 1:
 			raise RuntimeError('No empty groups allowed.')
 
