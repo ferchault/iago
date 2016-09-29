@@ -8,6 +8,9 @@ before_install:
   - ./miniconda.sh -b
   - export PATH=/home/travis/miniconda2/bin:$PATH
   - conda update --yes conda
+  - conda create --yes -n condaenv python=$TRAVIS_PYTHON_VERSION
+  - conda install --yes -n condaenv pip
+  - source activate condaenv
   # The next couple lines fix a crash with multiprocessing on Travis and are not specific to using Miniconda
   - sudo rm -rf /dev/shm
   - sudo ln -s /run/shm /dev/shm
@@ -15,6 +18,11 @@ install:
   - conda install --yes python=$TRAVIS_PYTHON_VERSION numpy scipy pandas
   - pip install -e src
   - pip install -q coveralls MDAnalysis travis-sphinx sphinx_rtd_theme
+  # debugging
+  - conda list
+  - python --version
+  - whereis python
+  - conda info -a
 script:
   - cd docs
   - sphinx-apidoc -o iago/ ../src/iago/
@@ -22,7 +30,6 @@ script:
   - cd ../src
   - coverage run --rcfile=../config/coverage.conf setup.py test
 after_script:
-  - cd src
   - coveralls
 after_success:
   - travis-sphinx deploy
