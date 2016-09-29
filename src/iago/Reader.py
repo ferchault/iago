@@ -169,9 +169,13 @@ class CP2KReader(Reader):
 
 		# parse logfile
 		logpath = os.path.join(self._path, logfile)
+		openmethod = open
 		if logfile[-3:] == '.gz':
-			fh = gzip.GzipFile(logpath)
-		else:
-			fh = open(logpath)
-		c = cp2k.LogFile(fh)
-		self._output = c.parse()
+			openmethod = gzip.GzipFile
+		try:
+			fh = openmethod(logpath)
+		except IOError:
+			fh = None
+		if fh is not None:
+			c = cp2k.LogFile(fh)
+			self._output = c.parse()
