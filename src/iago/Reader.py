@@ -95,7 +95,7 @@ class Reader(object):
 			else:
 				mergepath = os.path.join(self._path, filename)
 			if os.path.isfile(mergepath):
-				return mergepath
+				return os.path.realpath(mergepath)
 		raise KeyError('No file matches.')
 
 
