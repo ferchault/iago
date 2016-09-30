@@ -112,6 +112,8 @@ class LogFile(object):
 			if sep in line:
 				self._readframe(parselines)
 				parselines = []
+			else:
+				parselines.append(line)
 		self._readframe(parselines)
 
 		return pd.DataFrame(self._results)
