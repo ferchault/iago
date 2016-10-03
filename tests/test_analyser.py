@@ -15,3 +15,11 @@ class TestAnalyser(TestCase):
 		a = iago.Analyser()
 		a.static_group('debug', [1, 3, 4, 5])
 		self.assertDictEqual(a.get_groups(), {'debug':  [1, 3, 4, 5]})
+
+	def test_empty_input_output(self):
+		# ensure empty buckets do not break iago
+		def _mock_get_runs():
+			return {}
+		a = iago.Analyser()
+		a.parser.get_runs = _mock_get_runs
+		a.collect_input_output()

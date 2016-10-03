@@ -252,7 +252,10 @@ class Analyser(object):
 			except NotImplementedError:
 				continue
 
-		output = pd.concat(output, ignore_index=True)
+		try:
+			output = pd.concat(output, ignore_index=True)
+		except ValueError:
+			output = pd.DataFrame()
 		self._db.input = input
 		self._db.output = output
 
