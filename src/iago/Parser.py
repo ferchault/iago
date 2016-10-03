@@ -55,9 +55,9 @@ class Parser(object):
 	def get_input(self, run):
 		return self._readers[run].get_input()
 
-	def get_output(self, run):
+	def get_output(self, run, alias):
 		o = self._readers[run].get_output()
-		o['run'] = run
+		o['run'] = alias
 		return o
 
 	def get_groups(self, run, groups):

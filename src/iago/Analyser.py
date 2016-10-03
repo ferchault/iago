@@ -134,7 +134,7 @@ class Analyser(object):
 		:return:
 		"""
 		resultdata = []
-		for run in self.parser.get_runs():
+		for run, alias in self.parser.get_runs().iteritems():
 			try:
 				u = self.parser.get_universe(run)
 			except:
@@ -150,7 +150,7 @@ class Analyser(object):
 				ag = u.select_atoms(selector, **tgroups)
 				normal_vector, center_of_geometry = utils.fit_plane(ag.positions, normal=normal)
 				resultdata.append({
-					'run': run,
+					'run': alias,
 					'frame': step,
 					'name': name,
 					'normal_x': normal_vector[0],
@@ -172,7 +172,7 @@ class Analyser(object):
 		:return:
 		"""
 		resultdata = []
-		for run in self.parser.get_runs():
+		for run, alias in self.parser.get_runs().iteritems():
 			try:
 				u = self.parser.get_universe(run)
 			except:
@@ -194,7 +194,7 @@ class Analyser(object):
 						for jidx, j in enumerate([_.id for _ in agB]):
 							if cutoff is None or distances[iidx, jidx] < cutoff:
 								resultdata.append({
-									'run': run,
+									'run': alias,
 									'frame': step,
 									'name': name,
 									'atom1': iidx,
@@ -229,7 +229,7 @@ class Analyser(object):
 					for iidx, i in enumerate([_.id for _ in ag]):
 						if cutoff is None or ds[iidx] < cutoff:
 							resultdata.append({
-								'run': run,
+								'run': alias,
 								'frame': step,
 								'name': name,
 								'plane': planename,
@@ -242,13 +242,13 @@ class Analyser(object):
 	def collect_input_output(self):
 		input = utils.Map()
 		output = []
-		for run in self.parser.get_runs():
+		for run, alias in self.parser.get_runs().iteritems():
 			try:
-				input[run] = self.parser.get_input(run)
+				input[alias] = self.parser.get_input(run)
 			except NotImplementedError:
 				continue
 			try:
-				output.append(self.parser.get_output(run))
+				output.append(self.parser.get_output(run, alias))
 			except NotImplementedError:
 				continue
 
@@ -274,7 +274,7 @@ class Analyser(object):
 		run_col = []
 		frame_col = []
 		result_col = []
-		for run in self.parser.get_runs():
+		for run, alias in self.parser.get_runs().iteritems():
 			universe, framenumbers = self.parser.get_coordinates(run)
 			if universe is None:
 				continue
@@ -292,7 +292,7 @@ class Analyser(object):
 							filtered.append(atom.index)
 					ag = universe.atoms[filtered]
 
-				run_col.append(run)
+				run_col.append(alias)
 				frame_col.append(frameidx)
 				result_col.append([_.index for _ in ag])
 
