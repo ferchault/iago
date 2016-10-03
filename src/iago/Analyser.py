@@ -261,7 +261,7 @@ class Analyser(object):
 
 	def run(self):
 		self.setup()
-		self.parser.run(self.path)
+		self.parser.run(self.path, self.runmatch)
 		self.define_groups()
 		self.calculated_columns()
 		self.collect_input_output()
