@@ -1,5 +1,6 @@
 # standard modules
 import os
+import re
 
 # custom modules
 import Reader
@@ -9,6 +10,8 @@ class Parser(object):
 	def __init__(self):
 		self._readers = dict()
 		self.path = None
+		self.runmatch = dict()
+		self._runcache = None
 
 	def get_atom_indices(self, selector):
 		"""
@@ -23,13 +26,28 @@ class Parser(object):
 		return [_.index for _ in ag]
 
 	def get_runs(self):
+		""" Discovers all available runs in this bucket.
+
+		:return: Dict of run names available in this bucket. Keys: paths, values: names.
 		"""
-		:return: List of run names available in this bucket.
-		"""
+		if self._runcache is not None:
+			return self._runcache
+
+		# regular runs
 		inodes = os.listdir(self.path)
 		directories = [_ for _ in inodes if os.path.isdir(os.path.join(self.path, _))]
-		runs = [_ for _ in directories if _.startswith('run-')]
-		return runs
+		runs = {_: _ for _ in directories if _.startswith('run-')}
+
+		# alternative run directories
+		for root, dirs, files in os.walk(self.path):
+			relpath = os.path.relpath(root, self.path)
+			for regex, replace in self.runmatch.iteritems():
+				g = re.match(regex, relpath)
+				if g is not None:
+					runs[relpath] = replace.format(**g.groupdict())
+
+		self._runcache = runs
+		return self._runcache
 
 	def get_universe(self, run):
 		return self._readers[run].get_universe()
@@ -54,11 +72,16 @@ class Parser(object):
 	def get_run_code(self, run):
 		return 'cp2k'
 
-	def run(self, path):
+	def run(self, path, runmatch=dict()):
 		""" Parses all runs of a certain bucket.
+
+		:param path: Basepath of all runs in this bucket.
+		:param runmatch: For run autodiscovery: dict of regular expressions matching relative paths from bucket root as
+		keys and named group replacements as values.
 		:return:
 		"""
 		self.path = path
+		self.runmatch = runmatch
 
 		for run in self.get_runs():
 			code = self.get_run_code(run)

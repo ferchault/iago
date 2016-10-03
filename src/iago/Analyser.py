@@ -18,6 +18,7 @@ class Analyser(object):
 		self._db = DatabaseProvider.DB()
 		self.parser = Parser.Parser()
 		self.path = None
+		self.runmatch = {}
 
 	def setup(self):
 		""" Points out the required settings and parsers. Has to be user-defined."""
