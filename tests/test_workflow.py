@@ -1,5 +1,6 @@
 # standard modules
 import os
+import tempfile
 from unittest import TestCase
 
 # custom modules
@@ -24,14 +25,14 @@ class Analyser(iago.Analyser):
 			'O3A',
 			'group O3A',
 			normal=(0, 0, 1),
-			framesel=slice(100),
+			framesel=slice(2),
 			comment='Plane defined by the last triply coordinated oxygens on the A side.')
 		self.dynamic_distance(
 			'OH',
 			'type O',
 			'type H',
 			cutoff=1.25,
-			framesel=slice(100),
+			framesel=slice(2),
 			comment='OH-distances up to transition state bond length'
 		)
 		#self.dynamic_distance(
@@ -51,3 +52,23 @@ class TestUtils(TestCase):
 		a = Analyser()
 		a.run()
 		a._db.planes.explain()
+
+	def test_load_database(self):
+		# Generate test database
+		a = Analyser()
+		a.run()
+
+		# Generate local configuration
+		fh = tempfile.NamedTemporaryFile(delete=False)
+		path = os.path.abspath(os.path.dirname(__file__))
+		fh.write('[local]\nurl=file://%s/fixtures' % path)
+		filename = fh.name
+		fh.close()
+
+		# Run test file
+		lg = iago.get_location_group(filename)
+		lg.get_bucket_list()
+		lg.fetch_database('debug')
+
+		# Cleanup
+		os.remove(filename)

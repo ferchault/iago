@@ -32,9 +32,17 @@ class LocationGroup(object):
 		self._hosts = dict()
 		self._buckets = None
 
-	def from_file(self):
+	def from_file(self, filename=None):
+		""" Reads the user-defined configuration of storage location.
+		
+		:param filename: Filename to read the config from. If not present, `.iago.conf` in the home directory will be used instead.
+		"""
 		config = cp.ConfigParser()
-		config.read([os.path.expanduser('~/.iago.conf')])
+		if filename is None:
+			filenames = [os.path.expanduser('~/.iago.conf')]
+		else:
+			filenames = [filename]
+		config.read(filenames)
 
 		self._hosts = dict()
 		for hostalias in config.sections():
