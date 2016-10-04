@@ -156,3 +156,124 @@ def annotated_data_frame(definition, datadict=None):
 	df._iago_comments = {k: definition[k][0] for k in definition.iterkeys()}
 	df._iago_units = {k: definition[k][1] for k in definition.iterkeys()}
 	return df
+
+
+def compare(reference, other=None, labels=None):
+	""" Compares two or more dictionaries in the ipython / jupyter context."""
+	import deepdiff
+	from IPython.core.display import display, HTML
+
+	if not isinstance(other, (list, tuple)):
+		if other is None:
+			other = reference[1:]
+			reference = reference[0]
+		else:
+			other = [other]
+
+	if not isinstance(labels, (list, tuple)):
+		if labels is None:
+			labels = map(str, range(len(other) + 1))
+		else:
+			labels = [labels(reference)] + map(labels, other)
+
+	diffs = [deepdiff.DeepDiff(reference, _) for _ in other]
+
+	output = '''<style>
+        table.iago-diff > tr {
+            border: 0px
+        }
+        td.iago-diff-changed {
+            background-color: #f8cbcb;
+        }
+        td.iago-diff-unchanged {
+            background-color: #a6f3a6;
+            font-size: 60%;
+        }
+        td.iago-diff-reference {
+            background-color: lightgrey;
+        }
+        td.iago-diff-key {
+            text-align: center;
+        }
+    </style>'''
+	output += '<table class="iago-diff"><tr>'
+	output += ''.join(map(lambda _: '<th>%s</th>' % _, labels))
+	output += '</tr>'
+
+	headline = '<tr><td colspan="%d" class="iago-diff-key">%%s</td></tr>' % len(labels)
+
+	# changed values
+	all_changed_values = []
+	for diff in diffs:
+		try:
+			all_changed_values += diff['values_changed'].keys()
+		except KeyError:
+			pass
+		pass
+
+	for value in set(all_changed_values):
+		output += headline % path_to_html(value)
+
+		for diff in diffs:
+			try:
+				output += '<td class="iago-diff-reference">%s</td>' % diff['values_changed'][value]['old_value']
+			except KeyError:
+				pass
+			break
+
+		for didx, diff in enumerate(diffs):
+			try:
+				output += '<td class="iago-diff-changed">%s</td>' % diff['values_changed'][value]['new_value']
+			except KeyError:
+				output += '<td class="iago-diff-unchanged">(unchanged)</td>'
+
+	output += headline % 'other differences'
+	output += '<tr><td colspan="%d" >' % len(labels)
+	for didx, diff in enumerate(diffs):
+		missing = []
+		for k in diff.keys():
+			if k != 'values_changed':
+				missing.append(k)
+		if len(missing) == 0:
+			continue
+		output += '<b>%s</b><br/>' % labels[didx + 1]
+		for m in missing:
+			output += '<i>%s</i>: %s </br>' % (m, diff[m])
+
+	output += '</td></tr></table>'
+	return display(HTML(output))
+
+
+def path_to_html(path):
+	if path.startswith('root'):
+		path = path[4:]
+
+	output_parts = []
+	parts = path.split('][')
+	for idx, part in enumerate(parts):
+		if (idx < len(parts) - 1 and part[-1] == "'") or (idx == len(parts) - 1 and part[-2] == "'"):
+			if idx == 0:
+				start = 2
+			else:
+				start = 1
+			if idx == len(parts) - 1:
+				end = -2
+			else:
+				end = -1
+			output_parts.append(part[start:end])
+		else:
+			if idx == len(parts) - 1:
+				output_parts.append('[' + part)
+			else:
+				output_parts.append('[%s]' % part)
+
+	output = ''
+	for part in output_parts:
+		if len(output) > 0 and output[-1] != ']':
+			output += '.' + part
+		else:
+			if part.startswith('[') or len(output) == 0:
+				output += part
+			else:
+				output += '.' + part
+	return output

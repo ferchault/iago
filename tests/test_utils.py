@@ -121,3 +121,11 @@ class TestUtils(TestCase):
 		data = {'input': {'run-a': {'a': 1}, 'run-b': {'a': 2}}}
 		m = u.Map(data)
 		self.assertIsInstance(m.input['run-a'], u.Map)
+
+	def test_path_to_html(self):
+		self.assertEqual(u.path_to_html("root['FORCE_EVAL']['SUBSYS']['COORD']['He'][1][0]['foo']"),
+						 "FORCE_EVAL.SUBSYS.COORD.He.[1][0].foo")
+		self.assertEqual(u.path_to_html("root['FORCE_EVAL']['SUBSYS']['COORD']['He'][1][0]"),
+						 "FORCE_EVAL.SUBSYS.COORD.He.[1][0]")
+		self.assertEqual(u.path_to_html("root['FORCE_EVAL']['SUBSYS']['COORD']['He']"),
+						 "FORCE_EVAL.SUBSYS.COORD.He")
