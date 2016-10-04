@@ -26,7 +26,9 @@ import DatabaseProvider
 
 
 class LocationGroup(object):
-	""" Bundles a set of locations to abstract access to raw data no matter where the data is stored. Behaves like a set of buckets.
+	""" Bundles a set of locations to abstract access to raw data no matter where the data is stored.
+
+	Behaves like a set of buckets.
 	"""
 	def __init__(self):
 		self._hosts = dict()
@@ -34,7 +36,7 @@ class LocationGroup(object):
 
 	def from_file(self, filename=None):
 		""" Reads the user-defined configuration of storage location.
-		
+
 		:param filename: Filename to read the config from. If not present, `.iago.conf` in the home directory will be used instead.
 		"""
 		config = cp.ConfigParser()

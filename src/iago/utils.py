@@ -14,6 +14,10 @@ class Map(dict):
 		for arg in args:
 			if isinstance(arg, dict):
 				for k, v in arg.iteritems():
+					if isinstance(v, (list, tuple)):
+						v = [Map(_) if isinstance(_, dict) else _ for _ in v]
+					if isinstance(v, dict):
+						v = Map(v)
 					self[k] = v
 
 		if kwargs:

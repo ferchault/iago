@@ -5,6 +5,7 @@ from unittest import TestCase
 
 # custom modules
 import iago
+import iago.utils as u
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -48,11 +49,6 @@ class Analyser(iago.Analyser):
 
 
 class TestUtils(TestCase):
-	def test_create_analyser(self):
-		a = Analyser()
-		a.run()
-		a._db.planes.explain()
-
 	def test_load_database(self):
 		# Generate test database
 		a = Analyser()
@@ -68,7 +64,13 @@ class TestUtils(TestCase):
 		# Run test file
 		lg = iago.get_location_group(filename)
 		lg.get_bucket_list()
-		lg.fetch_database('debug')
+		db = lg.fetch_database('debug')
+		self.assertIsInstance(db.input, u.Map)
+		runs = db.input.keys()
+		self.assertIsInstance(db.input[runs[0]], u.Map)
+
+		# Monkey-patching successful?
+		a._db.planes.explain()
 
 		# Cleanup
 		os.remove(filename)

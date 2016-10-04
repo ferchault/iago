@@ -112,3 +112,12 @@ class TestUtils(TestCase):
 		m.foo = 3
 		m.bar = {'foo': 4}
 		self.assertTrue(isinstance(m.bar, u.Map))
+
+	def test_map_list_dicts(self):
+		data = {'foo': [{'a': 1}, {'a': 2}]}
+		m = u.Map(data)
+		self.assertIsInstance(m.foo[0], u.Map)
+
+		data = {'input': {'run-a': {'a': 1}, 'run-b': {'a': 2}}}
+		m = u.Map(data)
+		self.assertIsInstance(m.input['run-a'], u.Map)
