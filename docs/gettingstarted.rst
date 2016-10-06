@@ -44,11 +44,18 @@ Run
 Location
   Folder that may contain :ref:`buckets <whatis-bucket>`. Can be on local disk or on a remote system. Iago will not distinguish by the data storage location.
 
+.. _whatis-analyser:
+
+Analyser
+  Script that defines what properties to extract from raw data. As soon as a run has completed, *iago* can calculate the derivative information like a plane fitted through a set of coordinates. The result of all this is stored in the database you can query with *jupyter*. In order to make this work, you need to tell *iago* which properties to calculate for which part of the system. This is done in the analyser script *iago-analysis.py*. Per :ref:`bucket <whatis-bucket>`, there is exactly one analyser script.
+
 This structure roughly equates to the following folder layout:
 
 ::
 
   bucket-name-6d78579fa1e849a2a58f794fa784c1ea
+  |-- iago-analysis.py
+  |-- iagodb.json
   |
   |-- input/
   |   |-- input.xyz
@@ -76,3 +83,34 @@ Create a file *.iago.conf* in your home directory. This file holds the configura
   url=file:///home/username/data/
 
 Here, the path */home/username/data/* is the location where the :ref:`bucket <whatis-bucket>` folders are stored. All folders that have no MD5-hash in their name will be ignored.
+
+Analyser
+--------
+
+Finally, *iago* needs to know what to extract from the trajectory. This is done by creating an :ref:`bucket <whatis-analyser>`. Since this is specific to the :ref:`bucket <whatis-bucket>`, the analyser script has to be created in the top-level directory. An example of this file looks like this:
+
+.. code-block:: python
+	:linenos:
+
+	import iago
+	import os
+
+	class Analyser(iago.Analyser):
+		def setup(self):
+			self.path = os.getcwd()
+
+		def define_groups(self):
+			self.static_load_groups('index.ndx')
+			self.static_group('test', 1, 3, 4, 5)
+
+		def calculated_columns(self):
+			self.dynamic_plane(
+				'myplane',
+				'group test',
+				normal=(0, 0, 1),
+				framesel=slice(2),
+				comment='My test plane.')
+
+	if __name__ == '__main__':
+		a = Analyser()
+		a.run()
