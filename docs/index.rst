@@ -17,16 +17,7 @@ Rapid Prototyping
 Long-term Archiving
   No more thinking where you left the data. Iago can access your results whether they are on local disk, remote SSH hosts or cloud storage providers - all without changes to your code.
 
-
-Documentation
-==================
-
-User Documentation
-  If you want to familiarise yourself how to use iago for your research, this is the right place.
-
-Developer Documentation
-  You want to extend iago? Great - here is how.
-
+If you want to familiarise yourself how to use iago for your research, this is the right place:
 
 .. _user-docs:
 
@@ -35,6 +26,9 @@ Developer Documentation
    :caption: User Documentation
 
    gettingstarted
+
+
+You want to extend iago? Great - here is how:
 
 .. _dev-docs:
 
