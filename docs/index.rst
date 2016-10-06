@@ -18,27 +18,30 @@ Long-term Archiving
   No more thinking where you left the data. Iago can access your results whether they are on local disk, remote SSH hosts or cloud storage providers - all without changes to your code.
 
 
-User Documentation
+Documentation
 ==================
 
-If you want to familiarise yourself how to use iago for your research, this is the right place.
-
-- :doc:`gettingstarted`
-
+User Documentation
+  If you want to familiarise yourself how to use iago for your research, this is the right place.
 
 Developer Documentation
-=======================
+  You want to extend iago? Great - here is how.
 
-You want to extend iago? Great - here is how.
 
-Contents:
+.. _user-docs:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+   :caption: User Documentation
+
+   gettingstarted
+
+.. _dev-docs:
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Developer Documentation
 
    iago/iago
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   api
 
