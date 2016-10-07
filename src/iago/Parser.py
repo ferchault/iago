@@ -77,8 +77,7 @@ class Parser(object):
 
 		:param path: Basepath of all runs in this bucket.
 		:param runmatch: For run autodiscovery: dict of regular expressions matching relative paths from bucket root as
-		keys and named group replacements as values.
-		:return:
+			keys and named group replacements as values.
 		"""
 		self.path = path
 		self.runmatch = runmatch

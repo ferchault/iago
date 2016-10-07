@@ -171,7 +171,7 @@ Your browser should open. Create a new notebook and run the following code:
 	lg = iago.get_location_group()
 	db = lg.fetch_database('bucket name or bucket id')
 
-It is always required to create a :ref:`whatis-locationgroup` first, since it caches the contents of remote repositories to speed up access. You can fetch the database by either its name or the (unique) ID. If (as in the previous example) your bucket directory is called *bucket-name-6d78579fa1e849a2a58f794fa784c1ea*, then the following two lines are equivalent
+It is always required to create a :ref:`location group <whatis-locationgroup>` first, since it caches the contents of remote repositories to speed up access. You can fetch the database by either its name or the (unique) ID. If (as in the previous example) your bucket directory is called *bucket-name-6d78579fa1e849a2a58f794fa784c1ea*, then the following two lines are equivalent
 
 .. code-block:: python
 

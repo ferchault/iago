@@ -25,7 +25,7 @@ install:
   - conda info -a
 script:
   - cd docs
-  - sphinx-apidoc -o iago/ ../src/iago/
+  - sphinx-apidoc -o iago/ ../src/iago/ -T
   - travis-sphinx --nowarn --source=. build
   - cd ../src
   - coverage run --rcfile=../config/coverage.conf setup.py test
