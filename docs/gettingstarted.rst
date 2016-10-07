@@ -44,6 +44,11 @@ Run
 Location
   Folder that may contain :ref:`buckets <whatis-bucket>`. Can be on local disk or on a remote system. Iago will not distinguish by the data storage location.
 
+.. _whatis-locationgroup:
+
+Location Group
+  A set of :ref:`locations <whatis-location>`. Essentially, a location group behaves as if all raw data and all databases would be available in one single local storage location.
+
 .. _whatis-analyser:
 
 Analyser
@@ -87,7 +92,7 @@ Here, the path */home/username/data/* is the location where the :ref:`bucket <wh
 Analyser
 --------
 
-Finally, *iago* needs to know what to extract from the trajectory. This is done by creating an :ref:`bucket <whatis-analyser>`. Since this is specific to the :ref:`bucket <whatis-bucket>`, the analyser script has to be created in the top-level directory. An example of this file looks like this:
+Finally, *iago* needs to know what to extract from the trajectory. This is done by creating a :ref:`bucket <whatis-analyser>`. Since this is specific to the :ref:`bucket <whatis-bucket>`, the analyser script *iago-analysis.py* has to be created in the top-level directory. An example of this file looks like this:
 
 .. code-block:: python
 	:linenos:
@@ -114,3 +119,63 @@ Finally, *iago* needs to know what to extract from the trajectory. This is done 
 	if __name__ == '__main__':
 		a = Analyser()
 		a.run()
+
+First, the *iago* module is loaded. The data to analyse is defined using the class methods as shown above, executed in that order. First, the base directory for this :ref:`bucket <whatis-bucket>` gets defined, followed by loading all the groups from the gromacs index file *index.ndx* and defining a static group for atoms 1, 3, 4, 5. The data to calculate based on the trajectories and the meta data defined in the iago.Analyser subclass is subsequently defined in the *calculated_columns* class method. In the example, a plane with the label *myplane* is added to the database where the plane is defined by the coordinates of the atoms in group *test*. For details and a list of available methods, see the documentation of the *Analyser* class.
+
+Once this :ref:`bucket <whatis-analyser>` file *iago-analysis.py* has been created in the :ref:`bucket <whatis-bucket>` directory, you can run it in two ways. Locally, you can start the command line and run
+
+::
+
+	$ python iago-analysis.py
+
+or from other python code (e.g., if you already have a jupyter notebook) with
+
+.. code-block:: python
+
+	import iago
+	lg = iago.get_location_group()
+	lg.build_database('bucket name or bucket id')
+	# optionally: load it from remote
+	db = lg.fetch_database('bucket name or bucket id')
+
+The second approach also works for remote locations if they are available via SSH and have *iago* installed. For remote SSH access, passwordless and key-based login has to be set up.
+
+Running the analysis script (ideally) gives no output on the command line and produces a database file *iagodb.json*. This database file contains all calculated information from the run including the input files in a well-structured manner. You can query the results using *iago* as outlined in the next section.
+
+Working With the Results
+------------------------
+
+So now everything is in working order. You can look into the database by loading it from *jupyter*. To do this, open a terminal and launch *jupyter*
+
+::
+
+	$ jupyter notebook
+
+Your browser should open. Create a new notebook and run the following code:
+
+.. code-block:: python
+
+	import iago
+	lg = iago.get_location_group()
+	db = lg.fetch_database('bucket name or bucket id')
+
+It is always required to create a :ref:`whatis-locationgroup` first, since it caches the contents of remote repositories to speed up access. You can fetch the database by either its name or the (unique) ID. If (as in the previous example) your bucket directory is called *bucket-name-6d78579fa1e849a2a58f794fa784c1ea*, then the following two lines are equivalent
+
+.. code-block:: python
+
+	db = lg.fetch_database('bucket-name')
+	db = lg.fetch_database('6d78579fa1e849a2a58f794fa784c1ea')
+
+Should there be two buckets of the same name though, the first line will raise an error, since it is not clear which bucket the command is referring to.
+
+The *db* object is a regular class. Its attributes are explained in detail here: :ref:`class.DatabaseProvider.DB`. E.g. if you were to inspect the configuration and then plot the z-component of the normal vector of the plane produced by the sample *iago-analysis.py* above, then this could be done as follows in *jupyter*
+
+.. code-block:: python
+
+	import matplotlib.pyplot as plt
+	%matplotlib inline
+
+	print db.config['run-name']
+	plt.plot(db.planes.frame, db.planes.normal_z)
+
+If further data is required that currently is not part of the database, *iago-analysis.py* has to be updated and re-run. Otherwise, now various data can be plotted interactively.
