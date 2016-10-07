@@ -26,6 +26,8 @@ If you want to familiarise yourself how to use iago for your research, this is t
    :caption: User Documentation
 
    gettingstarted
+   supported
+   selectors
 
 
 You want to extend iago? Great - here is how:

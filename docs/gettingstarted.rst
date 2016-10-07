@@ -23,7 +23,7 @@ For analysis, the use of `jupyter <http://jupyter.org/>`_ notebooks is highly re
 	$ pip install jupyter
 
 
-If you want to access remote files other than SSH, you also need the `rclone <http://rclone.org/>`_ command available on your machine.
+If you want to access remote files other than SSH, you also need the :command:`rclone` `(website) <http://rclone.org/>`_ command available on your machine.
 
 Terminology
 -----------
@@ -132,15 +132,15 @@ Finally, *iago* needs to know what to extract from the trajectory. This is done 
 		a = Analyser()
 		a.run()
 
-First, the *iago* module is loaded. The data to analyse is defined using the class methods as shown above, executed in that order. First, the base directory for this :ref:`bucket <whatis-bucket>` gets defined, followed by loading all the groups from the gromacs index file *index.ndx* and defining a static group for atoms 1, 3, 4, 5. The data to calculate based on the trajectories and the meta data defined in the :class:`iago.Analyser` subclass is subsequently defined in the *calculated_columns* class method. In the example, a plane with the label *myplane* is added to the database where the plane is defined by the coordinates of the atoms in group *test*. For details and a list of available methods, see the documentation of the *Analyser* class.
+First, the *iago* module is loaded. The data to analyse is defined using the class methods as shown above, executed in that order. First, the base directory for this :ref:`bucket <whatis-bucket>` gets defined, followed by loading all the groups from the gromacs index file :file:`index.ndx` and defining a static group for atoms 1, 3, 4, 5. The data to calculate based on the trajectories and the meta data defined in the :class:`iago.Analyser` subclass is subsequently defined in the *calculated_columns* class method. In the example, a plane with the label *myplane* is added to the database where the plane is defined by the coordinates of the atoms in group *test*. For details and a list of available methods, see the documentation of the *Analyser* class.
 
-Once this :ref:`analyser <whatis-analyser>` file *iago-analysis.py* has been created in the :ref:`bucket <whatis-bucket>` directory, you can run it in two ways. Locally, you can start the command line and run
+Once this :ref:`analyser <whatis-analyser>` file :file:`iago-analysis.py` has been created in the :ref:`bucket <whatis-bucket>` directory, you can run it in two ways. Locally, you can start the command line and run
 
 ::
 
 	$ python iago-analysis.py
 
-or from other python code (e.g., if you already have a jupyter notebook) with
+or from other python code (e.g., if you already have a *jupyter* notebook) with
 
 .. code-block:: python
 
@@ -152,7 +152,7 @@ or from other python code (e.g., if you already have a jupyter notebook) with
 
 The second approach also works for remote locations if they are available via SSH and have *iago* installed. For remote SSH access, passwordless and key-based login has to be set up.
 
-Running the analysis script (ideally) gives no output on the command line and produces a database file *iagodb.json*. This database file contains all calculated information from the run including the input files in a well-structured manner. You can query the results using *iago* as outlined in the next section.
+Running the analysis script (ideally) gives no output on the command line and produces a database file :file:`iagodb.json`. This database file contains all calculated information from the run including the input files in a well-structured manner. You can query the results using *iago* as outlined in the next section.
 
 Working With the Results
 ------------------------
@@ -171,7 +171,7 @@ Your browser should open. Create a new notebook and run the following code:
 	lg = iago.get_location_group()
 	db = lg.fetch_database('bucket name or bucket id')
 
-It is always required to create a :ref:`location group <whatis-locationgroup>` first, since it caches the contents of remote repositories to speed up access. You can fetch the database by either its name or the (unique) ID. If (as in the previous example) your bucket directory is called *bucket-name-6d78579fa1e849a2a58f794fa784c1ea*, then the following two lines are equivalent
+It is always required to create a :ref:`location group <whatis-locationgroup>` first, since it caches the contents of remote repositories to speed up access. You can fetch the database by either its name or the (unique) ID. If (as in the previous example) your bucket directory is called :file:bucket-name-6d78579fa1e849a2a58f794fa784c1ea`, then the following two lines are equivalent
 
 .. code-block:: python
 
@@ -180,7 +180,7 @@ It is always required to create a :ref:`location group <whatis-locationgroup>` f
 
 Should there be two buckets of the same name though, the first line will raise an error, since it is not clear which bucket the command is referring to.
 
-The *db* object is a regular class. Its attributes are explained in detail here: :class:`iago.DatabaseProvider.DB`. E.g. if you were to inspect the configuration and then plot the z-component of the normal vector of the plane produced by the sample *iago-analysis.py* above, then this could be done as follows in *jupyter*
+The *db* object is a regular class. Its attributes are explained in detail here: :class:`iago.DatabaseProvider.DB`. E.g. if you were to inspect the configuration and then plot the z-component of the normal vector of the plane produced by the sample :file:`iago-analysis.py above, then this could be done as follows in *jupyter*
 
 .. code-block:: python
 
@@ -190,4 +190,4 @@ The *db* object is a regular class. Its attributes are explained in detail here:
 	print db.config['run-name']
 	plt.plot(db.planes.frame, db.planes.normal_z)
 
-If further data is required that currently is not part of the database, *iago-analysis.py* has to be updated and re-run. Otherwise, now various data can be plotted interactively.
+If further data is required that currently is not part of the database, :file:`iago-analysis.py` has to be updated and re-run. Otherwise, now various data can be plotted interactively.

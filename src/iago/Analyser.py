@@ -125,14 +125,45 @@ class Analyser(object):
 	def get_groups(self):
 		return self._db.groups
 
-	def dynamic_plane(self, name, selector, normal=None, comment=None, framesel=None):
-		""" Not suitable for wrapped trajectories.
-		:param name: Name of the plane.
-		:param selector: Which atoms are to be approximated by a plane.
-		:param normal: Preferred orientation of the normal vector. 3-tuple.
-		:param comment: Description of the plane.
-		:return:
-		"""
+	def dynamic_plane(self, name, selector, normal=None, framesel=None, comment=None):
+		""" Fits a plane through at least three atoms in each frame.
+
+.. warning::
+
+	Be careful **not to use this function with wrapped trajectories**, i.e. coordinates that have been wrapped into the
+	simulation box. Imagine points on a plane that is not parallel to any of the simulation box surfaces. Any point
+	outside the box will work fine for unwrapped trajectories but will give results other than the expected.
+
+The *name* of the plane is informational only and should be kept concise since it is the identifier of the plane.
+
+The *selector* can be any :ref:`atom selector <selection-atom>` but must select at least three atoms in every frame.
+The selector will be evaluated for any frame which means that selected atoms may change over the course
+of the trajectory. If you do not want this behaviour, define a static group in your :func:`define_groups`
+implementation in your :ref:`analyser script <whatis-analyser>`.
+
+The *normal* defines the surface orientation. Since the plane is stored in the database by recording a support vector
+and the surface normal vector, the sign of the normal vector can be important, e.g. if you want to calculate the atom
+distance from a certain plane with :func:`dynamic_distance`. The *normal* vector defines the orientation of the normal
+vectors calculated by this function such that they point in the same direction. More precisely, the dot product of the
+*normal* parameter and the calculated normal vectors is guaranteed to be positive (or zero).
+
+The *framesel* selects the frames that are to be analysed. If follows the regular python slice syntax. Its application
+in the context of *iago* is explained in greater depth i
+
+The *comment* can be as verbose as needed to describe the plane in a human-readable format. It will be stored in the
+database alongside the results for documentation purposes. Together with the plane *name*, the user should be able to
+understand the meaning and origin of this plane.
+
+The resulting data is stored in the database as :attr:`iago.DatabaseProvider.DB.planes`.
+
+Technical detail: the plane is calculated using the SVD approach. There is no mass-weighting of the atoms in question.
+
+:param name: Name of the plane.
+:param selector: Which atoms are to be approximated by a plane.
+:param normal: Preferred orientation of the normal vector. 3-tuple.
+:param framesel: A python slice selecting only certain frames.
+:param comment: Description of the plane.
+"""
 		resultdata = []
 		for run, alias in self.parser.get_runs().iteritems():
 			try:
@@ -163,14 +194,16 @@ class Analyser(object):
 		self._db.planes = self._db.planes.append(pd.DataFrame(resultdata), ignore_index=True)
 
 	def dynamic_distance(self, name, selectorA, selectorB, cutoff=None, comment=None, framesel=None, signed=False):
-		"""
-		:param name: Name of the distance set between groups A and B
-		:param selectorA: Selector for the group A
-		:param selectorB: Selector for the grouop B
-		:param cutoff: Maximum included distance in Angstrom. None to disable.
-		:param comment: Description of the distance set
-		:return:
-		"""
+		""" Calculates a distance between two objects in each frame.
+
+This routine
+
+:param name: Name of the distance set between groups A and B
+:param selectorA: Selector for the group A
+:param selectorB: Selector for the group B
+:param cutoff: Maximum included distance in Angstrom. None to disable.
+:param comment: Description of the distance set
+"""
 		resultdata = []
 		for run, alias in self.parser.get_runs().iteritems():
 			try:

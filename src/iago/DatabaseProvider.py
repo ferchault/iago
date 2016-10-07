@@ -9,6 +9,8 @@ import pandas as pd
 class DB(object):
 	def __init__(self):
 		self._groups = utils.SafeDict()
+
+		#: Plane data as calculated by :func:`iago.Analyser.Analyser.dynamic_plane`
 		self.planes = utils.annotated_data_frame({
 			'run': ('Run', None),
 			'frame': ('Frame number', None),
