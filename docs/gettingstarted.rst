@@ -77,6 +77,10 @@ This structure roughly equates to the following folder layout:
   |   |-- run.dcd
   | ...
 
+Example Bucket
+--------------
+If you want to start off a working example, you may copy a :ref:`bucket <whatis-bucket>` directory from the `tests/fixtures <https://github.com/ferchault/iago/tree/master/tests/fixtures/>`_ folder in the repository. Just configure the path as shown in the next section. The following steps, most importantly the *iago-analysis.py* script is already set-up.
+
 Configuration
 -------------
 
@@ -88,6 +92,14 @@ Create a file *.iago.conf* in your home directory. This file holds the configura
   url=file:///home/username/data/
 
 Here, the path */home/username/data/* is the location where the :ref:`bucket <whatis-bucket>` folders are stored. All folders that have no MD5-hash in their name will be ignored.
+
+If you want to set up the configuration with the example :ref:`bucket <whatis-bucket>`, then please make sure to specify the path to the parent folder only. If you have downloaded the sample :ref:`bucket <whatis-bucket>` to your *~/Downloads/* directory, then add the following lines to your *.iago.conf* in your home directory:
+
+::
+
+  [example]
+  url=file:///home/username/Downloads/
+
 
 Analyser
 --------
@@ -120,9 +132,9 @@ Finally, *iago* needs to know what to extract from the trajectory. This is done 
 		a = Analyser()
 		a.run()
 
-First, the *iago* module is loaded. The data to analyse is defined using the class methods as shown above, executed in that order. First, the base directory for this :ref:`bucket <whatis-bucket>` gets defined, followed by loading all the groups from the gromacs index file *index.ndx* and defining a static group for atoms 1, 3, 4, 5. The data to calculate based on the trajectories and the meta data defined in the iago.Analyser subclass is subsequently defined in the *calculated_columns* class method. In the example, a plane with the label *myplane* is added to the database where the plane is defined by the coordinates of the atoms in group *test*. For details and a list of available methods, see the documentation of the *Analyser* class.
+First, the *iago* module is loaded. The data to analyse is defined using the class methods as shown above, executed in that order. First, the base directory for this :ref:`bucket <whatis-bucket>` gets defined, followed by loading all the groups from the gromacs index file *index.ndx* and defining a static group for atoms 1, 3, 4, 5. The data to calculate based on the trajectories and the meta data defined in the :class:`iago.Analyser` subclass is subsequently defined in the *calculated_columns* class method. In the example, a plane with the label *myplane* is added to the database where the plane is defined by the coordinates of the atoms in group *test*. For details and a list of available methods, see the documentation of the *Analyser* class.
 
-Once this :ref:`bucket <whatis-analyser>` file *iago-analysis.py* has been created in the :ref:`bucket <whatis-bucket>` directory, you can run it in two ways. Locally, you can start the command line and run
+Once this :ref:`analyser <whatis-analyser>` file *iago-analysis.py* has been created in the :ref:`bucket <whatis-bucket>` directory, you can run it in two ways. Locally, you can start the command line and run
 
 ::
 
@@ -168,7 +180,7 @@ It is always required to create a :ref:`whatis-locationgroup` first, since it ca
 
 Should there be two buckets of the same name though, the first line will raise an error, since it is not clear which bucket the command is referring to.
 
-The *db* object is a regular class. Its attributes are explained in detail here: :ref:`class.DatabaseProvider.DB`. E.g. if you were to inspect the configuration and then plot the z-component of the normal vector of the plane produced by the sample *iago-analysis.py* above, then this could be done as follows in *jupyter*
+The *db* object is a regular class. Its attributes are explained in detail here: :class:`iago.DatabaseProvider.DB`. E.g. if you were to inspect the configuration and then plot the z-component of the normal vector of the plane produced by the sample *iago-analysis.py* above, then this could be done as follows in *jupyter*
 
 .. code-block:: python
 
