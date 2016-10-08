@@ -130,9 +130,9 @@ class Analyser(object):
 
 .. warning::
 
-	Be careful **not to use this function with wrapped trajectories**, i.e. coordinates that have been wrapped into the
-	simulation box. Imagine points on a plane that is not parallel to any of the simulation box surfaces. Any point
-	outside the box will work fine for unwrapped trajectories but will give results other than the expected.
+  Be careful **not to use this function with wrapped trajectories**, i.e. coordinates that have been wrapped into the
+  simulation box. Imagine points on a plane that is not parallel to any of the simulation box surfaces. Any point
+  outside the box will work fine for unwrapped trajectories but will give results other than the expected.
 
 The *name* of the plane is informational only and should be kept concise since it is the identifier of the plane.
 
@@ -196,7 +196,30 @@ Technical detail: the plane is calculated using the SVD approach. There is no ma
 	def dynamic_distance(self, name, selectorA, selectorB, cutoff=None, comment=None, framesel=None, signed=False):
 		""" Calculates a distance between two objects in each frame.
 
-This routine
+.. warning::
+
+  Currently, the minimum image convention is only respected for rectangular unit cells. This is likely to be fixed soon.
+  This warning only affects atom-atom distances.
+
+This routine supports atom-atom distances, and atom-plane distances. For atom-atom distances, the cartesian product of
+the two selections is built and distances are calculated for each tuple of atoms. For atom-plane calculations, the
+shortest distance between each atom and the plane is measured. No wrapping of atoms back into the unit cell is happening
+in this case. In the case of atom-plane distances, signed distances are stored in the database. Positive values denote
+atom positions in the direction of the plane normal vector (i.e. above the plane).
+
+The *name* of the plane is informational only and should be kept concise since it is the identifier of the distance set.
+
+The two selectors *selectorA* and *selectorB* can either be both :ref:`atom selectors <selection-atom>` or at most one
+can be a :ref:`plane selector <selection-plane>`. The selectors are evaluated dynamically, i.e. for each :term:`frame`
+separately.
+
+The *cutoff* parameter limits entries to be included in the database. While all combinations from the cartesian product
+of the two selections are calculated, only those are stored in the database where the calculated absolute distance is
+below the cutoff.
+
+The *comment* can be as verbose as needed to describe the distance set in a human-readable format. It will be stored
+in the database alongside the results for documentation purposes. Together with the *name*, the user should be able to
+understand the meaning and origin of this distance set.
 
 :param name: Name of the distance set between groups A and B
 :param selectorA: Selector for the group A
