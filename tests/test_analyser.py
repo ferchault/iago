@@ -23,3 +23,24 @@ class TestAnalyser(TestCase):
 		a = iago.Analyser()
 		a.parser.get_runs = _mock_get_runs
 		a.collect_input_output()
+
+	def test_mandatory_and_optional_overrides(self):
+		a = iago.Analyser()
+
+		self.assertRaises(NotImplementedError, a.setup)
+		try:
+			a.define_groups()
+			a.calculated_columns()
+		except:
+			self.fail('Mistakenly mandatory routines.')
+
+	def test_fail_missing_ndx(self):
+		a = iago.Analyser()
+		self.assertRaises(ValueError, a.static_load_groups, 'nonexisting.ndx')
+		a.path = '/'
+		self.assertRaises(ValueError, a.static_load_groups, 'nonexisting.ndx')
+
+	def test_no_empty_groups(self):
+		a = iago.Analyser()
+		self.assertRaises(ValueError, a.static_group, 'test')
+		self.assertRaises(ValueError, a.static_group)

@@ -48,6 +48,9 @@ class Analyser(object):
 
 		:param filename: Path or filename of the 'ndx' file to load.
 		"""
+		if self.path is None:
+			raise ValueError('No bucket path defined.')
+
 		if not os.path.isabs(filename):
 			filename = os.path.abspath(os.path.join(self.path, filename))
 		try:
@@ -101,8 +104,9 @@ class Analyser(object):
 
 		:param args: Dict or name and selector string or name and list of indices.
 		"""
-		if len(args) < 1:
-			raise RuntimeError('No empty groups allowed.')
+
+		if (len(args) == 1 and isinstance(args[0], types.StringTypes)) or len(args) == 0:
+			raise ValueError('No empty groups allowed.')
 
 		first, rest = args[0], args[1:]
 

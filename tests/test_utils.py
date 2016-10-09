@@ -129,3 +129,18 @@ class TestUtils(TestCase):
 						 "FORCE_EVAL.SUBSYS.COORD.He.[1][0]")
 		self.assertEqual(u.path_to_html("root['FORCE_EVAL']['SUBSYS']['COORD']['He']"),
 						 "FORCE_EVAL.SUBSYS.COORD.He")
+
+	def test_safe_dict_raises(self):
+		s = u.SafeDict()
+		s['test'] = 1
+		try:
+			s['test'] = 2
+		except ValueError:
+			self.assertTrue(True)
+			return
+		self.fail('SafeDict allows overwriting entries.')
+
+	def test_safe_dict_update(self):
+		s = u.SafeDict()
+		s.update(test=2)
+		self.assertEqual(s['test'], 2)
