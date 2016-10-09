@@ -10,8 +10,34 @@ Atom Selectors
 
 .. _selection_plane:
 
-Plane Selectors
----------------
+Plane Selector
+--------------
+
+To select a plane where applicable, simply use *plane planename*. The following complete example creates a plane based
+on three atoms, and then calculates the distance of a fourth atom to said plane.
+
+.. code-block:: python
+	:linenos:
+	:emphasize-lines: 14
+
+	import iago
+	import os
+
+	class Analyser(iago.Analyser):
+		def setup(self):
+			self.path = os.getcwd()
+
+		def define_groups(self):
+			self.static_group('test', 10, 11, 12)
+
+		def calculated_columns(self):
+			self.dynamic_plane('myplane', 'group test', normal=(0, 0, 1),
+				comment='Plane in all frames.')
+			self.dynamic_distance('mydist', 'atom 5', 'plane myplane')
+
+	if __name__ == '__main__':
+		a = Analyser()
+		a.run()
 
 
 .. _selection_frame:
