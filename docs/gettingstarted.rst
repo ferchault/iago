@@ -46,6 +46,9 @@ Some expressions are used throughout the document which may not be obvious at fi
 	Analyser
 		Script that defines what properties to extract from raw data. As soon as a run has completed, *iago* can calculate the derivative information like a plane fitted through a set of coordinates. The result of all this is stored in the database you can query with *jupyter*. In order to make this work, you need to tell *iago* which properties to calculate for which part of the system. This is done in the analyser script :file:`iago-analysis.py`. Per :term:`bucket`, there is exactly one analyser script.
 
+	Frame
+		Any single geometry in a :term:`bucket` is referred to as frame. For this context, it does not matter whether the :term:`run` is a single-point calculation or forms a molecular dynamics run.
+
 This structure roughly equates to the following folder layout:
 
 ::

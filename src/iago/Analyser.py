@@ -316,6 +316,7 @@ understand the meaning and origin of this distance set.
 		self._db.output = output
 
 	def run(self):
+		""" Starts the analysis in the user-specified order."""
 		self.setup()
 		self.parser.run(self.path, self.runmatch)
 		self.define_groups()

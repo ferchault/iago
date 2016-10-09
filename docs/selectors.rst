@@ -7,6 +7,7 @@ Selection Syntax
 Atom Selectors
 --------------
 
+For atom selectors, the superset of the CHARMM :ref:`selection syntax <http://www.mdanalysis.org/mdanalysis/documentation_pages/selections.html>`_ as supported by *MDAnalysis* is accepted.
 
 .. _selection_plane:
 
