@@ -4,18 +4,36 @@ import pandas as pd
 
 class LogFile(object):
 	def _skip_header(self):
-		""" Set the internal cursor to the beginning of the MD run. """
+		""" Set the internal cursor to the beginning of the MD run.
+
+		In CP2K Quickstep output, the part before "GO, CP2K, GO" is not of general interest and consists of preparatory
+		information that is currently not parsed.
+		"""
 		for line in self._fh:
 			if 'GO CP2K GO!' in line:
 				return
 
 	def __init__(self, fh):
+		""" Defines the keywords to parse from the log file.
+
+		For any physical property of interest, a unique string is chosen that occurrs in the output file only if this
+		particular property is printed. For some of these quantities, the unit is different from what is internally
+		used by iago. In this case, a converter is defined that corrects the units by a fixed prefactor.
+
+		For few quantities, it is not the last column of the selected line that holds the desired information. Only if
+		this is the case for a unit of interest, a parse position is defined for that case."""
 		if not hasattr(fh, 'read'):
 			fh = open(fh)
 
+		#: File handle to the opened log file
 		self._fh = fh
+
 		self._skip_header()
+
+		#: Result data holder. List of dicts in chronological order where keys are physical quantities
 		self._results = []
+
+		#: Recognised quantities and their line matching string
 		self._keywords = dict((
 			('stepnumber', 'STEP NUMBER'),
 			('steptime', 'TIME [fs]'),
@@ -45,6 +63,8 @@ class LogFile(object):
 			('otcycles', 'outer SCF loop converged in'),
 			('globaleri', 'Global ERI counter')
 		))
+
+		#: Converter functions for those quantities where the units deviate from what iago uses
 		self._converters = dict((
 			('cell_a', lambda _: _ * 0.52917721967),
 			('cell_b', lambda _: _ * 0.52917721967),
@@ -61,6 +81,8 @@ class LogFile(object):
 			('ekin', lambda _: _ * 27.21138602),
 			('drift', lambda _: _ * 27.21138602),
 		))
+
+		#: Value indices if it is not the last column in the matched line that holds the result
 		self._parse_positions = dict((
 			('cell_a', 0),
 			('cell_b', 1),
@@ -79,6 +101,11 @@ class LogFile(object):
 		))
 
 	def _extract_value(self, keyword, line):
+		""" Extracts the physical quantity from a matched line.
+
+		:param keyword: Quantity that matched.
+		:param line: Line that matched.
+		:returns: Desired value as float. """
 		def keep_float(var):
 			try:
 				val = float(var)
@@ -106,6 +133,11 @@ class LogFile(object):
 		return parts
 
 	def parse(self):
+		""" Reads the input line by line.
+
+		Works by identifying frames first. Actual parsing is offloaded to :func:`iago.cp1k.LogFile._readframe`.
+
+		:returns: :class:`pandas.DataFrame` with quantities in columns and index in the order of occurrence."""
 		parselines = []
 		sep = '*' * 79
 		for line in self._fh:
@@ -119,6 +151,9 @@ class LogFile(object):
 		return pd.DataFrame(self._results)
 
 	def _readframe(self, parselines):
+		""" Parses a single frame from the log file.
+
+		:param parselines: List of strings. The lines identified as one single frame."""
 		rowdata = {}
 		for line in parselines:
 			for keyword in self._keywords:
