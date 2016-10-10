@@ -7,7 +7,7 @@ raw data are defined. For each kind of selector, a subsection describes the supp
 selectors are not interchangeable. This means that each operation asks for either of them at appropriate places. The
 documentation of each :ref:`supported calculation <supported-calculation>` highlights the required types.
 
-.. _selection-atom:
+.. _selection_atom:
 
 Atom Selectors
 --------------

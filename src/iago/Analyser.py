@@ -140,10 +140,10 @@ class Analyser(object):
 
 The *name* of the plane is informational only and should be kept concise since it is the identifier of the plane.
 
-The *selector* can be any :ref:`atom selector <selection-atom>` but must select at least three atoms in every frame.
+The *selector* can be any :ref:`atom selector <selection_atom>` but must select at least three atoms in every frame.
 The selector will be evaluated for any frame which means that selected atoms may change over the course
 of the trajectory. If you do not want this behaviour, define a static group in your :func:`define_groups`
-implementation in your :ref:`analyser script <whatis-analyser>`.
+implementation in your :term:`analyser script <analyser>`.
 
 The *normal* defines the surface orientation. Since the plane is stored in the database by recording a support vector
 and the surface normal vector, the sign of the normal vector can be important, e.g. if you want to calculate the atom
@@ -213,8 +213,8 @@ atom positions in the direction of the plane normal vector (i.e. above the plane
 
 The *name* of the plane is informational only and should be kept concise since it is the identifier of the distance set.
 
-The two selectors *selectorA* and *selectorB* can either be both :ref:`atom selectors <selection-atom>` or at most one
-can be a :ref:`plane selector <selection-plane>`. The selectors are evaluated dynamically, i.e. for each :term:`frame`
+The two selectors *selectorA* and *selectorB* can either be both :ref:`atom selectors <selection_atom>` or at most one
+can be a :ref:`plane selector <selection_plane>`. The selectors are evaluated dynamically, i.e. for each :term:`frame`
 separately.
 
 The *cutoff* parameter limits entries to be included in the database. While all combinations from the cartesian product
