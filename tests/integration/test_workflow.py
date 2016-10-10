@@ -7,7 +7,7 @@ from unittest import TestCase
 import iago
 import iago.utils as u
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 
 
 class Analyser(iago.Analyser):
@@ -56,7 +56,7 @@ class TestUtils(TestCase):
 
 		# Generate local configuration
 		fh = tempfile.NamedTemporaryFile(delete=False)
-		path = os.path.abspath(os.path.dirname(__file__))
+		path = os.path.abspath(BASE_DIR)
 		fh.write('[local]\nurl=file://%s/fixtures' % path)
 		filename = fh.name
 		fh.close()
