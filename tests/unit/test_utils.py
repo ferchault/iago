@@ -144,3 +144,14 @@ class TestUtils(TestCase):
 		s = u.SafeDict()
 		s.update(test=2)
 		self.assertEqual(s['test'], 2)
+
+	def test_fit_plane(self):
+		nv, cog = u.fit_plane(np.array([[-1, 0, 0], [0, -1, 0], [1, 0, 0], [0, 1, 0]]), normal=(0, 0, 1))
+		self.assertTrue(np.allclose(nv, (0, 0, 1)))
+		self.assertTrue(np.allclose(cog, (0, 0, 0)))
+
+	def test_fit_plane_undef(self):
+		positions_in_line = np.array([[0, 0, 0], [0, 0, 1], [0, 0, 2], [0, 0, 3]])
+		positions_too_few = np.array([[0, 0, 0], [0, 0, 1]])
+		self.assertRaises(ValueError, u.fit_plane, positions_in_line)
+		self.assertRaises(ValueError, u.fit_plane, positions_too_few)

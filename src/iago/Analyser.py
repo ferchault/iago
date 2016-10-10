@@ -129,7 +129,7 @@ class Analyser(object):
 	def get_groups(self):
 		return self._db.groups
 
-	def dynamic_plane(self, name, selector, normal=None, framesel=None, comment=None):
+	def dynamic_plane(self, name, selector, normal=None, framesel=None, comment=None, raise_undetermined=False):
 		""" Fits a plane through at least three atoms in each frame.
 
 .. warning::
@@ -158,6 +158,10 @@ The *comment* can be as verbose as needed to describe the plane in a human-reada
 database alongside the results for documentation purposes. Together with the plane *name*, the user should be able to
 understand the meaning and origin of this plane.
 
+If *raise_undetermined* is *True*, then having an undetermined plane for any single frame will stop the analysis. There
+are two main reasons why this could be happening: the *selector* matched less than three atoms for this frame or all the
+selected atoms are collinear, i.e. form a single line and not a plane.
+
 The resulting data is stored in the database as :attr:`iago.DatabaseProvider.DB.planes`.
 
 Technical detail: the plane is calculated using the SVD approach. There is no mass-weighting of the atoms in question.
@@ -166,6 +170,7 @@ Technical detail: the plane is calculated using the SVD approach. There is no ma
 :param selector: Which atoms are to be approximated by a plane.
 :param normal: Preferred orientation of the normal vector. 3-tuple.
 :param framesel: A python slice selecting only certain frames.
+:param raise_undetermined: Boolean. If *False*, silently skip undetermined planes.
 :param comment: Description of the plane.
 """
 		resultdata = []
@@ -183,7 +188,13 @@ Technical detail: the plane is calculated using the SVD approach. There is no ma
 
 			for step, frame in it.izip(steps[framesel], u.trajectory[framesel]):
 				ag = u.select_atoms(selector, **tgroups)
-				normal_vector, center_of_geometry = utils.fit_plane(ag.positions, normal=normal)
+				try:
+					normal_vector, center_of_geometry = utils.fit_plane(ag.positions, normal=normal)
+				except ValueError:
+					if raise_undetermined:
+						raise
+					else:
+						continue
 				resultdata.append({
 					'run': alias,
 					'frame': step,

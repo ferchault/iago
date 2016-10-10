@@ -93,12 +93,24 @@ def parse_ndx(lines):
 
 
 def fit_plane(positions, normal=None):
-	""" Not suited for wrapped trajectories.
-	:param positions:
-	:param normal:
-	:return:
+	""" Calculates a fitted plane given atom positions.
+
+	.. warning::
+	 	Not suited for wrapped trajectories. Imagine points on a plane that is not parallel to any of the simulation
+	 	box surfaces. Any point outside the box will work fine for unwrapped trajectories but will give results other
+	 	than the expected.
+
+	:param positions: :class:`numpy.array` with atom positions.
+	:param normal: Tuple of the preferred normal vector orientation
+	:return: Tuple of normal vector and center of geometry as :class:`numpy.array`
 	"""
+	if np.linalg.matrix_rank(positions) <= 1:
+		raise ValueError('Collinear positions.')
+
 	rows, cols = positions.shape
+	if rows < 3:
+		raise ValueError('Plane undetermined - need at least three points.')
+
 	p = np.ones((rows, 1))
 	ab = np.hstack([positions, p])
 	u, d, v = np.linalg.svd(ab, True)
