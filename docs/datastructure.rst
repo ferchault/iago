@@ -38,3 +38,64 @@ with the run name as key and a tree dictionary as value. Here are a few examples
 	for run in db.config.keys():
 		print db.config[run].FORCE_EVAL.SUBSYS.KIND
 
+While strings are converted to floats whenever applicable, no units are converted from the internal units used in the
+simulation codes.
+
+Calculated Data
+---------------
+
+Planes
+++++++
+
+Calculated plane data can be found in
+
+.. code-block:: python
+
+	db.planes
+
+
+============= =============== ===========================================================
+Column        Unit            Description
+============= =============== ===========================================================
+run           --              Run name. String.
+frame         --              Frame number. Integer.
+name          --              Plane name. String.
+normal_x      --              Normal vector: x component. Float.
+normal_y      --              Normal vector: y component. Float.
+normal_z      --              Normal vector: z component. Float.
+support_x     Angstrom        Support point: x component. Float.
+support_y     Angstrom        Support point: y component. Float.
+support_z     Angstrom        Support point: z component. Float.
+============= =============== ===========================================================
+
+Distances
++++++++++
+
+Calculated distances can be found in
+
+.. code-block:: python
+
+	db.distances      # for atom-atom distances
+	db.planedistances # for atom-plane distances
+
+============= =============== ===========================================================
+Column        Unit            Description
+============= =============== ===========================================================
+run           --              Run name. String.
+frame         --              Frame number. Integer.
+name          --              Plane name. String.
+atom1         --              First atom index. Integer.
+atom2         --              Second atom index. Integer.
+dist          Angstrom        Distance. Float.
+============= =============== ===========================================================
+
+============= =============== ===========================================================
+Column        Unit            Description
+============= =============== ===========================================================
+run           --              Run name. String.
+frame         --              Frame number. Integer.
+name          --              Plane name. String.
+plane         --              Plane name. String.
+atom2         --              Atom index. Integer.
+dist          Angstrom        Distance. Float.
+============= =============== ===========================================================
