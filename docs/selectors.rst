@@ -1,13 +1,21 @@
 Selection Syntax
 ================
 
+For many operations, it is crucial to know to which atoms or :term:`frames <frame>` to apply it to. This selection
+is based on strings that are of relevance to the :term:`analyser` in :file:`iago-analysis.py` where all operations on
+raw data are defined. For each kind of selector, a subsection describes the supported syntax. The different kinds of
+selectors are not interchangeable. This means that each operation asks for either of them at appropriate places. The
+documentation of each :ref:`supported calculation <supported-calculation>` highlights the required types.
 
 .. _selection-atom:
 
 Atom Selectors
 --------------
 
-For atom selectors, the superset of the CHARMM `selection syntax <http://www.mdanalysis.org/mdanalysis/documentation_pages/selections.html>`_ as supported by *MDAnalysis* is accepted.
+For atom selectors, the superset of the CHARMM
+`selection syntax <http://www.mdanalysis.org/mdanalysis/documentation_pages/selections.html>`_ as supported by
+*MDAnalysis* is accepted.
+
 
 .. _selection_plane:
 

@@ -34,6 +34,8 @@ OT Cycles Needed    yes
 ERI Count           yes
 =================== ==============
 
+.. _supported-calculation:
+
 Supported Calculations
 ----------------------
 
