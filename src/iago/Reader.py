@@ -29,6 +29,7 @@ class Reader(object):
 	""" Base class for any reader. Defines the API the rest of iago is expecting."""
 	def __init__(self, path):
 		""" Prepares the data structure.
+
 		:param path: Absolute path to the single run.
 		"""
 		#: Absolute path to the run directory.
@@ -40,6 +41,7 @@ class Reader(object):
 
 	def get_options(self):
 		""" Lists all available options supported by this reader subclass.
+
 		:return: List of strings.
 		"""
 		raise NotImplementedError()
@@ -53,21 +55,24 @@ class Reader(object):
 
 	def get_input(self):
 		""" Fetch the parsed input file data.
-		:return: Dict-like or 'utils.Map' instance.
+
+		:return: :class:`dict` like or :class:`iago.utils.Map` instance
 		"""
 		raise NotImplementedError()
 
 	def get_output(self):
 		""" Fetch the parsed output file data.
-		:return: 'pandas.DataFrame'
+
+		:return: :class:`pandas.DataFrame`
 		"""
 		raise NotImplementedError()
 
 	def get_universe(self):
 		""" Fetch the trajectory data.
 
-		When no trajectory data is present, this function must return an EmptyUniverse instance.
-		:return: 'MDAnalysis.Universe' instance or 'EmptyUniverse' instance.
+		When no trajectory data is present, this function must return an :class:`iago.Reader.EmptyUniverse` instance.
+
+		:return: :class:`MDAnalysis.core.AtomGroup.Universe` instance or :class:`iago.Reader.EmptyUniverse` instance.
 		"""
 		return self._universe
 
@@ -77,6 +82,7 @@ class Reader(object):
 		Particularly helpful if the log file and the trajectory data are written in different intervals. Frame numbers
 		should be consistently one-based or zero-based. Frame numbers coincide with time steps from molecular dynamics
 		calculations.
+
 		:return: Iterable.
 		"""
 		return range(len(self._universe.trajectory))

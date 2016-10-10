@@ -100,9 +100,9 @@ def fit_plane(positions, normal=None):
 	 	box surfaces. Any point outside the box will work fine for unwrapped trajectories but will give results other
 	 	than the expected.
 
-	:param positions: :class:`numpy.array` with atom positions.
+	:param positions: :class:`numpy.ndarray` with atom positions.
 	:param normal: Tuple of the preferred normal vector orientation
-	:return: Tuple of normal vector and center of geometry as :class:`numpy.array`
+	:return: Tuple of normal vector and center of geometry as :py:class:`numpy.ndarray`
 	"""
 	if np.linalg.matrix_rank(positions) <= 1:
 		raise ValueError('Collinear positions.')
