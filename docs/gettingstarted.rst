@@ -149,6 +149,8 @@ The second approach also works for remote locations if they are available via SS
 
 Running the analysis script (ideally) gives no output on the command line and produces a database file :file:`iagodb.json`. This database file contains all calculated information from the run including the input files in a well-structured manner. You can query the results using *iago* as outlined in the next section.
 
+.. _working-results:
+
 Working With the Results
 ------------------------
 

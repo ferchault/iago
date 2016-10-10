@@ -28,6 +28,7 @@ If you want to familiarise yourself how to use iago for your research, this is t
    gettingstarted
    supported
    selectors
+   datastructure
 
 
 You want to extend iago? Great - here is how:

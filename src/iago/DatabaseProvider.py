@@ -22,6 +22,8 @@ class DB(object):
 			'support_y': ('Support point: y component', 'angstrom'),
 			'support_z': ('Support point: z component', 'angstrom'),
 		})
+
+		#: Atom-atom distance data as calculated by :func:`iago.Analyser.Analyser.dynamic_distance`
 		self.distances = utils.annotated_data_frame({
 			'run': ('Run', None),
 			'frame': ('Frame number', None),
@@ -30,6 +32,8 @@ class DB(object):
 			'atom2': ('Second atom index', None),
 			'dist': ('Distance', 'angstrom')
 		})
+
+		#: Atom-plane distance data as calculated by :func:`iago.Analyser.Analyser.dynamic_distance`
 		self.planedistances = utils.annotated_data_frame({
 			'run': ('Run', None),
 			'frame': ('Frame number', None),
@@ -38,20 +42,22 @@ class DB(object):
 			'atom1': ('First atom index', None),
 			'dist': ('Distance', 'angstrom')
 		})
+
 		self.input = utils.Map()
 		self.output = pd.DataFrame()
 
 	@property
 	def groups(self):
 		""" Known static atom groups.
+
 		:return: Dictionary with group names as key, list of 0-based atom indices as value.
 		"""
 		return self._groups
 
 	def write(self, fh):
 		""" Writes the database to disk or stream.
+
 		:param fh: File handle or filename.
-		:return:
 		"""
 		if not hasattr(fh, 'write'):
 			fh = open(fh, 'w')
@@ -78,8 +84,8 @@ class DB(object):
 
 	def read(self, fh):
 		""" Reads the database from disk or stream.
+
 		:param fh: File handle or filename.
-		:return:
 		"""
 		if not hasattr(fh, 'read'):
 			fh = open(fh)
