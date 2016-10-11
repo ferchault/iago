@@ -166,20 +166,3 @@ class DB(object):
 
 		# cleanup
 		fh.close()
-
-
-class DatabaseProvider(object):
-	@staticmethod
-	def get_annotated_collections():
-		return 'atommeta', 'atomframemeta', 'framemeta'
-
-
-class MemoryDatabaseProvider(DatabaseProvider):
-	def __init__(self, run, atom, atommeta, atomframe, atomframemeta, frame, framemeta):
-		self.run = uMap(run)
-		self.atom = pd.DataFrame(atom)
-		self.atommeta = Map(atommeta)
-		self.atomframe = pd.DataFrame(atomframe)
-		self.atomframemeta = Map(atomframemeta)
-		self.frame = pd.DataFrame(frame)
-		self.framemeta = Map(framemeta)
