@@ -43,6 +43,48 @@ class DB(object):
 			'dist': ('Distance', 'angstrom')
 		})
 
+		self.energies = utils.annotated_data_frame({
+			'run': ('Run', None),
+			'frame': ('Frame number', None),
+			'total': ('Total energy', 'hartree'),
+			'conserved': ('Conserved quantity', 'hartree'),
+			'coreself': ('Core-Self energy', 'hartree'),
+			'corehamiltonian': ('Core Hamiltonian', 'hartree'),
+			'hartree': ('Hartree energy', 'hartree'),
+			'xc': ('Exchange-Correlation energy', 'hartree'),
+			'hfx': ('Hartree-Fock Exchange energy', 'hartree'),
+			'dispersion': ('Dispersion energy', 'hartree'),
+			'potential': ('Potential energy', 'hartree'),
+			'kinetic': ('Kinetic energy', 'hartree'),
+			'drift': ('Energy drift per atom', 'kelvin')
+		})
+
+		self.cells = utils.annotated_data_frame({
+			'run': ('Run', None),
+			'frame': ('Frame number', None),
+			'a': ('First cell length', 'angstrom'),
+			'b': ('Second cell length', 'angstrom'),
+			'c': ('Third cell length', 'angstrom'),
+			'alpha': ('First cell angle', 'degrees'),
+			'beta': ('Second cell angle', 'degrees'),
+			'gamma': ('Third cell angle', 'degrees'),
+			'volume': ('Cell volume', 'angstrom**3'),
+		})
+
+		self.ensembles = utils.annotated_data_frame({
+			'temperature': ('Temperature', 'kelvin'),
+			'pressure': ('Pressure', 'bar'),
+
+		})
+
+		self.meta = utils.annotated_data_frame({
+			'iasd': ('Integrated absolute spin density', None),
+			's2': ('Determinant S**2', None),
+			'scfcycles': ('Number of SCF cycles', None),
+			'otcycles': ('Number of outer SCF cycles', None),
+			'globaleri': ('Number of ERI evaluated', None)
+		})
+
 		self.input = utils.Map()
 		self.output = pd.DataFrame()
 
@@ -134,7 +176,7 @@ class DatabaseProvider(object):
 
 class MemoryDatabaseProvider(DatabaseProvider):
 	def __init__(self, run, atom, atommeta, atomframe, atomframemeta, frame, framemeta):
-		self.run = Map(run)
+		self.run = uMap(run)
 		self.atom = pd.DataFrame(atom)
 		self.atommeta = Map(atommeta)
 		self.atomframe = pd.DataFrame(atomframe)
