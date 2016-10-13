@@ -72,17 +72,32 @@ class DB(object):
 		})
 
 		self.ensembles = utils.annotated_data_frame({
+			'run': ('Run', None),
+			'frame': ('Frame number', None),
 			'temperature': ('Temperature', 'kelvin'),
 			'pressure': ('Pressure', 'bar'),
-
 		})
 
 		self.meta = utils.annotated_data_frame({
+			'run': ('Run', None),
+			'frame': ('Frame number', None),
 			'iasd': ('Integrated absolute spin density', None),
 			's2': ('Determinant S**2', None),
 			'scfcycles': ('Number of SCF cycles', None),
 			'otcycles': ('Number of outer SCF cycles', None),
 			'globaleri': ('Number of ERI evaluated', None)
+		})
+
+		self.points = utils.annotated_data_frame({
+			'run': ('Run', None),
+			'frame': ('Frame number', None),
+			'name': ('Point set name', None),
+			'x': ('X position', 'angstrom'),
+			'y': ('Y position', 'angstrom'),
+			'z': ('Z position', 'angstrom'),
+			'fractional_x': ('Fractional x position', None),
+			'fractional_y': ('Fractional y position', None),
+			'fractional_z': ('Fractional z position', None),
 		})
 
 		self.input = utils.Map()
@@ -116,6 +131,9 @@ class DB(object):
 		data['distances-meta'] = self.distances.annotations_to_dict()
 		data['planedistances'] = self.planedistances.to_dict('list')
 		data['planedistances-meta'] = self.planedistances.annotations_to_dict()
+		# points
+		data['points'] = self.points.to_dict('list')
+		data['points-meta'] = self.points.annotations_to_dict()
 		# input / output
 		data['input'] = self.input
 		data['output'] = self.output.to_dict('list')
@@ -151,6 +169,11 @@ class DB(object):
 			pass
 		try:
 			self.planedistances = utils.annotated_data_frame(data['planedistances-meta'], data['planedistances'])
+		except KeyError:
+			pass
+		# points
+		try:
+			self.points = utils.annotated_data_frame(data['points-meta'], data['points'])
 		except KeyError:
 			pass
 		# input / output

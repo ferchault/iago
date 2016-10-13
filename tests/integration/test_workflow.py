@@ -36,6 +36,21 @@ class Analyser(iago.Analyser):
 			framesel=slice(2),
 			comment='OH-distances up to transition state bond length'
 		)
+		self.dynamic_point(
+			'hematite-slab',
+			com='type O or type Fe',
+			framesel=slice(2),
+			fractional=True,
+			comment='center of mass of the hematite slab'
+		)
+		self.dynamic_point(
+			'hematite-avg-pos',
+			'atom type O or type Fe',
+			'point hematite-slab',
+			framesel=slice(2),
+			fractional=True,
+			comment='average position in the hematite slab'
+		)
 		#self.dynamic_distance(
 		#	'O3A',
 		#	'plane O3A',
