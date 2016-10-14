@@ -155,3 +155,6 @@ class TestUtils(TestCase):
 		positions_too_few = np.array([[0, 0, 0], [0, 0, 1]])
 		self.assertRaises(ValueError, u.fit_plane, positions_in_line)
 		self.assertRaises(ValueError, u.fit_plane, positions_too_few)
+
+	def test_minimum_image_distance(self):
+		d = 2.446792
