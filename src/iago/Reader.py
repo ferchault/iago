@@ -6,11 +6,28 @@ import utils
 import warnings
 
 # third-party modules
-import MDAnalysis as mda
+try:
+	import MDAnalysis as mda
+	HAS_MDA = True
+except ImportError:
+	HAS_MDA = False
+	pass
+try:
+	import mdtraj
+	HAS_MDTRAJ = True
+except ImportError:
+	HAS_MDTRAJ = False
 import pandas as pd
 
 # custom modules
 import cp2k
+
+class UniverseFactory(object):
+	def __init__(self, topology, trajectory):
+		self._topology = topology
+		self._trajectory = trajectory
+		if not HAS_MDA and not HAS_MDTRAJ:
+			raise RuntimeError('Neither mdtraj nor MDAnalysis available. Unable to read trajectory data.')
 
 
 class EmptyUniverse(object):

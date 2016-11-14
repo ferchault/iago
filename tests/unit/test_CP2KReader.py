@@ -2,6 +2,7 @@
 from unittest import TestCase
 
 # custom modules
+import iago.cp2k
 import iago.Reader
 
 
@@ -60,3 +61,12 @@ class TestCP2KReader(TestCase):
 		self.assertEqual(iago.Reader.CP2KReader._recognize_line('FOO 1 2'), ('FOO', (1., 2.)))
 		self.assertEqual(iago.Reader.CP2KReader._recognize_line('FOO'), ('FOO', None))
 		self.assertEqual(iago.Reader.CP2KReader._recognize_line('FOO bar bar'), ('FOO', ('bar', 'bar')))
+
+class TestCP2KLogFile(TestCase):
+	def test_extract_keyword(self):
+		linedata = '  Hartree energy:                                            2525.59047596095479'
+		c = iago.cp2k.LogFile(__file__)
+		self.assertAlmostEquals(68724.8173698, c._extract_value('hartree', linedata))
+
+		linedata = ' CELL ANGLS[deg]              =    0.8566225E+02   0.9434319E+02   0.9434867E+02'
+		self.assertAlmostEqual(85.66225, c._extract_value('cell_alpha', linedata))

@@ -37,12 +37,12 @@ class LogFile(object):
 		self._keywords = dict((
 			('stepnumber', 'STEP NUMBER'),
 			('steptime', 'TIME [fs]'),
-			('cell_a', 'CELL LNTHS[bohr]'),
-			('cell_b', 'CELL LNTHS[bohr]'),
-			('cell_c', 'CELL LNTHS[bohr]'),
-			('cell_alpha', 'CELL ANGLS[deg]'),
-			('cell_beta', 'CELL ANGLS[deg]'),
-			('cell_gamma', 'CELL ANGLS[deg]'),
+			('cell_a', 'CELL LNTHS[bohr]             ='),
+			('cell_b', 'CELL LNTHS[bohr]             ='),
+			('cell_c', 'CELL LNTHS[bohr]             ='),
+			('cell_alpha', 'CELL ANGLS[deg]              ='),
+			('cell_beta', 'CELL ANGLS[deg]              ='),
+			('cell_gamma', 'CELL ANGLS[deg]              ='),
 			('temperature', 'TEMPERATURE [K]'),
 			('pressure', 'PRESSURE [bar]'),
 			('volume', 'VOLUME[bohr^3]'),
@@ -77,8 +77,9 @@ class LogFile(object):
 			('xc', lambda _: _ * 27.21138602),
 			('hfx', lambda _: _ * 27.21138602),
 			('etot', lambda _: _ * 27.21138602),
-			('epot', lambda _: _ * 27.21138602),
+			('potential', lambda _: _ * 27.21138602),
 			('ekin', lambda _: _ * 27.21138602),
+			('kinetic', lambda _: _ * 27.21138602),
 			('drift', lambda _: _ * 27.21138602),
 		))
 
@@ -94,10 +95,12 @@ class LogFile(object):
 			('otcycles', 0),
 			('temperature', 0),
 			('drift', 0),
-			('ekin', 0),
-			('epot', 0),
+			('potential', 0),
+			('volume', 0),
 			('pressure', 0),
-			('s2', 0)
+			('s2', 0),
+			('kinetic', 0),
+			('xc', 0)
 		))
 
 	def _extract_value(self, keyword, line):
@@ -113,12 +116,10 @@ class LogFile(object):
 				return None
 			return val
 
-		keyword = self._keywords[keyword]
-
 		try:
 			converter = self._converters[keyword]
 		except KeyError:
-			def converter(x): x
+			converter = lambda _: _
 		try:
 			pos = self._parse_positions[keyword]
 		except KeyError:
@@ -140,10 +141,15 @@ class LogFile(object):
 		:returns: :class:`pandas.DataFrame` with quantities in columns and index in the order of occurrence."""
 		parselines = []
 		sep = '*' * 79
+		count = 0
 		for line in self._fh:
 			if sep in line:
-				self._readframe(parselines)
-				parselines = []
+				if count == 0:
+					count += 1
+				else:
+					self._readframe(parselines)
+					count = 0
+					parselines = []
 			else:
 				parselines.append(line)
 		self._readframe(parselines)
@@ -156,10 +162,9 @@ class LogFile(object):
 		:param parselines: List of strings. The lines identified as one single frame."""
 		rowdata = {}
 		for line in parselines:
-			for keyword in self._keywords:
-				if keyword in line:
+			for keyword, locator in self._keywords.iteritems():
+				if locator in line:
 					retval = self._extract_value(keyword, line)
 					if retval is not None:
 						rowdata[keyword] = retval
-					break
 		self._results.append(rowdata)
