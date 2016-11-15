@@ -69,4 +69,4 @@ class TestCP2KLogFile(TestCase):
 		self.assertAlmostEquals(68724.8173698, c._extract_value('hartree', linedata))
 
 		linedata = ' CELL ANGLS[deg]              =    0.8566225E+02   0.9434319E+02   0.9434867E+02'
-		self.assertAlmostEqual(85.66225, c._extract_value('cell_alpha', linedata))
+		self.assertAlmostEqual(85.66225, c._extract_value('alpha', linedata))
