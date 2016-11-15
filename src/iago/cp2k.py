@@ -37,12 +37,12 @@ class LogFile(object):
 		self._keywords = dict((
 			('frame', 'STEP NUMBER'),
 			('steptime', 'TIME [fs]'),
-			('cell_a', 'CELL LNTHS[bohr]             ='),
-			('cell_b', 'CELL LNTHS[bohr]             ='),
-			('cell_c', 'CELL LNTHS[bohr]             ='),
-			('cell_alpha', 'CELL ANGLS[deg]              ='),
-			('cell_beta', 'CELL ANGLS[deg]              ='),
-			('cell_gamma', 'CELL ANGLS[deg]              ='),
+			('a', 'CELL LNTHS[bohr]             ='),
+			('b', 'CELL LNTHS[bohr]             ='),
+			('c', 'CELL LNTHS[bohr]             ='),
+			('alpha', 'CELL ANGLS[deg]              ='),
+			('beta', 'CELL ANGLS[deg]              ='),
+			('gamma', 'CELL ANGLS[deg]              ='),
 			('temperature', 'TEMPERATURE [K]'),
 			('pressure', 'PRESSURE [bar]'),
 			('volume', 'VOLUME[bohr^3]'),
@@ -66,9 +66,9 @@ class LogFile(object):
 
 		#: Converter functions for those quantities where the units deviate from what iago uses
 		self._converters = dict((
-			('cell_a', lambda _: _ * 0.52917721967),
-			('cell_b', lambda _: _ * 0.52917721967),
-			('cell_c', lambda _: _ * 0.52917721967),
+			('a', lambda _: _ * 0.52917721967),
+			('b', lambda _: _ * 0.52917721967),
+			('c', lambda _: _ * 0.52917721967),
 			('volume', lambda _: _ * 0.52917721967 ** 3),
 			('conserved', lambda _: _ * 27.21138602),
 			('coreselfenergy', lambda _: _ * 27.21138602),
@@ -85,12 +85,12 @@ class LogFile(object):
 
 		#: Value indices if it is not the last column in the matched line that holds the result
 		self._parse_positions = dict((
-			('cell_a', 0),
-			('cell_b', 1),
-			('cell_c', 2),
-			('cell_alpha', 0),
-			('cell_beta', 1),
-			('cell_gamma', 2),
+			('a', 0),
+			('b', 1),
+			('c', 2),
+			('alpha', 0),
+			('beta', 1),
+			('gamma', 2),
 			('scfcycles', 1),
 			('otcycles', 0),
 			('temperature', 0),
