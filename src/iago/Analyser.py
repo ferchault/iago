@@ -327,8 +327,11 @@ understand the meaning and origin of this distance set.
 			output = pd.concat(output, ignore_index=True)
 		except ValueError:
 			output = pd.DataFrame()
+
 		self._db.input = input
 		self._db.output = output
+
+		self._db.assign_output_columns()
 
 	def run(self):
 		""" Starts the analysis in the user-specified order."""

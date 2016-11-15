@@ -35,7 +35,7 @@ class LogFile(object):
 
 		#: Recognised quantities and their line matching string
 		self._keywords = dict((
-			('stepnumber', 'STEP NUMBER'),
+			('frame', 'STEP NUMBER'),
 			('steptime', 'TIME [fs]'),
 			('cell_a', 'CELL LNTHS[bohr]             ='),
 			('cell_b', 'CELL LNTHS[bohr]             ='),

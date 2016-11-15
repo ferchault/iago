@@ -103,6 +103,17 @@ class DB(object):
 		self.input = utils.Map()
 		self.output = pd.DataFrame()
 
+		self._data_tables = 'points meta ensembles cells energies'.split()
+
+	def assign_output_columns(self):
+		for table in self._data_tables:
+			overlap = (set(self.output.columns) & set(self.__dict__[table].columns)) - set(['run', 'frame'])
+			if len(overlap) == 0:
+				continue
+
+			self.__dict__[table] = self.__dict__[table].append(self.output[['run', 'frame'] + list(overlap)])
+			self.output.drop(list(overlap), inplace=True, axis=1)
+
 	@property
 	def groups(self):
 		""" Known static atom groups.
@@ -138,6 +149,10 @@ class DB(object):
 		data['input'] = self.input
 		data['output'] = self.output.to_dict('list')
 		# data['output-meta'] = self.output.annotations_to_dict()
+		# data tables
+		for table in self._data_tables:
+			data[table] = self.__dict__[table].to_dict('list')
+			data[table + '-meta'] = self.__dict__[table].annotations_to_dict()
 
 		# finalise
 		fh.write(json.dumps(data, separators=(',', ':')))
@@ -186,6 +201,11 @@ class DB(object):
 			self.output = pd.DataFrame.from_dict(data['output'])
 		except KeyError:
 			pass
-
+		# data tables
+		for table in self._data_tables:
+			try:
+				self.__dict__[table] = utils.annotated_data_frame(data[table + '-meta'], data[table])
+			except KeyError:
+				pass
 		# cleanup
 		fh.close()
