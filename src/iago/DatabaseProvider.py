@@ -105,13 +105,21 @@ class DB(object):
 
 		self._data_tables = 'points meta ensembles cells energies'.split()
 
+	@staticmethod
+	def _transfer_missing_units(origin, destination, columns):
+		for column in columns:
+			destination._iago_units[column] = origin._iago_units[column]
+			destination._iago_comments[column] = origin._iago_comments[column]
+
 	def assign_output_columns(self):
 		for table in self._data_tables:
 			overlap = (set(self.output.columns) & set(self.__dict__[table].columns)) - set(['run', 'frame'])
 			if len(overlap) == 0:
 				continue
 
-			self.__dict__[table] = self.__dict__[table].append(self.output[['run', 'frame'] + list(overlap)])
+			newtable = self.__dict__[table].append(self.output[['run', 'frame'] + list(overlap)])
+			DB._transfer_missing_units(self.__dict__[table], newtable, ['run', 'frame'] + list(overlap))
+			self.__dict__[table] = newtable
 			self.output.drop(list(overlap), inplace=True, axis=1)
 
 	@property
@@ -209,3 +217,19 @@ class DB(object):
 				pass
 		# cleanup
 		fh.close()
+
+	def monitor(self, quantity):
+		for table in self._data_tables:
+			tobj = self.__dict__[table]
+			if quantity in tobj.columns:
+				# keep dependency local to this function
+				import matplotlib.pyplot as plt
+				plt.plot(tobj['frame'], tobj[quantity])
+				unit = tobj.explain(quantity).Unit.values[0]
+				if unit == 'No unit available.':
+					unit = 'n/a'
+				label = '%s in %s' % (tobj.explain(quantity).Comment.values[0], unit)
+				plt.ylabel(label)
+				plt.xlabel('Frame')
+				return
+		raise ValueError('No such quantity.')
