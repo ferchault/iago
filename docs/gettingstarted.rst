@@ -113,7 +113,7 @@ Finally, *iago* needs to know what to extract from the trajectory. This is done 
 
 		def define_groups(self):
 			self.static_load_groups('index.ndx')
-			self.static_group('test', 1, 3, 4, 5)
+			self.static_group('test2', 1, 3, 4, 5)
 
 		def calculated_columns(self):
 			self.dynamic_plane(
