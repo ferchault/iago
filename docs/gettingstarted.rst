@@ -95,6 +95,8 @@ If you want to set up the configuration with the example :term:`bucket`, then pl
   [example]
   url=file:///home/username/Downloads/
 
+For the SSH protocol, hostnames and details can be read from an existing OpenSSH config file by specifying the hostname from that config file without username. Proxy commands are respected, as well. This enables the use of this software through SSH gateways.
+
 
 Analyser
 --------
