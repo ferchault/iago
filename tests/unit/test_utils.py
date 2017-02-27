@@ -145,6 +145,12 @@ class TestUtils(TestCase):
 		s.update(test=2)
 		self.assertEqual(s['test'], 2)
 
+	def test_safe_dict_save_restore(self):
+		sd = u.SafeDict()
+		sd['test'] = [1, 2, 3]
+		sd['test2'] = [1, 2, 3, 4]
+		self.assertEqual(sd, u.SafeDict.from_dataframe(sd.to_dataframe()))
+
 	def test_fit_plane(self):
 		nv, cog = u.fit_plane(np.array([[-1, 0, 0], [0, -1, 0], [1, 0, 0], [0, 1, 0]]), normal=(0, 0, 1))
 		self.assertTrue(np.allclose(nv, (0, 0, 1)))
