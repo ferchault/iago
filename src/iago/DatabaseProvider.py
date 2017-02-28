@@ -103,7 +103,8 @@ class DB(object):
 		self.input = utils.Map()
 		self.output = pd.DataFrame()
 
-		self._data_tables = 'points meta ensembles cells energies'.split()
+		self._data_tables = 'meta ensembles cells energies'.split()
+		self._stock_tables = 'planes distances planedistances points'.split()
 
 	@staticmethod
 	def _transfer_missing_units(origin, destination, columns):
@@ -130,11 +131,48 @@ class DB(object):
 		"""
 		return self._groups
 
-	def write(self, fh):
+	def write(self, fh, format='hdf5'):
 		""" Writes the database to disk or stream.
 
 		:param fh: File handle or filename.
+		:param format: File format. Either hdf5 or json.
 		"""
+		if format == 'json':
+			self._write_json(fh)
+		elif format == 'hdf5':
+			self._write_hdf5(fh)
+		else:
+			raise ValueError('No such format supported: %s' % format)
+
+	def _write_hdf5(self, fh):
+		""" Writes the database as hdf5 to disk.
+
+		:param fh: File handle or filename."""
+		hdf = pd.HDFStore(fh)
+		hdf.put('groups', self.groups.to_dataframe())
+
+		for table in self._stock_tables:
+			hdf.put(table, getattr(self, table))
+			hdf.put('%s_meta' % table, pd.DataFrame.from_dict(getattr(self, table).annotations_to_dict()))
+
+		# String properties
+		sdf = pd.DataFrame.from_dict({'labels': ['input', ], 'values': [str(self.input), ]})
+		hdf.put('strings', sdf)
+
+		hdf.put('output', self.output)
+
+		# data tables
+		for table in self._data_tables:
+			hdf.put(table, getattr(self, table))
+			hdf.put('%s_meta' % table, pd.DataFrame.from_dict(getattr(self, table).annotations_to_dict()))
+
+		# finalise
+		hdf.close()
+
+	def _write_json(self, fh):
+		""" Writes the database as json to disk.
+
+		:param fh: File handle or filename."""
 		if not hasattr(fh, 'write'):
 			fh = open(fh, 'w')
 
@@ -142,17 +180,11 @@ class DB(object):
 
 		# groups
 		data['groups'] = self.groups
-		# planes
-		data['planes'] = self.planes.to_dict('list')
-		data['planes-meta'] = self.planes.annotations_to_dict()
-		# distances
-		data['distances'] = self.distances.to_dict('list')
-		data['distances-meta'] = self.distances.annotations_to_dict()
-		data['planedistances'] = self.planedistances.to_dict('list')
-		data['planedistances-meta'] = self.planedistances.annotations_to_dict()
-		# points
-		data['points'] = self.points.to_dict('list')
-		data['points-meta'] = self.points.annotations_to_dict()
+
+		for table in self._stock_tables:
+			data[table] = getattr(self, table).to_dict('list')
+			data['%s-meta' % table] = getattr(self, table).annotations_to_dict()
+
 		# input / output
 		data['input'] = self.input
 		data['output'] = self.output.to_dict('list')

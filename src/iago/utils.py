@@ -183,7 +183,6 @@ def annotated_data_frame(definition, datadict=None):
 	df._iago_units = {k: definition[k][1] for k in definition.iterkeys()}
 	return df
 
-
 def compare(reference, other=None, labels=None):
 	""" Compares two or more dictionaries in the ipython / jupyter context."""
 	import deepdiff
