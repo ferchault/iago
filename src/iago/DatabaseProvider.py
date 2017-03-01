@@ -132,12 +132,14 @@ class DB(object):
 		"""
 		return self._groups
 
-	def write(self, fh, format='hdf5'):
+	def write(self, fh, format='HDF5'):
 		""" Writes the database to disk or stream.
 
 		:param fh: File handle or filename.
 		:param format: File format. Either hdf5 or json.
 		"""
+		format = format.lower()
+
 		if format == 'json':
 			self._write_json(fh)
 		elif format == 'hdf5':
@@ -198,10 +200,12 @@ class DB(object):
 		# finalise
 		fh.write(json.dumps(data, separators=(',', ':')))
 
-	def read(self, handle=None, name=None, format='hdf5'):
+	def read(self, handle=None, name=None, format='json'):
 		""" Reads the database from disk or stream.
 
-		:param fh: File handle or filename.
+		:param handle: File handle. Either `handle` or `name` has to be specified.
+		:param name: File name. Either `handle` or `name` has to be specified.
+		:param format: Either JSON or HDF5.
 		"""
 		if handle is None and name is None:
 			raise ValueError('Nothing to read specified.')
