@@ -124,10 +124,22 @@ class LocationGroup(object):
 		try:
 			fh = self._hosts[row.hostalias].open_file(row.rawname, 'iagodb.json')
 		except:
+			fh = None
+		try:
+			fn, ephemeral = self._hosts[row.hostalias].local_file(row.rawname, 'iagodb.h5')
+			if fh is not None:
+				fh.close()
+				fh = None
+		except:
+			fn = None
+
+		if fh is None and fn is None:
 			raise RuntimeError('Unable to open remote database.')
 
 		db = DatabaseProvider.DB()
-		db.read(fh)
+		db.read(handle=fh, name=fn)
+		if ephemeral:
+			os.remove(fn)
 		return db
 
 	def build_database(self, bucket):
@@ -170,6 +182,12 @@ class LocationProvider(object):
 	def open_file(self, bucket, filename):
 		raise NotImplementedError()
 
+	def local_file(self, bucket, filename):
+		""" If necessary, copies a remote file to local file system.
+
+		:return: Tuple. Absolute filename and flag whether file is ephemeral."""
+		raise NotImplementedError()
+
 	def build_database(self, bucket):
 		raise NotImplementedError()
 
@@ -193,6 +211,9 @@ class FileLocationProvider(LocationProvider):
 
 	def open_file(self, bucket, filename):
 		return open(os.path.join(self._basepath, bucket, filename))
+
+	def local_file(self, bucket, filename):
+		return os.path.join(self._basepath, bucket, filename), False
 
 
 class SSHLocationProvider(LocationProvider):
