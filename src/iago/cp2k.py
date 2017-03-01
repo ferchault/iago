@@ -61,7 +61,8 @@ class LogFile(object):
 			('s2', 'Ideal and single determinant S**2 :'),
 			('scfcycles', 'outer SCF loop converged in'),
 			('otcycles', 'outer SCF loop converged in'),
-			('globaleri', 'Global ERI counter')
+			('globaleri', 'Global ERI counter'),
+			('cputime', 'CPU TIME [s]                 =')
 		))
 
 		#: Converter functions for those quantities where the units deviate from what iago uses
@@ -100,7 +101,8 @@ class LogFile(object):
 			('pressure', 0),
 			('s2', 0),
 			('kinetic', 0),
-			('xc', 0)
+			('xc', 0),
+			('cputime', 0)
 		))
 
 	def _extract_value(self, keyword, line):
@@ -151,8 +153,10 @@ class LogFile(object):
 					count = 0
 					parselines = []
 			else:
-				parselines.append(line)
-		self._readframe(parselines)
+				if count == 1:
+					parselines.append(line)
+		if len(parselines) != 0:
+			self._readframe(parselines)
 
 		return pd.DataFrame(self._results)
 

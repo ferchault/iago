@@ -137,7 +137,7 @@ class CP2KReader(Reader):
 		self.inputnames = ['run.inp', ]
 
 		#: List of topologies to test for input files. Precedence in order of the list.
-		self.topologies = ['input.psf', '../input/input.psf']
+		self.topologies = ['input.psf', '../input/input.psf', 'input-1.psf']
 
 		#: List of logfiles to test for input files. Precedence in order of the list.
 		self.logs = ['run.log', 'run.log.gz']
@@ -236,11 +236,19 @@ class CP2KReader(Reader):
 
 		# load universe
 		if topname is not None and configname is not None:
-			outputfile = os.path.join(self._path, self._config.MOTION.PRINT.TRAJECTORY.FILENAME + '-pos-1.dcd')
+			format = self._config.MOTION.PRINT.TRAJECTORY.FORMAT
+			format_dict = {'XYZ': 'xyz', 'DCD': 'dcd'}
+			if self._config.MOTION.PRINT.TRAJECTORY.FILENAME is not None:
+				outputname = self._config.MOTION.PRINT.TRAJECTORY.FILENAME
+			else:
+				outputname = self._config.GLOBAL.PROJECT_NAME
+			outputfile = os.path.join(self._path, outputname + '-pos-1.' + format_dict.get(format))
 			try:
 				self._universe = mda.Universe(topname, outputfile)
 			except OSError:
 				self._universe = EmptyUniverse()
+
+
 
 		# parse logfile
 		if logname is not None:
