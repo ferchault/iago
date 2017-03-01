@@ -1,4 +1,5 @@
 # standard modules
+import ast
 import utils
 import json
 
@@ -103,7 +104,8 @@ class DB(object):
 		self.input = utils.Map()
 		self.output = pd.DataFrame()
 
-		self._data_tables = 'points meta ensembles cells energies'.split()
+		self._data_tables = 'meta ensembles cells energies'.split()
+		self._stock_tables = 'planes distances planedistances points'.split()
 
 	@staticmethod
 	def _transfer_missing_units(origin, destination, columns):
@@ -130,11 +132,48 @@ class DB(object):
 		"""
 		return self._groups
 
-	def write(self, fh):
+	def write(self, fh, format='hdf5'):
 		""" Writes the database to disk or stream.
 
 		:param fh: File handle or filename.
+		:param format: File format. Either hdf5 or json.
 		"""
+		if format == 'json':
+			self._write_json(fh)
+		elif format == 'hdf5':
+			self._write_hdf5(fh)
+		else:
+			raise ValueError('No such format supported: %s' % format)
+
+	def _write_hdf5(self, fh):
+		""" Writes the database as hdf5 to disk.
+
+		:param fh: File handle or filename."""
+		hdf = pd.HDFStore(fh)
+		hdf.put('groups', self.groups.to_dataframe())
+
+		for table in self._stock_tables:
+			hdf.put(table, getattr(self, table))
+			hdf.put('%s_meta' % table, pd.DataFrame.from_dict(getattr(self, table).annotations_to_dict()))
+
+		# String properties
+		sdf = pd.DataFrame.from_dict({'labels': ['input', ], 'values': [str(self.input), ]})
+		hdf.put('strings', sdf)
+
+		hdf.put('output', self.output)
+
+		# data tables
+		for table in self._data_tables:
+			hdf.put(table, getattr(self, table))
+			hdf.put('%s_meta' % table, pd.DataFrame.from_dict(getattr(self, table).annotations_to_dict()))
+
+		# finalise
+		hdf.close()
+
+	def _write_json(self, fh):
+		""" Writes the database as json to disk.
+
+		:param fh: File handle or filename."""
 		if not hasattr(fh, 'write'):
 			fh = open(fh, 'w')
 
@@ -142,17 +181,11 @@ class DB(object):
 
 		# groups
 		data['groups'] = self.groups
-		# planes
-		data['planes'] = self.planes.to_dict('list')
-		data['planes-meta'] = self.planes.annotations_to_dict()
-		# distances
-		data['distances'] = self.distances.to_dict('list')
-		data['distances-meta'] = self.distances.annotations_to_dict()
-		data['planedistances'] = self.planedistances.to_dict('list')
-		data['planedistances-meta'] = self.planedistances.annotations_to_dict()
-		# points
-		data['points'] = self.points.to_dict('list')
-		data['points-meta'] = self.points.annotations_to_dict()
+
+		for table in self._stock_tables:
+			data[table] = getattr(self, table).to_dict('list')
+			data['%s-meta' % table] = getattr(self, table).annotations_to_dict()
+
 		# input / output
 		data['input'] = self.input
 		data['output'] = self.output.to_dict('list')
@@ -165,14 +198,58 @@ class DB(object):
 		# finalise
 		fh.write(json.dumps(data, separators=(',', ':')))
 
-	def read(self, fh):
+	def read(self, handle=None, name=None, format='hdf5'):
 		""" Reads the database from disk or stream.
 
 		:param fh: File handle or filename.
 		"""
-		if not hasattr(fh, 'read'):
-			fh = open(fh)
+		if handle is None and name is None:
+			raise ValueError('Nothing to read specified.')
 
+		if format == 'json':
+			if handle is None:
+				handle = open(name)
+			self._read_json(handle)
+		elif format == 'hdf5':
+			self._read_hdf5(name)
+		else:
+			raise ValueError('No such format supported: %s' % format)
+
+	def _read_hdf5(self, filename):
+		""" Reads the HDF5 database from disk.
+
+		:param fh: File handle or filename.
+		"""
+		hdf = pd.HDFStore(filename)
+		self._groups = utils.SafeDict.from_dataframe(hdf.get('groups'))
+
+		for table in self._stock_tables:
+			pdt = hdf.get(table)
+			meta = hdf.get('%s_meta' % table).to_dict(orient='list')
+			setattr(self, table, utils.annotated_data_frame(meta, pdt))
+
+		# String properties
+		sdf = hdf.get('strings') #.to_dict(orient='list')
+		input = sdf[sdf['labels']=='input']['values'].values[0]
+
+		self.input = utils.Map(ast.literal_eval(input))
+
+		self.output = hdf.get('output')
+
+		# data tables
+		for table in self._data_tables:
+			pdt = hdf.get(table)
+			meta = hdf.get('%s_meta' % table).to_dict(orient='list')
+			setattr(self, table, utils.annotated_data_frame(meta, pdt))
+
+		# finalise
+		hdf.close()
+
+	def _read_json(self, fh):
+		""" Reads the JSON database from disk or stream.
+
+		:param fh: File handle or filename.
+		"""
 		data = json.load(fh)
 
 		# groups

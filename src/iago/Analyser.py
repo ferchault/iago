@@ -340,7 +340,7 @@ understand the meaning and origin of this distance set.
 		self.define_groups()
 		self.calculated_columns()
 		self.collect_input_output()
-		self._db.write(os.path.join(self.path, 'iagodb.json'))
+		self._db.write(os.path.join(self.path, 'iagodb.h5'))
 
 	def _compare_predicate(self, a, p, b):
 		return (p == 'eq' and a == b) or (p == 'gt' and a > b) or (p == 'lt' and a < b) or (p == 'ge' and a >= b) or (p == 'le' and a <= b)

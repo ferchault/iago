@@ -95,6 +95,8 @@ If you want to set up the configuration with the example :term:`bucket`, then pl
   [example]
   url=file:///home/username/Downloads/
 
+For the SSH protocol, hostnames and details can be read from an existing OpenSSH config file by specifying the hostname from that config file without username. Proxy commands are respected, as well. This enables the use of this software through SSH gateways.
+
 
 Analyser
 --------
@@ -113,7 +115,7 @@ Finally, *iago* needs to know what to extract from the trajectory. This is done 
 
 		def define_groups(self):
 			self.static_load_groups('index.ndx')
-			self.static_group('test', 1, 3, 4, 5)
+			self.static_group('test2', 1, 3, 4, 5)
 
 		def calculated_columns(self):
 			self.dynamic_plane(

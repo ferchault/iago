@@ -158,6 +158,20 @@ class SafeDict(dict):
 		for k, v in kwargs.items():
 			self[k] = v
 
+	def to_dataframe(self):
+		""" Represents the SafeDict instance as a pandas DataFrame."""
+		return pd.DataFrame.from_dict(self, orient='index')
+
+	@staticmethod
+	def from_dataframe(df):
+		""" Builds a SafeDict instance from a pandas DataFrame.
+
+		:param df: DataFrame instance with keys in columns."""
+		basedict = df.T.to_dict(orient='list')
+		sd = SafeDict()
+		for k, vs in basedict.iteritems():
+			sd[k] = [int(v) for v in vs if not np.isnan(v)]
+		return sd
 
 def annotated_data_frame(definition, datadict=None):
 	columns = definition.keys()
@@ -168,7 +182,6 @@ def annotated_data_frame(definition, datadict=None):
 	df._iago_comments = {k: definition[k][0] for k in definition.iterkeys()}
 	df._iago_units = {k: definition[k][1] for k in definition.iterkeys()}
 	return df
-
 
 def compare(reference, other=None, labels=None):
 	""" Compares two or more dictionaries in the ipython / jupyter context."""

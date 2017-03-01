@@ -1,5 +1,6 @@
 # standard modules
 import os
+import getpass
 import re
 import stat
 import shlex
@@ -123,10 +124,22 @@ class LocationGroup(object):
 		try:
 			fh = self._hosts[row.hostalias].open_file(row.rawname, 'iagodb.json')
 		except:
+			fh = None
+		try:
+			fn, ephemeral = self._hosts[row.hostalias].local_file(row.rawname, 'iagodb.h5')
+			if fh is not None:
+				fh.close()
+				fh = None
+		except:
+			fn = None
+
+		if fh is None and fn is None:
 			raise RuntimeError('Unable to open remote database.')
 
 		db = DatabaseProvider.DB()
-		db.read(fh)
+		db.read(handle=fh, name=fn)
+		if ephemeral:
+			os.remove(fn)
 		return db
 
 	def build_database(self, bucket):
@@ -169,9 +182,20 @@ class LocationProvider(object):
 	def open_file(self, bucket, filename):
 		raise NotImplementedError()
 
+	def local_file(self, bucket, filename):
+		""" If necessary, copies a remote file to local file system.
+
+		:return: Tuple. Absolute filename and flag whether file is ephemeral."""
+		raise NotImplementedError()
+
 	def build_database(self, bucket):
 		raise NotImplementedError()
 
+	def _get_temp_filename(self):
+		fh = tempfile.NamedTemporaryFile()
+		name = fh.name
+		fh.close()
+		return name
 
 class FileLocationProvider(LocationProvider):
 	""" Location class for raw file access on the local machine.
@@ -193,6 +217,9 @@ class FileLocationProvider(LocationProvider):
 	def open_file(self, bucket, filename):
 		return open(os.path.join(self._basepath, bucket, filename))
 
+	def local_file(self, bucket, filename):
+		return os.path.join(self._basepath, bucket, filename), False
+
 
 class SSHLocationProvider(LocationProvider):
 	""" Location class for remote file access using SSH.
@@ -202,15 +229,38 @@ class SSHLocationProvider(LocationProvider):
 			raise RuntimeError('The paramiko python module is required for this location provider.')
 
 		match = re.match(r'^(.+)@(.+):(.*)$', path)
+		self._port = 22
+		self._sock = None
 		if match is None:
-			raise ValueError('Incorrect SSH URL.')
-
-		self._username, self._hostname, self._basepath = match.groups()
+			# OpenSSH config
+			match = re.match(r'^(.+):(.*)$', path)
+			if match is None:
+				raise ValueError('Incorrect SSH URL.')
+			else:
+				self._username = getpass.getuser()
+				self._hostname, self._basepath = match.groups()
+				ssh_config = paramiko.SSHConfig()
+				user_config_file = os.path.expanduser("~/.ssh/config")
+				if os.path.exists(user_config_file):
+					with open(user_config_file) as fh:
+						ssh_config.parse(fh)
+				user_config = ssh_config.lookup(self._hostname)
+				if len(user_config) != 0:
+					if 'hostname' in user_config:
+						self._hostname = user_config['hostname']
+					if 'user' in user_config:
+						self._username = user_config['user']
+					if 'port' in user_config:
+						self._port = user_config['port']
+					if 'proxycommand' in user_config:
+						self._sock = paramiko.ProxyCommand(user_config['proxycommand'])
+		else:
+			self._username, self._hostname, self._basepath = match.groups()
 
 		client = paramiko.SSHClient()
 		client.load_system_host_keys()
 		client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-		client.connect(self._hostname, username=self._username)
+		client.connect(self._hostname, username=self._username, port=self._port, sock=self._sock)
 
 		self._client = client
 		self._sftp = None
@@ -247,6 +297,13 @@ class SSHLocationProvider(LocationProvider):
 		self._connect_sftp()
 		self._sftp.chdir(bucket)
 		return self._sftp.file(filename)
+
+	def local_file(self, bucket, filename):
+		fn = self._get_temp_filename()
+		self._connect_sftp()
+		self._sftp.chdir(bucket)
+		self._sftp.get(filename, fn)
+		return fn, True
 
 	def build_database(self, bucket):
 		if not self.has_file(bucket, 'iago-analysis.py'):

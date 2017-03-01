@@ -236,15 +236,19 @@ class CP2KReader(Reader):
 
 		# load universe
 		if topname is not None and configname is not None:
-			format = self._config.MOTION.PRINT.TRAJECTORY.FORMAT
-			format_dict = {'XYZ': 'xyz', 'DCD': 'dcd'}
+			try:
+				format = self._config.MOTION.PRINT.TRAJECTORY.FORMAT.upper()
+			except:
+				format = 'XMOL'  # default from CP2K manual
+			fileextensions = {'DCD': 'dcd', 'DCD_ALIGNED_CELL': 'dcd', 'PDB': 'pdb', 'XMOL': 'xyz', 'XYZ': 'xyz'}
 			if self._config.MOTION.PRINT.TRAJECTORY.FILENAME is not None:
 				outputname = self._config.MOTION.PRINT.TRAJECTORY.FILENAME
 			else:
 				outputname = self._config.GLOBAL.PROJECT_NAME
-			outputfile = os.path.join(self._path, outputname + '-pos-1.' + format_dict.get(format))
 			try:
+				outputfile = os.path.join(self._path, outputname + '-pos-1.' + fileextensions[format])
 				self._universe = mda.Universe(topname, outputfile)
+
 			except OSError:
 				self._universe = EmptyUniverse()
 
