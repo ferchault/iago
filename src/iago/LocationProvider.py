@@ -228,42 +228,48 @@ class SSHLocationProvider(LocationProvider):
 		if not HAS_PARAMIKO:
 			raise RuntimeError('The paramiko python module is required for this location provider.')
 
+		client, self._port, self._sock, self._username, self._hostname, self._basepath = self._prepare_connect(path)
+		client.connect(self._hostname, username=self._username, port=self._port, sock=self._sock)
+
+		self._client = client
+		self._sftp = None
+
+	@staticmethod
+	def _prepare_connect(path):
+		""" Reads user configurations related to SSH."""
 		match = re.match(r'^(.+)@(.+):(.*)$', path)
-		self._port = 22
-		self._sock = None
+		_port = 22
+		_sock = None
 		if match is None:
 			# OpenSSH config
 			match = re.match(r'^(.+):(.*)$', path)
 			if match is None:
 				raise ValueError('Incorrect SSH URL.')
 			else:
-				self._username = getpass.getuser()
-				self._hostname, self._basepath = match.groups()
+				_username = getpass.getuser()
+				_hostname, _basepath = match.groups()
 				ssh_config = paramiko.SSHConfig()
 				user_config_file = os.path.expanduser("~/.ssh/config")
 				if os.path.exists(user_config_file):
 					with open(user_config_file) as fh:
 						ssh_config.parse(fh)
-				user_config = ssh_config.lookup(self._hostname)
+				user_config = ssh_config.lookup(_hostname)
 				if len(user_config) != 0:
 					if 'hostname' in user_config:
-						self._hostname = user_config['hostname']
+						_hostname = user_config['hostname']
 					if 'user' in user_config:
-						self._username = user_config['user']
+						_username = user_config['user']
 					if 'port' in user_config:
-						self._port = user_config['port']
+						_port = user_config['port']
 					if 'proxycommand' in user_config:
-						self._sock = paramiko.ProxyCommand(user_config['proxycommand'])
+						_sock = paramiko.ProxyCommand(user_config['proxycommand'])
 		else:
-			self._username, self._hostname, self._basepath = match.groups()
+			_username, _hostname, _basepath = match.groups()
 
 		client = paramiko.SSHClient()
 		client.load_system_host_keys()
 		client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-		client.connect(self._hostname, username=self._username, port=self._port, sock=self._sock)
-
-		self._client = client
-		self._sftp = None
+		return client, _port, _sock, _username, _hostname, _basepath
 
 	def _connect_sftp(self):
 		if self._sftp is not None:
