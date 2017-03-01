@@ -11,6 +11,6 @@ class TestDB(TestCase):
 		s = StringIO.StringIO('{}')
 		d = DB()
 		try:
-			d.read(s)
+			d.read(s, format='json')
 		except KeyError:
 			self.fail('DB cannot handle empty JSON files.')
