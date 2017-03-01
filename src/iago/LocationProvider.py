@@ -191,6 +191,11 @@ class LocationProvider(object):
 	def build_database(self, bucket):
 		raise NotImplementedError()
 
+	def _get_temp_filename(self):
+		fh = tempfile.NamedTemporaryFile()
+		name = fh.name
+		fh.close()
+		return name
 
 class FileLocationProvider(LocationProvider):
 	""" Location class for raw file access on the local machine.
@@ -292,6 +297,13 @@ class SSHLocationProvider(LocationProvider):
 		self._connect_sftp()
 		self._sftp.chdir(bucket)
 		return self._sftp.file(filename)
+
+	def local_file(self, bucket, filename):
+		fn = self._get_temp_filename()
+		self._connect_sftp()
+		self._sftp.chdir(bucket)
+		self._sftp.get(filename, fn)
+		return fn, True
 
 	def build_database(self, bucket):
 		if not self.has_file(bucket, 'iago-analysis.py'):
