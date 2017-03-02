@@ -132,7 +132,7 @@ class DB(object):
 		"""
 		return self._groups
 
-	def write(self, fh, format='HDF5'):
+	def write(self, fh, format='hdf5'):
 		""" Writes the database to disk or stream.
 
 		:param fh: File handle or filename.
@@ -151,7 +151,7 @@ class DB(object):
 		""" Writes the database as hdf5 to disk.
 
 		:param fh: File handle or filename."""
-		hdf = pd.HDFStore(fh)
+		hdf = pd.HDFStore(fh, mode='a')
 		hdf.put('groups', self.groups.to_dataframe())
 
 		for table in self._stock_tables:
@@ -224,7 +224,7 @@ class DB(object):
 
 		:param fh: File handle or filename.
 		"""
-		hdf = pd.HDFStore(filename)
+		hdf = pd.HDFStore(filename, mode='r')
 		self._groups = utils.SafeDict.from_dataframe(hdf.get('groups'))
 
 		for table in self._stock_tables:

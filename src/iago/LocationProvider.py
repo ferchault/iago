@@ -122,6 +122,7 @@ class LocationGroup(object):
 	def fetch_database(self, bucket):
 		row = self._get_bucket_from_name_or_id(bucket)
 		format = None
+		ephemeral = False
 		try:
 			fh = self._hosts[row.hostalias].open_file(row.rawname, 'iagodb.json')
 			format = 'json'
@@ -186,7 +187,7 @@ class LocationProvider(object):
 		raise NotImplementedError()
 
 	def local_file(self, bucket, filename):
-		""" If necessary, copies a remote file to local file system.
+		""" If necessary, copies a remote file to local file system. Raise a ValueError if the file is not found.
 
 		:return: Tuple. Absolute filename and flag whether file is ephemeral."""
 		raise NotImplementedError()
@@ -221,7 +222,10 @@ class FileLocationProvider(LocationProvider):
 		return open(os.path.join(self._basepath, bucket, filename))
 
 	def local_file(self, bucket, filename):
-		return os.path.join(self._basepath, bucket, filename), False
+		fullname = os.path.join(self._basepath, bucket, filename)
+		if not os.path.isfile(fullname):
+			raise ValueError('File %s not found.' % fullname)
+		return fullname, False
 
 
 class SSHLocationProvider(LocationProvider):

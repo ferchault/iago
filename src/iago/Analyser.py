@@ -337,11 +337,11 @@ understand the meaning and origin of this distance set.
 	def run(self):
 		""" Starts the analysis in the user-specified order."""
 		self.setup()
-		self.format = self.format.lower()
-		if self.format == 'json':
-			self.fileext = 'json'
-		elif self.format == 'hdf5':
-			self.fileext = 'h5'
+		format = self.format.lower()
+		if format == 'json':
+			fileext = 'json'
+		elif format == 'hdf5':
+			fileext = 'h5'
 		else:
 			raise ValueError('Unknown file format specified in setup.')
 
@@ -349,7 +349,7 @@ understand the meaning and origin of this distance set.
 		self.define_groups()
 		self.calculated_columns()
 		self.collect_input_output()
-		self._db.write(os.path.join(self.path, 'iagodb.%s' % self.fileext), format=self.format)
+		self._db.write(os.path.join(self.path, 'iagodb.%s' % fileext), format=self.format)
 
 	def _compare_predicate(self, a, p, b):
 		return (p == 'eq' and a == b) or (p == 'gt' and a > b) or (p == 'lt' and a < b) or (p == 'ge' and a >= b) or (p == 'le' and a <= b)
