@@ -121,12 +121,15 @@ class LocationGroup(object):
 
 	def fetch_database(self, bucket):
 		row = self._get_bucket_from_name_or_id(bucket)
+		format = None
 		try:
 			fh = self._hosts[row.hostalias].open_file(row.rawname, 'iagodb.json')
+			format = 'json'
 		except:
 			fh = None
 		try:
 			fn, ephemeral = self._hosts[row.hostalias].local_file(row.rawname, 'iagodb.h5')
+			format = 'hdf5'
 			if fh is not None:
 				fh.close()
 				fh = None
@@ -137,7 +140,7 @@ class LocationGroup(object):
 			raise RuntimeError('Unable to open remote database.')
 
 		db = DatabaseProvider.DB()
-		db.read(handle=fh, name=fn)
+		db.read(handle=fh, name=fn, format=format)
 		if ephemeral:
 			os.remove(fn)
 		return db
