@@ -337,7 +337,7 @@ understand the meaning and origin of this distance set.
 	def run(self):
 		""" Starts the analysis in the user-specified order."""
 		self.setup()
-		format = self.format.lower()
+		self.format = self.format.lower()
 		if self.format == 'json':
 			self.fileext = 'json'
 		elif self.format == 'hdf5':
