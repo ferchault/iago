@@ -253,23 +253,31 @@ class SSHLocationProvider(LocationProvider):
 			if match is None:
 				raise ValueError('Incorrect SSH URL.')
 			else:
+				found = False
 				_username = getpass.getuser()
 				_hostname, _basepath = match.groups()
 				ssh_config = paramiko.SSHConfig()
-				user_config_file = os.path.expanduser("~/.ssh/config")
-				if os.path.exists(user_config_file):
-					with open(user_config_file) as fh:
-						ssh_config.parse(fh)
-				user_config = ssh_config.lookup(_hostname)
-				if len(user_config) != 0:
-					if 'hostname' in user_config:
-						_hostname = user_config['hostname']
-					if 'user' in user_config:
-						_username = user_config['user']
-					if 'port' in user_config:
-						_port = user_config['port']
-					if 'proxycommand' in user_config:
-						_sock = paramiko.ProxyCommand(user_config['proxycommand'])
+				user_config_files = [os.path.expanduser('~/.ssh/config'), '.ssh_config']
+				for user_config_file in user_config_files:
+					if os.path.exists(user_config_file):
+						with open(user_config_file) as fh:
+							ssh_config.parse(fh)
+					else:
+						break
+					user_config = ssh_config.lookup(_hostname)
+					if len(user_config) > 1:
+						found = True
+						if 'hostname' in user_config:
+							_hostname = user_config['hostname']
+						if 'user' in user_config:
+							_username = user_config['user']
+						if 'port' in user_config:
+							_port = user_config['port']
+						if 'proxycommand' in user_config:
+							_sock = paramiko.ProxyCommand(user_config['proxycommand'])
+						break
+				if not found:
+					raise ValueError('Unknown host')
 		else:
 			_username, _hostname, _basepath = match.groups()
 
