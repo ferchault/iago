@@ -4,3 +4,4 @@ pint
 coveralls
 MDAnalysis
 paramiko
+pytables
