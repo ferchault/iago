@@ -3,3 +3,4 @@ numpy
 pint
 coveralls
 MDAnalysis
+paramiko
