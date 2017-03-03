@@ -44,3 +44,17 @@ class TestAnalyser(TestCase):
 		a = iago.Analyser()
 		self.assertRaises(ValueError, a.static_group, 'test')
 		self.assertRaises(ValueError, a.static_group)
+
+	def test__compare_predicate(self):
+		func = iago.Analyser._compare_predicate
+
+		self.assertEqual(func(2, 'eq', 2), True)
+		self.assertEqual(func(2, 'eq', 3), False)
+		self.assertEqual(func(2, 'gt', 2), False)
+		self.assertEqual(func(2, 'gt', 1), True)
+		self.assertEqual(func(2, 'lt', 2), False)
+		self.assertEqual(func(2, 'lt', 3), True)
+		self.assertEqual(func(2, 'ge', 2), True)
+		self.assertEqual(func(2, 'ge', 1), True)
+		self.assertEqual(func(2, 'le', 2), True)
+		self.assertEqual(func(2, 'le', 3), True)

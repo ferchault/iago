@@ -357,7 +357,8 @@ understand the meaning and origin of this distance set.
 		self.collect_input_output()
 		self._db.write(os.path.join(self.path, 'iagodb.%s' % fileext), format=self.format)
 
-	def _compare_predicate(self, a, p, b):
+	@staticmethod
+	def _compare_predicate(a, p, b):
 		"""Helper function for literal predicates.
 
 		:oaram a: First value (left-hand side)

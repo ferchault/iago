@@ -36,6 +36,13 @@ class Analyser(iago.Analyser):
 			framesel=slice(2),
 			comment='OH-distances up to transition state bond length'
 		)
+		self.dynamic_distance(
+			'Dplane',
+			'plane O3A',
+			'type H',
+			framesel=slice(2),
+			comment='Distance of protons from plane'
+		)
 		#self.dynamic_point(
 		#	'hematite-slab',
 		#	com='type O or type Fe',
@@ -68,6 +75,8 @@ class TestUtils(TestCase):
 		# Generate test database
 		a = Analyser()
 		a.run()
+
+		self.assertRaises(ValueError, Analyser.dynamic_distance, a, 'test', 'plane A', 'plane B')
 
 		# Generate local configuration
 		fh = tempfile.NamedTemporaryFile(delete=False)
