@@ -265,6 +265,7 @@ class SSHLocationProvider(LocationProvider):
 					else:
 						break
 					user_config = ssh_config.lookup(_hostname)
+					print user_config
 					if len(user_config) > 1:
 						found = True
 						if 'hostname' in user_config:
@@ -272,7 +273,7 @@ class SSHLocationProvider(LocationProvider):
 						if 'user' in user_config:
 							_username = user_config['user']
 						if 'port' in user_config:
-							_port = user_config['port']
+							_port = int(user_config['port'])
 						if 'proxycommand' in user_config:
 							_sock = paramiko.ProxyCommand(user_config['proxycommand'])
 						break

@@ -16,10 +16,10 @@ class TestSSHLocationProvider(TestCase):
 
         path = 'foobar:dir'
         fh = open('.ssh_config', 'w')
-        fh.write('Host foobar\n\tUser snafu\n\tHostName foobar.example.com\n')
+        fh.write('Host foobar\n\tUser snafu\n\tPort 24\n\tHostName foobar.example.com\n')
         fh.close()
         client, port, sock, username, hostname, basepath = lp.SSHLocationProvider._prepare_connect(path)
-        self.assertEqual(port, 22)
+        self.assertEqual(port, 24)
         self.assertEqual(username, 'snafu')
         self.assertEqual(hostname, 'foobar.example.com')
         self.assertEqual(basepath, 'dir')
