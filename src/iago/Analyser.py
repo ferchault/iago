@@ -15,10 +15,15 @@ import Parser
 
 class Analyser(object):
 	def __init__(self):
+		#: Link to the underlying database
 		self._db = DatabaseProvider.DB()
 		self.parser = Parser.Parser()
+
+		#: Basepath for this bucket used for relative file names
 		self.path = None
 		self.runmatch = {}
+
+		#: File format for the output database. Caen be either JSON or HDF5.
 		self.format = 'JSON'
 
 	def setup(self):
@@ -312,6 +317,7 @@ understand the meaning and origin of this distance set.
 				self._db.planedistances = self._db.planedistances.append(df, ignore_index=True)
 
 	def collect_input_output(self):
+		""" Aggregates all configuration input and simulation output from all runs for inclusion in the database."""
 		input = utils.Map()
 		output = []
 		for run, alias in self.parser.get_runs().iteritems():
@@ -352,6 +358,13 @@ understand the meaning and origin of this distance set.
 		self._db.write(os.path.join(self.path, 'iagodb.%s' % fileext), format=self.format)
 
 	def _compare_predicate(self, a, p, b):
+		"""Helper function for literal predicates.
+
+		:oaram a: First value (left-hand side)
+		:param b: Second value (right-hand side)
+		:param p: String. Either 'eq', 'gr', 'lt', 'ge', 'le'.
+
+		:returns: LHS predicate RHS."""
 		return (p == 'eq' and a == b) or (p == 'gt' and a > b) or (p == 'lt' and a < b) or (p == 'ge' and a >= b) or (p == 'le' and a <= b)
 
 	def dynamic_atomlist(self, columnname, filter, where_count=None, comment=None):

@@ -15,7 +15,6 @@ class TestSSHLocationProvider(TestCase):
         self.assertIsInstance(client, paramiko.SSHClient)
 
         path = 'foobar:dir'
-        print os.getcwd()
         fh = open('.ssh_config', 'w')
         fh.write('Host foobar\n\tUser snafu\n\tHostName foobar.example.com\n')
         fh.close()
