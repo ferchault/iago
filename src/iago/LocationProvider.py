@@ -257,7 +257,7 @@ class SSHLocationProvider(LocationProvider):
 				_username = getpass.getuser()
 				_hostname, _basepath = match.groups()
 				ssh_config = paramiko.SSHConfig()
-				user_config_files = [os.path.expanduser('~/.ssh/config'), '.ssh_config']
+				user_config_files = ['.ssh_config', os.path.expanduser('~/.ssh/config')]
 				for user_config_file in user_config_files:
 					if os.path.exists(user_config_file):
 						with open(user_config_file) as fh:
@@ -265,7 +265,6 @@ class SSHLocationProvider(LocationProvider):
 					else:
 						break
 					user_config = ssh_config.lookup(_hostname)
-					print user_config
 					if len(user_config) > 1:
 						found = True
 						if 'hostname' in user_config:
