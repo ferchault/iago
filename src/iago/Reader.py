@@ -4,6 +4,7 @@ import os
 import os.path
 import utils
 import warnings
+import re
 
 # third-party modules
 try:
@@ -134,10 +135,14 @@ class NAMDReader(Reader):
 	def _parse_input_file(lines):
 		dict = {'ensemble': 'NVE'}
 		for line in lines:
+			value=[]
 			line = line.strip()
 			# check line not remark and not empty line
 			if (not line.startswith('#')) and (line):
-				field = line.split()
+				#regular expression to match lines do not have ending remark';#'
+				#return a list with one string element
+				line=re.match(r'([^;#]*);?#?.*',line).groups()
+				field = line[0].split()
 				# parse all setted parameters
 				if field[0] == 'set':
 					dict.update({field[1]: NAMDReader._recognize_value(field[2])})
@@ -148,13 +153,8 @@ class NAMDReader(Reader):
 						var = field[1][1:]
 						dict.update({field[0]: dict[var]})
 					else:
-						dict.update({field[0]: field[1]})
+						dict.update({field[0]: NAMDReader._recognize_value(field[1])})
 					break
-				# substitute variable with their real value
-				if field[1].startswith('$'):
-					var = field[1][1:]
-					dict.update({field[0]: dict[var]})
-					continue
 				# detect ensemble
 				if field[0] == 'langevin':
 					if (field[1] == 'on' and dict['ensemble'] == 'NVE'):
@@ -163,9 +163,20 @@ class NAMDReader(Reader):
 					if (field[1] == 'on' and dict['ensemble'] == 'NVT'):
 						dict.update({'ensemble': 'NPT'})
 					# default parse
-				dict.update({field[0]: NAMDReader._recognize_value(field[1])})
+					# substitute variable with their real value
+					# in case have multi entry, value can be a list
+				for number in field[1:]:
+					if number.startswith('$'):
+						var = number[1:]
+						value.append(NAMDReader._recognize_value(dict[var]))
+					else:
+						value.append(NAMDReader._recognize_value(number))
+				# if single value entry, convert value list to a number
+				if len(value) == 1:
+					dict.update({field[0]: value[0]})
+				else:
+					dict.update({field[0]: value})
 		return dict
-
 
 class CP2KReader(Reader):
 	""" Parses CP2K Quickstep runs.
