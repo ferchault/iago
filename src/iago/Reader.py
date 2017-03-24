@@ -127,7 +127,7 @@ class NAMDReader(Reader):
 	@staticmethod
 	def _recognize_value(value):
 		try:
-			return float(value)
+			return float(re.match(r'([.0-9]*).*', value).groups()[0])
 		except:
 			return value
 

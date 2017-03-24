@@ -60,3 +60,10 @@ class TestNAMDReader(TestCase):
         '''.split('\n')
         result = iago.Reader.NAMDReader._parse_input_file(lines)
         self.assertEqual(result['restartfreq'], 500)
+
+    def test__parse_input_file_test_multiple_entries(self):
+        lines = '''
+        sphericalBCcenter   30.3081743413, 28.8049907121, 15.353994423
+        '''.split('\n')
+        result = iago.Reader.NAMDReader._parse_input_file(lines)
+        self.assertEqual(result['sphericalBCcenter'], [30.3081743413, 28.8049907121, 15.353994423])
