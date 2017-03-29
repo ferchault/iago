@@ -128,6 +128,7 @@ class NAMDReader(Reader):
 	def _recognize_value(value):
 		try:
 			return float(re.match(r'([.0-9]*).*', value).groups()[0])
+		#to remove the , after some number and convert the number into a float.
 		except:
 			return value
 
@@ -177,6 +178,26 @@ class NAMDReader(Reader):
 				else:
 					dict.update({field[0]: value})
 		return dict
+
+	@staticmethod
+	def _parse_output_file(lines):
+		frames = []
+		properties = []
+		for line in lines:
+			line = line.strip()
+			if line.startswith('ETITLE:'):
+				#to update the order of properties of interest in one line
+				properties = line.split()
+				continue
+			if line.startswith('ENERGY'):
+				data = {}
+				field = line.split()
+				#would assume the first column is always TS
+				data.update({'TS': int(float(field[1]))})
+				for i in range(2,len(field)):
+					data.update({properties[i] : float(field[i])})
+				frames.append(data)
+		return frames
 
 class CP2KReader(Reader):
 	""" Parses CP2K Quickstep runs.

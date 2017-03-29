@@ -55,7 +55,7 @@ class LogFile(object):
 			('dispersion', 'Dispersion energy:'),
 			('total', 'ENERGY| Total FORCE_EVAL ( QS ) energy (a.u.):'),
 			('potential', 'POTENTIAL ENERGY[hartree]'),
-			('kinetic', 'KINETIC ENERGY [hartree]'),
+			('kinetic', 'KINETIC ENERGare not so clearY [hartree]'),
 			('drift', 'ENERGY DRIFT PER ATOM [K]'),
 			('iasd', 'Integrated absolute spin density  :'),
 			('s2', 'Ideal and single determinant S**2 :'),

@@ -67,3 +67,25 @@ class TestNAMDReader(TestCase):
         '''.split('\n')
         result = iago.Reader.NAMDReader._parse_input_file(lines)
         self.assertEqual(result['sphericalBCcenter'], [30.3081743413, 28.8049907121, 15.353994423])
+
+    def test__parse_logfile_test_readin_one_step(self):
+        lines = '''
+        ETITLE:      TS           BOND          ANGLE
+        ENERGY: 0 1.5 2.5
+        '''.split('\n')
+        result = iago.Reader.NAMDReader._parse_output_file(lines)
+        self.assertEqual(result[0]['TS'], 0)
+        self.assertEqual(result[0]['ANGLE'], 2.5)
+
+    def test__parse_logfile_test_change_ETITLE(self):
+        lines = '''
+        ETITLE:  TS  BOND  ANGLE
+        ENERGY: 0 1.5 2.5
+        ENERGY: 1 11.5 12.5
+        ETITLE: TS DIHEDRAL
+        ENERGY: 2 21.5
+        '''.split('\n')
+        result = iago.Reader.NAMDReader._parse_output_file(lines)
+        self.assertEqual(result[1]['ANGLE'], 12.5)
+        self.assertEqual(result[2]['TS'], 2)
+        self.assertEqual(result[2]['DIHEDRAL'], 21.5)
