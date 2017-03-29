@@ -71,11 +71,11 @@ class TestNAMDReader(TestCase):
     def test__parse_logfile_test_readin_one_step(self):
         lines = '''
         ETITLE:      TS           BOND          ANGLE
-        ENERGY: 0 1.5 2.5
+        ENERGY: 0 1.5 1.0
         '''.split('\n')
         result = iago.Reader.NAMDReader._parse_output_file(lines)
         self.assertEqual(result[0]['TS'], 0)
-        self.assertEqual(result[0]['ANGLE'], 2.5)
+        self.assertEqual(result[0]['ANGLE'], 0.0433634)
 
     def test__parse_logfile_test_change_ETITLE(self):
         lines = '''
@@ -86,6 +86,6 @@ class TestNAMDReader(TestCase):
         ENERGY: 2 21.5
         '''.split('\n')
         result = iago.Reader.NAMDReader._parse_output_file(lines)
-        self.assertEqual(result[1]['ANGLE'], 12.5)
+        self.assertEqual(result[1]['ANGLE'], 12.5*0.0433634)
         self.assertEqual(result[2]['TS'], 2)
-        self.assertEqual(result[2]['DIHEDRAL'], 21.5)
+        self.assertEqual(result[2]['DIHEDRAL'], 21.5*0.0433634)

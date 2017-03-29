@@ -195,7 +195,10 @@ class NAMDReader(Reader):
 				#would assume the first column is always TS
 				data.update({'TS': int(float(field[1]))})
 				for i in range(2,len(field)):
-					data.update({properties[i] : float(field[i])})
+					if (properties[i] == 'BOND' or 'ANGLE' or 'DIHED' or 'IMPRP' or 'ELECT' or 'VDW' or 'BOUNDARY' or 'MISC' or 'KINETIC' or 'TOTAL' or 'TOTAL2' or 'TOTAL3' or 'POTENTIAL'):
+						data.update({properties[i] : float(field[i])*0.0433634})
+					else:
+						data.update({properties[i] : float(field[i])})
 				frames.append(data)
 		return frames
 
