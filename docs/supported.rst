@@ -37,6 +37,7 @@ cputime            s               CPU time per MD step. Float.
 
 If present in the output of a calculation, the following quantities are recognised by *iago* for NAMD. All quantities here consist of raw data as calculated by the simulation package itself. None of them is derived (except for unit
 conversions). Any keyword starts with NAMD is either an averaged output from NAMD or not clearly defined in NAMD MANUAL.
+
 ================== =============== ===========================================================
 Column             Unit            Description
 ================== =============== ===========================================================
