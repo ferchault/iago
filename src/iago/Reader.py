@@ -181,8 +181,34 @@ class NAMDReader(Reader):
 
 	@staticmethod
 	def _parse_output_file(lines):
+		namd_to_iago = dict((
+			('TS', 'frame'),
+			('BOND', 'bond'),
+			('ANGLE', 'angle'),
+			('DIHED', 'dihedral'),
+			('IMPRP', 'improper'),
+			('ELECT', 'electrostatic'),
+			('VDW', 'vdw'),
+			('BOUNDARY', 'boundary'),
+			('MISC', 'external'),
+			('KINETIC', 'kinetic'),
+			('TOTAL', 'total'),
+			('TOTAL2', 'conserved'),
+			('TOTAL3', 'NAMD_total3'),
+			('POTENTIAL', 'potential'),
+			('PRESSURE', 'pressure'),
+			('GPRESSURE', 'NAMD_GPRESSURE'),
+			('VOLUME', 'volume'),
+			('TEMP', 'temperature'),
+			('PRESSAVG', 'NAMD_PRESSAVG'),
+			('GPRESSAVG', 'NAMD_GPRESSAVG'),
+			('TEMPAVG', 'NAMD_TEMPAVG')
+		))
 		frames = []
 		properties = []
+		kcal_to_eV = 0.0433634
+		energy_columns = 'BOND ANGLE DIHED IMPRP ELECT VDW BOUNDARY MISC KINETIC TOTAL TOTAL2 TOTAL3 POTENTIAL'.split()
+		other_columns = 'PRESSURE GPRESSURE VOLUME PRESSAVG GPRESSAVG TEMP TEMPAVG'.split()
 		for line in lines:
 			line = line.strip()
 			if line.startswith('ETITLE:'):
@@ -191,14 +217,20 @@ class NAMDReader(Reader):
 				continue
 			if line.startswith('ENERGY'):
 				data = {}
-				field = line.split()
+				values = line.split()
 				#would assume the first column is always TS
-				data.update({'TS': int(float(field[1]))})
-				for i in range(2,len(field)):
-					if (properties[i] == 'BOND' or 'ANGLE' or 'DIHED' or 'IMPRP' or 'ELECT' or 'VDW' or 'BOUNDARY' or 'MISC' or 'KINETIC' or 'TOTAL' or 'TOTAL2' or 'TOTAL3' or 'POTENTIAL'):
-						data.update({properties[i] : float(field[i])*0.0433634})
-					else:
-						data.update({properties[i] : float(field[i])})
+				data['frame'] = int(values[1])
+				lookup = dict(zip(properties[2:], values[2:]))
+				for energy in energy_columns:
+					try:
+						data[namd_to_iago[energy]] = float(lookup[energy])*kcal_to_eV
+					except KeyError:
+						pass
+				for other in other_columns:
+					try:
+						data[namd_to_iago[other]] = float(lookup[other])
+					except KeyError:
+						pass
 				frames.append(data)
 		return frames
 
