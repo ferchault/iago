@@ -54,9 +54,9 @@ electrostatic	   eV		   electrostatic energy. Float.
 vdw		   eV		   van der Waals energy. Float.
 boundary	   eV		   boundary energy from spherical boundary conditions and harmonic restraints. Float.
 external	   eV		   MISC term in NAMD. External electric fields and various steering forces. Float.
-kinetic_cm	   eV		   Classical kinetic energy. Float.
-total_cm	   eV		   Classical total energy. Float.
-potential_cm	   eV		   classical potential energy. Float.
+kinetic		   eV		   Classical kinetic energy. Float.
+total		   eV		   Classical total energy. Float.
+potential	   eV		   classical potential energy. Float.
 NAMD_total3	   eV		   NAMD TOTAL3. Float.
 NAMD_GPRESSURE	   eV		   NAMD GPRESSURE. Float.
 NAMD_GPRESSUREAVG  eV		   NAMD GPRESSUREAVG. Float.
