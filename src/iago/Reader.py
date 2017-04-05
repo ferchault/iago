@@ -124,6 +124,27 @@ class Reader(object):
 
 
 class NAMDReader(Reader):
+	""" Parses NAMD runs."""
+	def __init__(self, *args, **kwargs):
+		""" Prepare internal data structure and set the default file paths.
+                """
+		super(NAMDReader, self).__init__(*args, **kwargs)
+
+		#: List of supported options
+		self._options = 'inputnames logs'
+
+		#: List of filenames to test for input files. Precedence in order of the list.
+		self.inputnames = ['namd.conf', ]
+
+		#: List of logfiles to test for input files. Precedence in order of the list.
+		self.logs = ['run.log', 'run.log.gz']
+
+		#: Holds the atom-frame table.
+		self._output = pd.DataFrame()
+
+		#: Holds the relevant sections of the input file
+		self._config = dict()
+
 	@staticmethod
 	def _recognize_value(value):
 		try:
@@ -233,6 +254,64 @@ class NAMDReader(Reader):
 						pass
 				frames.append(data)
 		return frames
+
+	def get_options(self):
+		return self._options
+
+	def get_input(self):
+		return self._config
+
+	def get_output(self):
+		return self._output
+
+	def read(self):
+		configname = None
+		try:
+			configname = self._get_first_file_matching(self.inputnames)
+		except KeyError:
+			warnings.warn('No input file for run in path %s' % self._path)
+
+		logname = None
+		try:
+			logname = self._get_first_file_matching(self.logs)
+		except KeyError:
+			warnings.warn('No log file for run in path %s' % self._path)
+
+		# parse input
+		if configname is not None:
+			fh = open(configname)
+			self._config = self._parse_input_file(fh.readlines())
+			fh.close()
+
+		# load universe
+		if configname is not None:
+			try:
+				topologyfile = self._config['structure']
+				self._get_first_file_matching([topologyfile, ])
+			except KeyError:
+				warnings.warn('No topology file for run in path %s' % self._path)
+				topologyfile = None
+
+			trajectoryfile = self._config['outputname'] + '.dcd'
+			if 'DCDfile' in self._config:
+				trajectoryfile = self._config['DCDfile']
+
+			try:
+				self._universe = mda.Universe(topologyfile, trajectoryfile)
+			except OSError:
+				self._universe = EmptyUniverse()
+
+		# parse logfile
+		if logname is not None:
+			if logname[-3:] == '.gz':
+				fh = gzip.GzipFile(logname)
+			else:
+				fh = open(logname)
+
+			if fh is not None:
+				configlines = fh.readlines()
+				fh.close()
+				self._output = pd.DataFrame(self._parse_output_file(configlines))
 
 class CP2KReader(Reader):
 	""" Parses CP2K Quickstep runs.
@@ -363,8 +442,6 @@ class CP2KReader(Reader):
 
 			except OSError:
 				self._universe = EmptyUniverse()
-
-
 
 		# parse logfile
 		if logname is not None:
