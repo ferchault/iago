@@ -1,4 +1,5 @@
 # standard modules
+import glob
 import gzip
 import os
 import os.path
@@ -118,8 +119,10 @@ class Reader(object):
 				mergepath = filename
 			else:
 				mergepath = os.path.join(self._path, filename)
-			if os.path.isfile(mergepath):
-				return os.path.realpath(mergepath)
+			candidates = glob.glob(mergepath)
+			for candidate in candidates:
+				if os.path.isfile(candidate):
+					return os.path.realpath(candidate)
 		raise KeyError('No file matches.')
 
 	def claims(self):
@@ -142,7 +145,7 @@ class NAMDReader(Reader):
 		self.inputnames = ['namd.conf', '*.nmd']
 
 		#: List of logfiles to test for input files. Precedence in order of the list.
-		self.logs = ['run.log', 'run.log.gz']
+		self.logs = ['run.log', 'run.log.gz', '*.log']
 
 		#: Holds the atom-frame table.
 		self._output = pd.DataFrame()
