@@ -1,7 +1,11 @@
 from unittest import TestCase
 from iago import LocationProvider as lp
 import paramiko
+import shutil
 import os
+
+BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+
 
 class TestSSHLocationProvider(TestCase):
     def test__prepare_connect(self):
@@ -27,6 +31,25 @@ class TestSSHLocationProvider(TestCase):
 
         self.assertRaises(ValueError, lp.SSHLocationProvider._prepare_connect, 'foobar')
 
-        self.assertRaises(ValueError, lp.SSHLocationProvider._prepare_connect, 'unknown_host:dir')
+    def test__connect(self):
+        # create private key
+        private_key = paramiko.RSAKey.generate(2048)
+        key_filename = os.path.join(os.path.expanduser('~'), 'iago-sshkey')
+        private_key.write_private_key_file(key_filename)
+        fh = open(key_filename + '.pub', 'w').write(private_key.get_base64())
 
+        # add to authorized keys
+        authorized = os.path.join(os.path.expanduser('~'), '.ssh', 'authorized_keys')
+        shutil.copyfile(authorized, authorized + '.bak')
+        fh = open(authorized, 'a')
+        fh.write('\n' + private_key.get_base64())
+        fh.close()
 
+        # open SSH connection to localhost with current user
+        ssh = lp.SSHLocationProvider('localhost:' + os.path.join(BASE_DIR, 'fixtures'))
+        bl = ssh.get_bucket_list()
+        self.assertTrue('debug' in bl.name.values)
+
+        # reset authorized keys
+        shutil.copyfile(authorized + '.bak', authorized)
+        os.remove(authorized + '.bak')

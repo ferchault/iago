@@ -276,8 +276,6 @@ class SSHLocationProvider(LocationProvider):
 						if 'proxycommand' in user_config:
 							_sock = paramiko.ProxyCommand(user_config['proxycommand'])
 						break
-				if not found:
-					raise ValueError('Unknown host')
 		else:
 			_username, _hostname, _basepath = match.groups()
 
