@@ -69,10 +69,21 @@ class Parser(object):
 	def get_trajectory_frames(self, run):
 		return self._readers[run].get_trajectory_frames()
 
-	def get_run_code(self, run):
-		return 'cp2k'
+	def get_run_code(self, runpath, topologyfiles, configfiles, logfiles):
+		readers = {'cp2k': Reader.CP2KReader, 'namd': Reader.NAMDReader}
+		for label, reader in readers.iteritems():
+			r = reader(runpath)
+			if 'inputnames' in r.get_options():
+				r.inputnames = configfiles + r.inputnames
+			if 'topologies' in r.get_options():
+				r.topologies = topologyfiles + r.topologies
+			if 'logs' in r.get_options():
+				r.logs = logfiles + r.logs
 
-	def run(self, path, runmatch=dict()):
+			if r.claims():
+				return label
+
+	def run(self, path, runmatch=dict(), topologyfiles=[], configfiles=[], logfiles=[]):
 		""" Parses all runs of a certain bucket.
 
 		:param path: Basepath of all runs in this bucket.
@@ -83,9 +94,11 @@ class Parser(object):
 		self.runmatch = runmatch
 
 		for run in self.get_runs():
-			code = self.get_run_code(run)
+			code = self.get_run_code(os.path.join(path, run), topologyfiles, configfiles, logfiles)
 			if code == 'cp2k':
 				self._readers[run] = Reader.CP2KReader(os.path.join(path, run))
+			elif code == 'namd':
+				self._readers[run] = Reader.NAMDReader(os.path.join(path, run))
 			else:
 				raise NotImplementedError()
 			self._readers[run].read()

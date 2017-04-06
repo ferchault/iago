@@ -26,6 +26,15 @@ class Analyser(object):
 		#: File format for the output database. Caen be either JSON or HDF5.
 		self.format = 'JSON'
 
+		#: User-defined config file names
+		self.configfiles = []
+
+		#: User-defined topology file names
+		self.topologyfiles = []
+
+		#: User-defined log file names
+		self.logfiles = []
+
 	def setup(self):
 		""" Points out the required settings and parsers. Has to be user-defined."""
 		raise NotImplementedError()

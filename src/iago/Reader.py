@@ -122,6 +122,11 @@ class Reader(object):
 				return os.path.realpath(mergepath)
 		raise KeyError('No file matches.')
 
+	def claims(self):
+		""" Checks whether the run path specified when creating the Reader instance looks like a valid run for this code.
+
+		:return: True if the reader is sure it can handle this run given the filename options."""
+		raise NotImplementedError()
 
 class NAMDReader(Reader):
 	""" Parses NAMD runs."""
@@ -134,7 +139,7 @@ class NAMDReader(Reader):
 		self._options = 'inputnames logs'
 
 		#: List of filenames to test for input files. Precedence in order of the list.
-		self.inputnames = ['namd.conf', ]
+		self.inputnames = ['namd.conf', '*.nmd']
 
 		#: List of logfiles to test for input files. Precedence in order of the list.
 		self.logs = ['run.log', 'run.log.gz']
@@ -256,7 +261,7 @@ class NAMDReader(Reader):
 		return frames
 
 	def get_options(self):
-		return self._options
+		return self._options.split()
 
 	def get_input(self):
 		return self._config
@@ -313,6 +318,27 @@ class NAMDReader(Reader):
 				fh.close()
 				self._output = pd.DataFrame(self._parse_output_file(configlines))
 
+	def claims(self):
+		""" Checks whether this run is indeed a NAMD run.
+
+		:return: True if this certainly is a NAMD run."""
+		try:
+			logname = self._get_first_file_matching(self.logs)
+		except KeyError:
+			return False
+
+		line_limit = 50
+		if logname is not None:
+			if logname[-3:] == '.gz':
+				fh = gzip.GzipFile(logname)
+			else:
+				fh = open(logname)
+		for lineno in xrange(line_limit):
+			line = fh.readline()
+			if line.startswith('Info:') and 'NAMD' in line:
+				return True
+		return False
+
 class CP2KReader(Reader):
 	""" Parses CP2K Quickstep runs.
 	"""
@@ -340,7 +366,7 @@ class CP2KReader(Reader):
 		self._config = utils.Map()
 
 	def get_options(self):
-		return self._options
+		return self._options.split()
 
 	def get_input(self):
 		return self._config
@@ -452,3 +478,24 @@ class CP2KReader(Reader):
 			if fh is not None:
 				c = cp2k.LogFile(fh)
 				self._output = c.parse()
+
+	def claims(self):
+		""" Checks whether this run is indeed a CP2K run.
+
+		:return: True if this certainly is a CP2K run."""
+		try:
+			logname = self._get_first_file_matching(self.logs)
+		except KeyError:
+			return False
+
+		line_limit = 50
+		if logname is not None:
+			if logname[-3:] == '.gz':
+				fh = gzip.GzipFile(logname)
+			else:
+				fh = open(logname)
+		for lineno in xrange(line_limit):
+			line = fh.readline()
+			if line.startswith(' CP2K|'):
+				return True
+		return False
