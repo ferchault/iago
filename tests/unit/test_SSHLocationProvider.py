@@ -31,7 +31,7 @@ class TestSSHLocationProvider(TestCase):
 
         self.assertRaises(ValueError, lp.SSHLocationProvider._prepare_connect, 'foobar')
 
-    def test__connect(self):
+    def test__connected(self):
         # create private key
         private_key = paramiko.RSAKey.generate(2048)
 
@@ -47,8 +47,21 @@ class TestSSHLocationProvider(TestCase):
 
         # open SSH connection to localhost with current user
         ssh = lp.SSHLocationProvider('localhost:' + os.path.join(BASE_DIR, 'fixtures'), pkey=private_key)
+
+        # check presence of buckets
         bl = ssh.get_bucket_list()
         self.assertTrue('debug' in bl.name.values)
+
+        # check file access
+        self.assertTrue(ssh.has_file('debug-88ac57b3e437fa1d5d26d00d6c768324', 'index.ndx'))
+        try:
+            fh = ssh.open_file('debug-88ac57b3e437fa1d5d26d00d6c768324', 'index.ndx')
+            fh.close()
+        except:
+            self.fail('Cannot open SSH remote file.')
+        fn, emphemeral = ssh.local_file('debug-88ac57b3e437fa1d5d26d00d6c768324', 'index.ndx')
+        self.assertTrue(emphemeral)
+        os.remove(fn)
 
         # reset authorized keys
         try:
