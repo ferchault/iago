@@ -34,22 +34,26 @@ class TestSSHLocationProvider(TestCase):
     def test__connect(self):
         # create private key
         private_key = paramiko.RSAKey.generate(2048)
-        key_filename = os.path.join(os.path.expanduser('~'), 'iago-sshkey')
-        private_key.write_private_key_file(key_filename)
-        fh = open(key_filename + '.pub', 'w').write(private_key.get_base64())
 
         # add to authorized keys
         authorized = os.path.join(os.path.expanduser('~'), '.ssh', 'authorized_keys')
-        shutil.copyfile(authorized, authorized + '.bak')
-        fh = open(authorized, 'a')
-        fh.write('\n' + private_key.get_base64())
+        try:
+            shutil.copyfile(authorized, authorized + '.bak')
+        except IOError:
+            pass # no authorized_keys file already present
+        fh = open(authorized, 'a+')
+        fh.write('\nssh-rsa ' + private_key.get_base64())
         fh.close()
 
         # open SSH connection to localhost with current user
-        ssh = lp.SSHLocationProvider('localhost:' + os.path.join(BASE_DIR, 'fixtures'))
+        ssh = lp.SSHLocationProvider('localhost:' + os.path.join(BASE_DIR, 'fixtures'), pkey=private_key)
         bl = ssh.get_bucket_list()
         self.assertTrue('debug' in bl.name.values)
 
         # reset authorized keys
-        shutil.copyfile(authorized + '.bak', authorized)
-        os.remove(authorized + '.bak')
+        try:
+            shutil.copyfile(authorized + '.bak', authorized)
+            os.remove(authorized + '.bak')
+        except IOError:
+            # no authorized_keys file present initially
+            os.remove(authorized)

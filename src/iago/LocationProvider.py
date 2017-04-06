@@ -231,12 +231,12 @@ class FileLocationProvider(LocationProvider):
 class SSHLocationProvider(LocationProvider):
 	""" Location class for remote file access using SSH.
 	"""
-	def __init__(self, path):
+	def __init__(self, path, *args, **kwargs):
 		if not HAS_PARAMIKO:
 			raise RuntimeError('The paramiko python module is required for this location provider.')
 
 		client, self._port, self._sock, self._username, self._hostname, self._basepath = self._prepare_connect(path)
-		client.connect(self._hostname, username=self._username, port=self._port, sock=self._sock)
+		client.connect(self._hostname, username=self._username, port=self._port, sock=self._sock, **kwargs)
 
 		self._client = client
 		self._sftp = None
