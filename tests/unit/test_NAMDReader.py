@@ -33,11 +33,14 @@ class TestNAMDReader(TestCase):
     def test__parse_input_file_run_with_variable(self):
         lines = '''
         set steps 100
+        set temp 50
+        reinitvels ${temp}
         run $steps
         run 200
         '''.split('\n')
         result = iago.Reader.NAMDReader._parse_input_file(lines)
         self.assertEqual(result['run'], 100)
+        self.assertEqual(result['reinitvels'], 50)
 
     def test__parse_input_file_test_NVT(self):
         lines = '''

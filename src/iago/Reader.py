@@ -179,11 +179,11 @@ class NAMDReader(Reader):
 					continue
 				# stop reading after first 'minimize' or 'run' command
 				if (field[0] == 'minimize') or (field[0] == 'run'):
-					if field[1].startswith('$'):
-						var = re.match(r'\$([a-zA-Z0-9_]*)',field[1]).groups()[0]
-						dict[field[0]] = dict[var]
-					elif field[1].startswith ('${'):
+					if field[1].startswith ('${'):
 						var = re.match(r'\${([^}]*)}',field[1]).groups()[0]
+						dict[field[0]] = dict[var]
+					elif field[1].startswith('$'):
+						var = re.match(r'\$([a-zA-Z0-9_]*)',field[1]).groups()[0]
 						dict[field[0]] = dict[var]
 					else:
 						dict[field[0]] = NAMDReader._recognize_value(field[1])
@@ -199,14 +199,15 @@ class NAMDReader(Reader):
 					# substitute variable with their real value
 					# in case have multi entry, value can be a list
 				for number in field[1:]:
-					if number.startswith('$'):
+					if number.startswith('${'):
+						var = re.match(r'\${([^}]*)}',number).groups()[0]
+						value.append(NAMDReader._recognize_value(dict[var]))
+					elif number.startswith('$'):
 						var = re.match(r'\$([a-zA-Z0-9_]*)',number).groups()[0]
 						value.append(NAMDReader._recognize_value(dict[var]))
-					elif number.startswith('${'):
-						var = re.match(r'\${([^}]*)}',number).groups()[0]
-						dict[field[0]] = dict[var]
 					else:
 						value.append(NAMDReader._recognize_value(number))
+
 				# if single value entry, convert value list to a number
 				if len(value) == 1:
 					dict[field[0]] = value[0]
