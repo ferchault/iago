@@ -71,6 +71,14 @@ class TestNAMDReader(TestCase):
         result = iago.Reader.NAMDReader._parse_input_file(lines)
         self.assertEqual(result['sphericalBCcenter'], [30.3081743413, 28.8049907121, 15.353994423])
 
+    def test__parse_input_file_test_multiple_varialbes(self):
+        lines = '''
+        set path testpath
+        set directory testdirectory
+        restartpath I/am/${directory}/${path}/${path}/tests'''.split('\n')
+        result = iago.Reader.NAMDReader._parse_input_file(lines)
+        self.assertEqual(result['restartpath'], 'I/am/testdirectory/testpath/testpath/tests')
+
     def test__parse_logfile_test_readin_one_step(self):
         lines = '''
         ETITLE:      TS           BOND          ANGLE  NOTRELEVANT PRESSAVG

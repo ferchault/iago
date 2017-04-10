@@ -199,13 +199,17 @@ class NAMDReader(Reader):
 					# substitute variable with their real value
 					# in case have multi entry, value can be a list
 				for number in field[1:]:
-					if number.startswith('${'):
-						var = re.match(r'\${([^}]*)}',number).groups()[0]
-						value.append(NAMDReader._recognize_value(dict[var]))
-					elif number.startswith('$'):
+					#if number.startswith('${'):
+					#	var = re.match(r'\${([^}]*)}',number).groups()[0]
+					#	value.append(NAMDReader._recognize_value(dict[var]))
+					if number.startswith('$') and (not number.startswith('${')):
 						var = re.match(r'\$([a-zA-Z0-9_]*)',number).groups()[0]
 						value.append(NAMDReader._recognize_value(dict[var]))
 					else:
+						#first, replace variable (if any)
+						varlist = set(re.findall(r'\${([^}]*)}',number))
+						for var in varlist:
+							number = number.replace('${'+var+'}', str(dict[var]))
 						value.append(NAMDReader._recognize_value(number))
 
 				# if single value entry, convert value list to a number
