@@ -175,37 +175,43 @@ class NAMDReader(Reader):
 				field = line[0].split()
 				# parse all setted parameters
 				if field[0] == 'set':
-					dict.update({field[1]: NAMDReader._recognize_value(field[2])})
+					dict[field[1]] = NAMDReader._recognize_value(field[2])
 					continue
 				# stop reading after first 'minimize' or 'run' command
 				if (field[0] == 'minimize') or (field[0] == 'run'):
 					if field[1].startswith('$'):
-						var = field[1][1:]
-						dict.update({field[0]: dict[var]})
+						var = re.match(r'\$([a-zA-Z0-9_]*)',field[1]).groups()[0]
+						dict[field[0]] = dict[var]
+					elif field[1].startswith ('${'):
+						var = re.match(r'\${([^}]*)}',field[1]).groups()[0]
+						dict[field[0]] = dict[var]
 					else:
-						dict.update({field[0]: NAMDReader._recognize_value(field[1])})
+						dict[field[0]] = NAMDReader._recognize_value(field[1])
 					break
 				# detect ensemble
 				if field[0] == 'langevin':
 					if (field[1] == 'on' and dict['ensemble'] == 'NVE'):
-						dict.update({'ensemble': 'NVT'})
+						dict['ensemble'] = 'NVT'
 				if field[0] == 'langevinPiston':
 					if (field[1] == 'on' and dict['ensemble'] == 'NVT'):
-						dict.update({'ensemble': 'NPT'})
+						dict['ensemble'] = 'NPT'
 					# default parse
 					# substitute variable with their real value
 					# in case have multi entry, value can be a list
 				for number in field[1:]:
 					if number.startswith('$'):
-						var = number[1:]
+						var = re.match(r'\$([a-zA-Z0-9_]*)',number).groups()[0]
 						value.append(NAMDReader._recognize_value(dict[var]))
+					elif number.startswith('${'):
+						var = re.match(r'\${([^}]*)}',number).groups()[0]
+						dict[field[0]] = dict[var]
 					else:
 						value.append(NAMDReader._recognize_value(number))
 				# if single value entry, convert value list to a number
 				if len(value) == 1:
-					dict.update({field[0]: value[0]})
+					dict[field[0]] = value[0]
 				else:
-					dict.update({field[0]: value})
+					dict[field[0]] = value
 		return dict
 
 	@staticmethod
