@@ -8,7 +8,7 @@ Install the software with pip
 
 ::
 
-	$ pip install git+https://github.com/ferchault/iago/tree/master/src
+	$ pip install git+https://github.com/ferchault/iago.git#subdirectory=src
 
 You may have to install the following requirements, depending on what you want to do:
 
