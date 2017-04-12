@@ -156,7 +156,7 @@ class NAMDReader(Reader):
 	@staticmethod
 	def _recognize_value(value):
 		try:
-			return float(re.match(r'([.0-9]*).*', value).groups()[0])
+			return float(re.match(r'([.0-9-]*).*', value).groups()[0])
 		#to remove the , after some number and convert the number into a float.
 		except:
 			return value
@@ -179,14 +179,19 @@ class NAMDReader(Reader):
 					continue
 				# stop reading after first 'minimize' or 'run' command
 				if (field[0] == 'minimize') or (field[0] == 'run'):
-					if field[1].startswith ('${'):
-						var = re.match(r'\${([^}]*)}',field[1]).groups()[0]
-						dict[field[0]] = dict[var]
-					elif field[1].startswith('$'):
-						var = re.match(r'\$([a-zA-Z0-9_]*)',field[1]).groups()[0]
-						dict[field[0]] = dict[var]
-					else:
-						dict[field[0]] = NAMDReader._recognize_value(field[1])
+					number = field[1]
+					# first, replace $var variable
+					varlist = set(re.findall(r'\$([a-zA-Z0-9_]*)', number))
+					for var in varlist:
+						try:
+							number = number.replace('$' + var, str(dict[var]))
+						except KeyError:
+							pass
+					# second, replace ${var} variable
+					varlist = set(re.findall(r'\${([^}]*)}', number))
+					for var in varlist:
+						number = number.replace('${' + var + '}', str(dict[var]))
+					dict[field[0]] = NAMDReader._recognize_value(number)
 					break
 				# detect ensemble
 				if field[0] == 'langevin':
@@ -202,15 +207,19 @@ class NAMDReader(Reader):
 					#if number.startswith('${'):
 					#	var = re.match(r'\${([^}]*)}',number).groups()[0]
 					#	value.append(NAMDReader._recognize_value(dict[var]))
-					if number.startswith('$') and (not number.startswith('${')):
-						var = re.match(r'\$([a-zA-Z0-9_]*)',number).groups()[0]
-						value.append(NAMDReader._recognize_value(dict[var]))
-					else:
-						#first, replace variable (if any)
-						varlist = set(re.findall(r'\${([^}]*)}',number))
-						for var in varlist:
-							number = number.replace('${'+var+'}', str(dict[var]))
-						value.append(NAMDReader._recognize_value(number))
+					#first, replace $var variable
+					varlist = set(re.findall(r'\$([a-zA-Z0-9_]*)',number))
+					for var in varlist:
+						try:
+							number = number.replace('$'+var, str(dict[var]))
+						except KeyError:
+							pass
+					#second, replace ${var} variable
+					varlist = set(re.findall(r'\${([^}]*)}',number))
+					for var in varlist:
+						number = number.replace('${'+var+'}', str(dict[var]))
+					#add value to the dictionary
+					value.append(NAMDReader._recognize_value(number))
 
 				# if single value entry, convert value list to a number
 				if len(value) == 1:

@@ -42,6 +42,18 @@ class TestNAMDReader(TestCase):
         self.assertEqual(result['run'], 100)
         self.assertEqual(result['reinitvels'], 50)
 
+    def test__parse_input_file_run_with_curve_bracket_variable(self):
+        lines = '''
+        set steps 100
+        set temp 50
+        reinitvels ${temp}
+        run ${steps}
+        run 200
+        '''.split('\n')
+        result = iago.Reader.NAMDReader._parse_input_file(lines)
+        self.assertEqual(result['run'], 100)
+        self.assertEqual(result['reinitvels'], 50)
+
     def test__parse_input_file_test_NVT(self):
         lines = '''
         langevin on
@@ -66,7 +78,7 @@ class TestNAMDReader(TestCase):
 
     def test__parse_input_file_test_multiple_entries(self):
         lines = '''
-        sphericalBCcenter   30.3081743413, 28.8049907121, 15.353994423
+        sphericalBCcenter   30.3081743413, 28.8049907121, 15.353994423+3
         '''.split('\n')
         result = iago.Reader.NAMDReader._parse_input_file(lines)
         self.assertEqual(result['sphericalBCcenter'], [30.3081743413, 28.8049907121, 15.353994423])
@@ -75,9 +87,11 @@ class TestNAMDReader(TestCase):
         lines = '''
         set path testpath
         set directory testdirectory
-        restartpath I/am/${directory}/${path}/${path}/tests'''.split('\n')
+        restartpath I/am/${directory}/${path}/${path}/tests
+        anotherpath I/am/$directory/$path$path${path}/tests'''.split('\n')
         result = iago.Reader.NAMDReader._parse_input_file(lines)
         self.assertEqual(result['restartpath'], 'I/am/testdirectory/testpath/testpath/tests')
+        self.assertEqual(result['anotherpath'], 'I/am/testdirectory/testpathtestpathtestpath/tests')
 
     def test__parse_logfile_test_readin_one_step(self):
         lines = '''
