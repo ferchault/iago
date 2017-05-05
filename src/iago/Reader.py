@@ -323,6 +323,9 @@ class NAMDReader(Reader):
 			trajectoryfile = self._config['outputname'] + '.dcd'
 			if 'DCDfile' in self._config:
 				trajectoryfile = self._config['DCDfile']
+			# make paths absolute
+			topologyfile = os.path.join(self._path, topologyfile)
+			trajectoryfile = os.path.join(self._path, trajectoryfile)
 
 			try:
 				self._universe = mda.Universe(topologyfile, trajectoryfile)
