@@ -1,0 +1,475 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Features &mdash; iago 0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="iago 0.0 documentation" href="index.html"/>
+        <link rel="next" title="Selection Syntax" href="selectors.html"/>
+        <link rel="prev" title="Getting Started" href="gettingstarted.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> iago
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#supported-quantities">Supported Quantities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#supported-calculations">Supported Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="selectors.html">Selection Syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastructure.html">Data Structure</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="iago/iago.html">iago package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">iago</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Features</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/supported.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="features">
+<h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="supported-quantities">
+<h2>Supported Quantities<a class="headerlink" href="#supported-quantities" title="Permalink to this headline">¶</a></h2>
+<p>If present in the output of a calculation, the following quantities are recognised by <em>iago</em> for cp2k QS. All quantities here
+consist of raw data as calculated by the simulation package itself. None of them is derived (except for unit
+conversions).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="16%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Unit</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>frame</td>
+<td>&#8211;</td>
+<td>Frame number. Integer.</td>
+</tr>
+<tr class="row-odd"><td>steptime</td>
+<td>fs</td>
+<td>Time of the frame. Float.</td>
+</tr>
+<tr class="row-even"><td>a, b, c</td>
+<td>Angstrom</td>
+<td>Cell lengths. Float.</td>
+</tr>
+<tr class="row-odd"><td>alpha, beta, gamma</td>
+<td>Degree</td>
+<td>Cell angles. Float.</td>
+</tr>
+<tr class="row-even"><td>temperature</td>
+<td>Kelvin</td>
+<td>Instantaneous temperature. Float.</td>
+</tr>
+<tr class="row-odd"><td>pressure</td>
+<td>bar</td>
+<td>Instantaneous pressure. Float.</td>
+</tr>
+<tr class="row-even"><td>conserved</td>
+<td>eV</td>
+<td>Conserved quantity. Float.</td>
+</tr>
+<tr class="row-odd"><td>coreself</td>
+<td>eV</td>
+<td>Core Self Energy. Float.</td>
+</tr>
+<tr class="row-even"><td>corehamiltonian</td>
+<td>eV</td>
+<td>Core Hamiltonian. Float.</td>
+</tr>
+<tr class="row-odd"><td>hartree</td>
+<td>eV</td>
+<td>Hartree Energy. Float.</td>
+</tr>
+<tr class="row-even"><td>xc</td>
+<td>eV</td>
+<td>Exchange-Correlation Energy. Float.</td>
+</tr>
+<tr class="row-odd"><td>hfx</td>
+<td>eV</td>
+<td>Hartree-Fock-Exchange Energy. Float.</td>
+</tr>
+<tr class="row-even"><td>dispersion</td>
+<td>eV</td>
+<td>Dispersion energy. Float.</td>
+</tr>
+<tr class="row-odd"><td>total</td>
+<td>eV</td>
+<td>Total energy. Float.</td>
+</tr>
+<tr class="row-even"><td>potential</td>
+<td>eV</td>
+<td>Potential energy. Float.</td>
+</tr>
+<tr class="row-odd"><td>kinetic</td>
+<td>eV</td>
+<td>Kinetic energy. Float.</td>
+</tr>
+<tr class="row-even"><td>drift</td>
+<td>&#160;</td>
+<td>Temperature drift. Float.</td>
+</tr>
+<tr class="row-odd"><td>iasd</td>
+<td>&#160;</td>
+<td>Integrated absolute spin density. Float.</td>
+</tr>
+<tr class="row-even"><td>s2</td>
+<td>&#160;</td>
+<td>Single determinant S**2. Float.</td>
+</tr>
+<tr class="row-odd"><td>scfcycles</td>
+<td>&#8211;</td>
+<td>Number of SCF steps. Integer.</td>
+</tr>
+<tr class="row-even"><td>otcycles</td>
+<td>&#8211;</td>
+<td>Number of outer SCF steps. Integer.</td>
+</tr>
+<tr class="row-odd"><td>cputime</td>
+<td>s</td>
+<td>CPU time per MD step. Float.</td>
+</tr>
+</tbody>
+</table>
+<p>If present in the output of a calculation, the following quantities are recognised by <em>iago</em> for NAMD. All quantities here consist of raw data as calculated by the simulation package itself. None of them is derived (except for unit
+conversions). Any keyword starts with NAMD is either an averaged output from NAMD or not clearly defined in NAMD MANUAL.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="13%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Unit</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>frame</td>
+<td>&#8211;</td>
+<td>Frame number. Integer.</td>
+</tr>
+<tr class="row-odd"><td>conserved</td>
+<td>eV</td>
+<td>Conserved quantity. Float.</td>
+</tr>
+<tr class="row-even"><td>temperature</td>
+<td>Kelvin</td>
+<td>Instantaneous temperature. Float.</td>
+</tr>
+<tr class="row-odd"><td>pressure</td>
+<td>bar</td>
+<td>Instantaneous pressure. Float.</td>
+</tr>
+<tr class="row-even"><td>volume</td>
+<td>Angstrom^3</td>
+<td>Instantaneous volume. float.</td>
+</tr>
+<tr class="row-odd"><td>bond</td>
+<td>eV</td>
+<td>bond energy. Float.</td>
+</tr>
+<tr class="row-even"><td>angle</td>
+<td>eV</td>
+<td>angle energy. Float.</td>
+</tr>
+<tr class="row-odd"><td>dihedral</td>
+<td>eV</td>
+<td>dihedral energy. Float.</td>
+</tr>
+<tr class="row-even"><td>improper</td>
+<td>eV</td>
+<td>improper energy. Float.</td>
+</tr>
+<tr class="row-odd"><td>electrostatic</td>
+<td>eV</td>
+<td>electrostatic energy. Float.</td>
+</tr>
+<tr class="row-even"><td>vdw</td>
+<td>eV</td>
+<td>van der Waals energy. Float.</td>
+</tr>
+<tr class="row-odd"><td>boundary</td>
+<td>eV</td>
+<td>boundary energy from spherical boundary conditions and harmonic restraints. Float.</td>
+</tr>
+<tr class="row-even"><td>external</td>
+<td>eV</td>
+<td>MISC term in NAMD. External electric fields and various steering forces. Float.</td>
+</tr>
+<tr class="row-odd"><td>kinetic</td>
+<td>eV</td>
+<td>Classical kinetic energy. Float.</td>
+</tr>
+<tr class="row-even"><td>total</td>
+<td>eV</td>
+<td>Classical total energy. Float.</td>
+</tr>
+<tr class="row-odd"><td>potential</td>
+<td>eV</td>
+<td>classical potential energy. Float.</td>
+</tr>
+<tr class="row-even"><td>NAMD_total3</td>
+<td>eV</td>
+<td>NAMD TOTAL3. Float.</td>
+</tr>
+<tr class="row-odd"><td>NAMD_GPRESSURE</td>
+<td>eV</td>
+<td>NAMD GPRESSURE. Float.</td>
+</tr>
+<tr class="row-even"><td>NAMD_GPRESSUREAVG</td>
+<td>eV</td>
+<td>NAMD GPRESSUREAVG. Float.</td>
+</tr>
+<tr class="row-odd"><td>NAMD_PRESSUREAVG</td>
+<td>eV</td>
+<td>NAMD PRESSUREAVG. Float.</td>
+</tr>
+<tr class="row-even"><td>NAMD_TEMPAVG</td>
+<td>Kelvin</td>
+<td>NAMD TEMPAVG. Float.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="supported-calculations">
+<span id="supported-calculation"></span><h2>Supported Calculations<a class="headerlink" href="#supported-calculations" title="Permalink to this headline">¶</a></h2>
+<p>Based on the trajectory data and the simulation package log file, the following quantities can be calculated.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="iago/iago.html#iago.Analyser.Analyser.dynamic_plane" title="iago.Analyser.Analyser.dynamic_plane"><code class="xref py py-obj docutils literal"><span class="pre">Analyser.dynamic_plane</span></code></a>(name,&nbsp;selector[,&nbsp;...])</td>
+<td>Fits a plane through at least three atoms in each frame.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="iago/iago.html#iago.Analyser.Analyser.dynamic_distance" title="iago.Analyser.Analyser.dynamic_distance"><code class="xref py py-obj docutils literal"><span class="pre">Analyser.dynamic_distance</span></code></a>(name,&nbsp;selectorA,&nbsp;...)</td>
+<td>Calculates a distance between two objects in each frame.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="selectors.html" class="btn btn-neutral float-right" title="Selection Syntax" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gettingstarted.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Guido Falk von Rudorff.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

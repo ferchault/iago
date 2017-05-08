@@ -1,0 +1,429 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Data Structure &mdash; iago 0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="iago 0.0 documentation" href="index.html"/>
+        <link rel="next" title="iago package" href="iago/iago.html"/>
+        <link rel="prev" title="Selection Syntax" href="selectors.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> iago
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selectors.html">Selection Syntax</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculated-data">Calculated Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#planes">Planes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#distances">Distances</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="iago/iago.html">iago package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">iago</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Data Structure</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/datastructure.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="data-structure">
+<h1>Data Structure<a class="headerlink" href="#data-structure" title="Permalink to this headline">¶</a></h1>
+<p>So you have written an <a class="reference internal" href="gettingstarted.html#term-analyser"><span class="xref std std-term">analyser</span></a> and ran it. You can <a class="reference internal" href="gettingstarted.html#working-results"><span class="std std-ref">load the database</span></a> but you are wondering
+where to find all the properties? They are all documented here, although for some software packages, there may be no
+current support for a certain quantity. Please refer to the list of <a class="reference internal" href="supported.html"><span class="doc">supported quantities</span></a> first.</p>
+<p>In the following, it will be assumed that <em>iago</em> is loaded as python module in either <em>python</em> or <em>jupyter</em>. An example
+of this happening could be as follows (refer to <a class="reference internal" href="gettingstarted.html"><span class="doc">Getting Started</span></a> for the details)</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">iago</span>
+<span class="n">lg</span> <span class="o">=</span> <span class="n">iago</span><span class="o">.</span><span class="n">get_location_group</span><span class="p">()</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">lg</span><span class="o">.</span><span class="n">fetch_database</span><span class="p">(</span><span class="s1">&#39;bucket name or bucket id&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<p>Raw input data is found in</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>with the run name as key and a tree dictionary as value. Here are a few examples for CP2K:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># print time step in femtoseconds for the run &#39;test&#39;</span>
+<span class="k">print</span> <span class="n">db</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;MOTION&#39;</span><span class="p">][</span><span class="s1">&#39;MD&#39;</span><span class="p">][</span><span class="s1">&#39;TIMESTEP&#39;</span><span class="p">]</span>
+
+<span class="c1"># print the same info but with implicit navigation</span>
+<span class="k">print</span> <span class="n">db</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">MOTION</span><span class="o">.</span><span class="n">MD</span><span class="o">.</span><span class="n">TIMESTEP</span>
+
+<span class="c1"># for each run, print all atom kind information</span>
+<span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">print</span> <span class="n">db</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">run</span><span class="p">]</span><span class="o">.</span><span class="n">FORCE_EVAL</span><span class="o">.</span><span class="n">SUBSYS</span><span class="o">.</span><span class="n">KIND</span>
+</pre></div>
+</div>
+<p>While strings are converted to floats whenever applicable, no units are converted from the internal units used in the
+simulation codes.</p>
+</div>
+<div class="section" id="calculated-data">
+<h2>Calculated Data<a class="headerlink" href="#calculated-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="planes">
+<h3>Planes<a class="headerlink" href="#planes" title="Permalink to this headline">¶</a></h3>
+<p>Calculated plane data can be found in</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">planes</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="17%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Unit</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>run</td>
+<td>&#8211;</td>
+<td>Run name. String.</td>
+</tr>
+<tr class="row-odd"><td>frame</td>
+<td>&#8211;</td>
+<td>Frame number. Integer.</td>
+</tr>
+<tr class="row-even"><td>name</td>
+<td>&#8211;</td>
+<td>Plane name. String.</td>
+</tr>
+<tr class="row-odd"><td>normal_x</td>
+<td>&#8211;</td>
+<td>Normal vector: x component. Float.</td>
+</tr>
+<tr class="row-even"><td>normal_y</td>
+<td>&#8211;</td>
+<td>Normal vector: y component. Float.</td>
+</tr>
+<tr class="row-odd"><td>normal_z</td>
+<td>&#8211;</td>
+<td>Normal vector: z component. Float.</td>
+</tr>
+<tr class="row-even"><td>support_x</td>
+<td>Angstrom</td>
+<td>Support point: x component. Float.</td>
+</tr>
+<tr class="row-odd"><td>support_y</td>
+<td>Angstrom</td>
+<td>Support point: y component. Float.</td>
+</tr>
+<tr class="row-even"><td>support_z</td>
+<td>Angstrom</td>
+<td>Support point: z component. Float.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="distances">
+<h3>Distances<a class="headerlink" href="#distances" title="Permalink to this headline">¶</a></h3>
+<p>Calculated distances can be found in</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">distances</span>      <span class="c1"># for atom-atom distances</span>
+<span class="n">db</span><span class="o">.</span><span class="n">planedistances</span> <span class="c1"># for atom-plane distances</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="17%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Unit</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>run</td>
+<td>&#8211;</td>
+<td>Run name. String.</td>
+</tr>
+<tr class="row-odd"><td>frame</td>
+<td>&#8211;</td>
+<td>Frame number. Integer.</td>
+</tr>
+<tr class="row-even"><td>name</td>
+<td>&#8211;</td>
+<td>Plane name. String.</td>
+</tr>
+<tr class="row-odd"><td>atom1</td>
+<td>&#8211;</td>
+<td>First atom index. Integer.</td>
+</tr>
+<tr class="row-even"><td>atom2</td>
+<td>&#8211;</td>
+<td>Second atom index. Integer.</td>
+</tr>
+<tr class="row-odd"><td>dist</td>
+<td>Angstrom</td>
+<td>Distance. Float.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="17%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Column</th>
+<th class="head">Unit</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>run</td>
+<td>&#8211;</td>
+<td>Run name. String.</td>
+</tr>
+<tr class="row-odd"><td>frame</td>
+<td>&#8211;</td>
+<td>Frame number. Integer.</td>
+</tr>
+<tr class="row-even"><td>name</td>
+<td>&#8211;</td>
+<td>Plane name. String.</td>
+</tr>
+<tr class="row-odd"><td>plane</td>
+<td>&#8211;</td>
+<td>Plane name. String.</td>
+</tr>
+<tr class="row-even"><td>atom2</td>
+<td>&#8211;</td>
+<td>Atom index. Integer.</td>
+</tr>
+<tr class="row-odd"><td>dist</td>
+<td>Angstrom</td>
+<td>Distance. Float.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="iago/iago.html" class="btn btn-neutral float-right" title="iago package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="selectors.html" class="btn btn-neutral" title="Selection Syntax" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Guido Falk von Rudorff.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

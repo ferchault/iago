@@ -1,0 +1,1231 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>iago package &mdash; iago 0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="iago 0.0 documentation" href="../index.html"/>
+        <link rel="next" title="API Documentation" href="../api.html"/>
+        <link rel="prev" title="Data Structure" href="../datastructure.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> iago
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../supported.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selectors.html">Selection Syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastructure.html">Data Structure</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">iago package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iago.Analyser">iago.Analyser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iago.DatabaseProvider">iago.DatabaseProvider module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iago.LocationProvider">iago.LocationProvider module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iago.PandasPatch">iago.PandasPatch module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iago.Parser">iago.Parser module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iago.Reader">iago.Reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iago.cp2k">iago.cp2k module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iago.iago">iago.iago module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iago.utils">iago.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-iago">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">iago</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>iago package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/iago/iago.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="iago-package">
+<h1>iago package<a class="headerlink" href="#iago-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-iago.Analyser">
+<span id="iago-analyser-module"></span><h2>iago.Analyser module<a class="headerlink" href="#module-iago.Analyser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="iago.Analyser.Analyser">
+<em class="property">class </em><code class="descclassname">iago.Analyser.</code><code class="descname">Analyser</code><a class="headerlink" href="#iago.Analyser.Analyser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="iago.Analyser.Analyser.calculated_columns">
+<code class="descname">calculated_columns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Analyser.Analyser.calculated_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the definitions of calculated columns as derived from the parsed result. May be user-defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Analyser.Analyser.collect_input_output">
+<code class="descname">collect_input_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Analyser.Analyser.collect_input_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Aggregates all configuration input and simulation output from all runs for inclusion in the database.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iago.Analyser.Analyser.configfiles">
+<code class="descname">configfiles</code><em class="property"> = None</em><a class="headerlink" href="#iago.Analyser.Analyser.configfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>User-defined config file names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Analyser.Analyser.define_groups">
+<code class="descname">define_groups</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Analyser.Analyser.define_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the definitions of static atom groups. May be user-defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Analyser.Analyser.dynamic_atomlist">
+<code class="descname">dynamic_atomlist</code><span class="sig-paren">(</span><em>columnname</em>, <em>filter</em>, <em>where_count=None</em>, <em>comment=None</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Analyser.Analyser.dynamic_atomlist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.Analyser.Analyser.dynamic_distance">
+<code class="descname">dynamic_distance</code><span class="sig-paren">(</span><em>name</em>, <em>selectorA</em>, <em>selectorB</em>, <em>cutoff=None</em>, <em>comment=None</em>, <em>framesel=None</em>, <em>signed=False</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Analyser.Analyser.dynamic_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates a distance between two objects in each frame.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Currently, the minimum image convention is only respected for rectangular unit cells. This is likely to be fixed soon.
+This warning only affects atom-atom distances.</p>
+</div>
+<p>This routine supports atom-atom distances, and atom-plane distances. For atom-atom distances, the cartesian product of
+the two selections is built and distances are calculated for each tuple of atoms. For atom-plane calculations, the
+shortest distance between each atom and the plane is measured. No wrapping of atoms back into the unit cell is happening
+in this case. In the case of atom-plane distances, signed distances are stored in the database. Positive values denote
+atom positions in the direction of the plane normal vector (i.e. above the plane).</p>
+<p>The <em>name</em> of the plane is informational only and should be kept concise since it is the identifier of the distance set.</p>
+<p>The two selectors <em>selectorA</em> and <em>selectorB</em> can either be both <a class="reference internal" href="../selectors.html#selection-atom"><span class="std std-ref">atom selectors</span></a> or at most one
+can be a <a class="reference internal" href="../selectors.html#selection-plane"><span class="std std-ref">plane selector</span></a>. The selectors are evaluated dynamically, i.e. for each <a class="reference internal" href="../gettingstarted.html#term-frame"><span class="xref std std-term">frame</span></a>
+separately.</p>
+<p>The <em>cutoff</em> parameter limits entries to be included in the database. While all combinations from the cartesian product
+of the two selections are calculated, only those are stored in the database where the calculated absolute distance is
+below the cutoff.</p>
+<p>The <em>comment</em> can be as verbose as needed to describe the distance set in a human-readable format. It will be stored
+in the database alongside the results for documentation purposes. Together with the <em>name</em>, the user should be able to
+understand the meaning and origin of this distance set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; Name of the distance set between groups A and B</li>
+<li><strong>selectorA</strong> &#8211; Selector for the group A</li>
+<li><strong>selectorB</strong> &#8211; Selector for the group B</li>
+<li><strong>cutoff</strong> &#8211; Maximum included distance in Angstrom. None to disable.</li>
+<li><strong>comment</strong> &#8211; Description of the distance set</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Analyser.Analyser.dynamic_plane">
+<code class="descname">dynamic_plane</code><span class="sig-paren">(</span><em>name</em>, <em>selector</em>, <em>normal=None</em>, <em>framesel=None</em>, <em>comment=None</em>, <em>raise_undetermined=False</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Analyser.Analyser.dynamic_plane" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits a plane through at least three atoms in each frame.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Be careful <strong>not to use this function with wrapped trajectories</strong>, i.e. coordinates that have been wrapped into the
+simulation box. Imagine points on a plane that is not parallel to any of the simulation box surfaces. Any point
+outside the box will work fine for unwrapped trajectories but will give results other than the expected.</p>
+</div>
+<p>The <em>name</em> of the plane is informational only and should be kept concise since it is the identifier of the plane.</p>
+<p>The <em>selector</em> can be any <a class="reference internal" href="../selectors.html#selection-atom"><span class="std std-ref">atom selector</span></a> but must select at least three atoms in every frame.
+The selector will be evaluated for any frame which means that selected atoms may change over the course
+of the trajectory. If you do not want this behaviour, define a static group in your <a class="reference internal" href="#iago.Analyser.Analyser.define_groups" title="iago.Analyser.Analyser.define_groups"><code class="xref py py-func docutils literal"><span class="pre">define_groups()</span></code></a>
+implementation in your <a class="reference internal" href="../gettingstarted.html#term-analyser"><span class="xref std std-term">analyser script</span></a>.</p>
+<p>The <em>normal</em> defines the surface orientation. Since the plane is stored in the database by recording a support vector
+and the surface normal vector, the sign of the normal vector can be important, e.g. if you want to calculate the atom
+distance from a certain plane with <a class="reference internal" href="#iago.Analyser.Analyser.dynamic_distance" title="iago.Analyser.Analyser.dynamic_distance"><code class="xref py py-func docutils literal"><span class="pre">dynamic_distance()</span></code></a>. The <em>normal</em> vector defines the orientation of the normal
+vectors calculated by this function such that they point in the same direction. More precisely, the dot product of the
+<em>normal</em> parameter and the calculated normal vectors is guaranteed to be positive (or zero).</p>
+<p>The <em>framesel</em> selects the frames that are to be analysed. If follows the regular python slice syntax. Its application
+in the context of <em>iago</em> is explained in greater depth i</p>
+<p>The <em>comment</em> can be as verbose as needed to describe the plane in a human-readable format. It will be stored in the
+database alongside the results for documentation purposes. Together with the plane <em>name</em>, the user should be able to
+understand the meaning and origin of this plane.</p>
+<p>If <em>raise_undetermined</em> is <em>True</em>, then having an undetermined plane for any single frame will stop the analysis. There
+are two main reasons why this could be happening: the <em>selector</em> matched less than three atoms for this frame or all the
+selected atoms are collinear, i.e. form a single line and not a plane.</p>
+<p>The resulting data is stored in the database as <a class="reference internal" href="#iago.DatabaseProvider.DB.planes" title="iago.DatabaseProvider.DB.planes"><code class="xref py py-attr docutils literal"><span class="pre">iago.DatabaseProvider.DB.planes</span></code></a>.</p>
+<p>Technical detail: the plane is calculated using the SVD approach. There is no mass-weighting of the atoms in question.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; Name of the plane.</li>
+<li><strong>selector</strong> &#8211; Which atoms are to be approximated by a plane.</li>
+<li><strong>normal</strong> &#8211; Preferred orientation of the normal vector. 3-tuple.</li>
+<li><strong>framesel</strong> &#8211; A python slice selecting only certain frames.</li>
+<li><strong>raise_undetermined</strong> &#8211; Boolean. If <em>False</em>, silently skip undetermined planes.</li>
+<li><strong>comment</strong> &#8211; Description of the plane.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iago.Analyser.Analyser.format">
+<code class="descname">format</code><em class="property"> = None</em><a class="headerlink" href="#iago.Analyser.Analyser.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>File format for the output database. Caen be either JSON or HDF5.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Analyser.Analyser.get_groups">
+<code class="descname">get_groups</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Analyser.Analyser.get_groups" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="iago.Analyser.Analyser.logfiles">
+<code class="descname">logfiles</code><em class="property"> = None</em><a class="headerlink" href="#iago.Analyser.Analyser.logfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>User-defined log file names</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iago.Analyser.Analyser.path">
+<code class="descname">path</code><em class="property"> = None</em><a class="headerlink" href="#iago.Analyser.Analyser.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basepath for this bucket used for relative file names</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Analyser.Analyser.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Analyser.Analyser.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the analysis in the user-specified order.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Analyser.Analyser.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Analyser.Analyser.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Points out the required settings and parsers. Has to be user-defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Analyser.Analyser.static_group">
+<code class="descname">static_group</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Analyser.Analyser.static_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates one or multiple static groups from an atom selector or indices list.</p>
+<p>If a dictionary is the single argument, its keys are taken as group names while its values are considered to be
+the zero-based atom index list. The following example creates the group &#8216;cas&#8217; with atoms 1-3.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">iago.Analyser</span> <span class="kn">as</span> <span class="nn">Analyser</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Analyser</span><span class="p">()</span>
+<span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">static_group</span><span class="p">({</span><span class="s1">&#39;cas&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)})</span>
+</span></pre></div>
+</div>
+<p>If the group is to be created by a atom selector string, then two arguments are required: a group name first
+followed by the selection string. The following example groups all carbon atoms of atom type CA into one group
+with the name cas:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">iago.Analyser</span> <span class="kn">as</span> <span class="nn">Analyser</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Analyser</span><span class="p">()</span>
+<span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">static_group</span><span class="p">(</span><span class="s1">&#39;cas&#39;</span><span class="p">,</span> <span class="s1">&#39;type CA&#39;</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>Instead of the selector, a list of zero-based atom indices is accepted, as well.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">iago.Analyser</span> <span class="kn">as</span> <span class="nn">Analyser</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Analyser</span><span class="p">()</span>
+<span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">static_group</span><span class="p">(</span><span class="s1">&#39;cas&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</span></pre></div>
+</div>
+<p>Finally, a list of atoms directly as parameters is accepted:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">iago.Analyser</span> <span class="kn">as</span> <span class="nn">Analyser</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">Analyser</span><span class="p">()</span>
+<span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">static_group</span><span class="p">(</span><span class="s1">&#39;cas&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> &#8211; Dict or name and selector string or name and list of indices.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Analyser.Analyser.static_load_groups">
+<code class="descname">static_load_groups</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Analyser.Analyser.static_load_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads groups of atoms from a GROMACS ndx file.</p>
+<p>The &#8216;ndx&#8217; file format looks like this:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>[ group_A ]
+1 2 3
+[ group_B ]
+4 5 6
+</pre></div>
+</div>
+<p>with indices being one-based. This group has the same composition for the whole simulation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; Path or filename of the &#8216;ndx&#8217; file to load.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iago.Analyser.Analyser.topologyfiles">
+<code class="descname">topologyfiles</code><em class="property"> = None</em><a class="headerlink" href="#iago.Analyser.Analyser.topologyfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>User-defined topology file names</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-iago.DatabaseProvider">
+<span id="iago-databaseprovider-module"></span><h2>iago.DatabaseProvider module<a class="headerlink" href="#module-iago.DatabaseProvider" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="iago.DatabaseProvider.DB">
+<em class="property">class </em><code class="descclassname">iago.DatabaseProvider.</code><code class="descname">DB</code><a class="headerlink" href="#iago.DatabaseProvider.DB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="iago.DatabaseProvider.DB.assign_output_columns">
+<code class="descname">assign_output_columns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.DatabaseProvider.DB.assign_output_columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="iago.DatabaseProvider.DB.distances">
+<code class="descname">distances</code><em class="property"> = None</em><a class="headerlink" href="#iago.DatabaseProvider.DB.distances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Atom-atom distance data as calculated by <a class="reference internal" href="#iago.Analyser.Analyser.dynamic_distance" title="iago.Analyser.Analyser.dynamic_distance"><code class="xref py py-func docutils literal"><span class="pre">iago.Analyser.Analyser.dynamic_distance()</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iago.DatabaseProvider.DB.groups">
+<code class="descname">groups</code><a class="headerlink" href="#iago.DatabaseProvider.DB.groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Known static atom groups.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary with group names as key, list of 0-based atom indices as value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.DatabaseProvider.DB.monitor">
+<code class="descname">monitor</code><span class="sig-paren">(</span><em>quantity</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.DatabaseProvider.DB.monitor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="iago.DatabaseProvider.DB.planedistances">
+<code class="descname">planedistances</code><em class="property"> = None</em><a class="headerlink" href="#iago.DatabaseProvider.DB.planedistances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Atom-plane distance data as calculated by <a class="reference internal" href="#iago.Analyser.Analyser.dynamic_distance" title="iago.Analyser.Analyser.dynamic_distance"><code class="xref py py-func docutils literal"><span class="pre">iago.Analyser.Analyser.dynamic_distance()</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iago.DatabaseProvider.DB.planes">
+<code class="descname">planes</code><em class="property"> = None</em><a class="headerlink" href="#iago.DatabaseProvider.DB.planes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plane data as calculated by <a class="reference internal" href="#iago.Analyser.Analyser.dynamic_plane" title="iago.Analyser.Analyser.dynamic_plane"><code class="xref py py-func docutils literal"><span class="pre">iago.Analyser.Analyser.dynamic_plane()</span></code></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.DatabaseProvider.DB.read">
+<code class="descname">read</code><span class="sig-paren">(</span><em>handle=None</em>, <em>name=None</em>, <em>format='json'</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.DatabaseProvider.DB.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the database from disk or stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>handle</strong> &#8211; File handle. Either <cite>handle</cite> or <cite>name</cite> has to be specified.</li>
+<li><strong>name</strong> &#8211; File name. Either <cite>handle</cite> or <cite>name</cite> has to be specified.</li>
+<li><strong>format</strong> &#8211; Either JSON or HDF5.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.DatabaseProvider.DB.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>fh</em>, <em>format='hdf5'</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.DatabaseProvider.DB.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the database to disk or stream.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fh</strong> &#8211; File handle or filename.</li>
+<li><strong>format</strong> &#8211; File format. Either hdf5 or json.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-iago.LocationProvider">
+<span id="iago-locationprovider-module"></span><h2>iago.LocationProvider module<a class="headerlink" href="#module-iago.LocationProvider" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="iago.LocationProvider.CloudDelegatedFile">
+<em class="property">class </em><code class="descclassname">iago.LocationProvider.</code><code class="descname">CloudDelegatedFile</code><span class="sig-paren">(</span><em>fh</em>, <em>cloudtemppath</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.CloudDelegatedFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="iago.LocationProvider.CloudLocationProvider">
+<em class="property">class </em><code class="descclassname">iago.LocationProvider.</code><code class="descname">CloudLocationProvider</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.CloudLocationProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iago.LocationProvider.LocationProvider" title="iago.LocationProvider.LocationProvider"><code class="xref py py-class docutils literal"><span class="pre">iago.LocationProvider.LocationProvider</span></code></a></p>
+<p>Location class for remote file access using rclone.</p>
+<dl class="method">
+<dt id="iago.LocationProvider.CloudLocationProvider.get_bucket_list">
+<code class="descname">get_bucket_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.CloudLocationProvider.get_bucket_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.CloudLocationProvider.has_file">
+<code class="descname">has_file</code><span class="sig-paren">(</span><em>bucket</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.CloudLocationProvider.has_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.CloudLocationProvider.open_file">
+<code class="descname">open_file</code><span class="sig-paren">(</span><em>bucket</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.CloudLocationProvider.open_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="iago.LocationProvider.FileLocationProvider">
+<em class="property">class </em><code class="descclassname">iago.LocationProvider.</code><code class="descname">FileLocationProvider</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.FileLocationProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iago.LocationProvider.LocationProvider" title="iago.LocationProvider.LocationProvider"><code class="xref py py-class docutils literal"><span class="pre">iago.LocationProvider.LocationProvider</span></code></a></p>
+<p>Location class for raw file access on the local machine.</p>
+<dl class="method">
+<dt id="iago.LocationProvider.FileLocationProvider.get_bucket_list">
+<code class="descname">get_bucket_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.FileLocationProvider.get_bucket_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.FileLocationProvider.has_file">
+<code class="descname">has_file</code><span class="sig-paren">(</span><em>bucket</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.FileLocationProvider.has_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.FileLocationProvider.local_file">
+<code class="descname">local_file</code><span class="sig-paren">(</span><em>bucket</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.FileLocationProvider.local_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.FileLocationProvider.open_file">
+<code class="descname">open_file</code><span class="sig-paren">(</span><em>bucket</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.FileLocationProvider.open_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="iago.LocationProvider.LocationGroup">
+<em class="property">class </em><code class="descclassname">iago.LocationProvider.</code><code class="descname">LocationGroup</code><a class="headerlink" href="#iago.LocationProvider.LocationGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Bundles a set of locations to abstract access to raw data no matter where the data is stored.</p>
+<p>Behaves like a set of buckets.</p>
+<dl class="method">
+<dt id="iago.LocationProvider.LocationGroup.build_database">
+<code class="descname">build_database</code><span class="sig-paren">(</span><em>bucket</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.LocationGroup.build_database" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.LocationGroup.fetch_database">
+<code class="descname">fetch_database</code><span class="sig-paren">(</span><em>bucket</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.LocationGroup.fetch_database" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.LocationGroup.from_file">
+<code class="descname">from_file</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.LocationGroup.from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the user-defined configuration of storage location.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> &#8211; Filename to read the config from. If not present, <cite>.iago.conf</cite> in the home directory will be used instead.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.LocationGroup.get_bucket_list">
+<code class="descname">get_bucket_list</code><span class="sig-paren">(</span><em>force_update=False</em>, <em>with_status=False</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.LocationGroup.get_bucket_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="iago.LocationProvider.LocationProvider">
+<em class="property">class </em><code class="descclassname">iago.LocationProvider.</code><code class="descname">LocationProvider</code><a class="headerlink" href="#iago.LocationProvider.LocationProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Base class for all supported protocols.</p>
+<p>Implements the factory pattern for new locations.</p>
+<dl class="method">
+<dt id="iago.LocationProvider.LocationProvider.build_database">
+<code class="descname">build_database</code><span class="sig-paren">(</span><em>bucket</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.LocationProvider.build_database" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="iago.LocationProvider.LocationProvider.create">
+<em class="property">static </em><code class="descname">create</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.LocationProvider.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.LocationProvider.get_bucket_list">
+<code class="descname">get_bucket_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.LocationProvider.get_bucket_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.LocationProvider.has_file">
+<code class="descname">has_file</code><span class="sig-paren">(</span><em>bucket</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.LocationProvider.has_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.LocationProvider.local_file">
+<code class="descname">local_file</code><span class="sig-paren">(</span><em>bucket</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.LocationProvider.local_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>If necessary, copies a remote file to local file system. Raise a ValueError if the file is not found.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Tuple. Absolute filename and flag whether file is ephemeral.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.LocationProvider.open_file">
+<code class="descname">open_file</code><span class="sig-paren">(</span><em>bucket</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.LocationProvider.open_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="iago.LocationProvider.SSHLocationProvider">
+<em class="property">class </em><code class="descclassname">iago.LocationProvider.</code><code class="descname">SSHLocationProvider</code><span class="sig-paren">(</span><em>path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.SSHLocationProvider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iago.LocationProvider.LocationProvider" title="iago.LocationProvider.LocationProvider"><code class="xref py py-class docutils literal"><span class="pre">iago.LocationProvider.LocationProvider</span></code></a></p>
+<p>Location class for remote file access using SSH.</p>
+<dl class="method">
+<dt id="iago.LocationProvider.SSHLocationProvider.build_database">
+<code class="descname">build_database</code><span class="sig-paren">(</span><em>bucket</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.SSHLocationProvider.build_database" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.SSHLocationProvider.get_bucket_list">
+<code class="descname">get_bucket_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.SSHLocationProvider.get_bucket_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.SSHLocationProvider.has_file">
+<code class="descname">has_file</code><span class="sig-paren">(</span><em>bucket</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.SSHLocationProvider.has_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.SSHLocationProvider.local_file">
+<code class="descname">local_file</code><span class="sig-paren">(</span><em>bucket</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.SSHLocationProvider.local_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.LocationProvider.SSHLocationProvider.open_file">
+<code class="descname">open_file</code><span class="sig-paren">(</span><em>bucket</em>, <em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.LocationProvider.SSHLocationProvider.open_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-iago.PandasPatch">
+<span id="iago-pandaspatch-module"></span><h2>iago.PandasPatch module<a class="headerlink" href="#module-iago.PandasPatch" title="Permalink to this headline">¶</a></h2>
+<p>The purpose of this file is to monkey-patch the pandas.DataFrame class to include metadata about columns like
+units.</p>
+<dl class="function">
+<dt id="iago.PandasPatch.annotations_to_dict">
+<code class="descclassname">iago.PandasPatch.</code><code class="descname">annotations_to_dict</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.PandasPatch.annotations_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iago.PandasPatch.explain">
+<code class="descclassname">iago.PandasPatch.</code><code class="descname">explain</code><span class="sig-paren">(</span><em>self</em>, <em>columnnames=None</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.PandasPatch.explain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iago.PandasPatch.modified_init">
+<code class="descclassname">iago.PandasPatch.</code><code class="descname">modified_init</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.PandasPatch.modified_init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-iago.Parser">
+<span id="iago-parser-module"></span><h2>iago.Parser module<a class="headerlink" href="#module-iago.Parser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="iago.Parser.Parser">
+<em class="property">class </em><code class="descclassname">iago.Parser.</code><code class="descname">Parser</code><a class="headerlink" href="#iago.Parser.Parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="iago.Parser.Parser.get_atom_indices">
+<code class="descname">get_atom_indices</code><span class="sig-paren">(</span><em>selector</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Parser.Parser.get_atom_indices" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>selector</strong> &#8211; Valid selection string.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of 0-based atom indices.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Parser.Parser.get_groups">
+<code class="descname">get_groups</code><span class="sig-paren">(</span><em>run</em>, <em>groups</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Parser.Parser.get_groups" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.Parser.Parser.get_input">
+<code class="descname">get_input</code><span class="sig-paren">(</span><em>run</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Parser.Parser.get_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.Parser.Parser.get_output">
+<code class="descname">get_output</code><span class="sig-paren">(</span><em>run</em>, <em>alias</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Parser.Parser.get_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.Parser.Parser.get_run_code">
+<code class="descname">get_run_code</code><span class="sig-paren">(</span><em>runpath</em>, <em>topologyfiles</em>, <em>configfiles</em>, <em>logfiles</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Parser.Parser.get_run_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.Parser.Parser.get_runs">
+<code class="descname">get_runs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Parser.Parser.get_runs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discovers all available runs in this bucket.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dict of run names available in this bucket. Keys: paths, values: names.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Parser.Parser.get_trajectory_frames">
+<code class="descname">get_trajectory_frames</code><span class="sig-paren">(</span><em>run</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Parser.Parser.get_trajectory_frames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.Parser.Parser.get_universe">
+<code class="descname">get_universe</code><span class="sig-paren">(</span><em>run</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Parser.Parser.get_universe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.Parser.Parser.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>path</em>, <em>runmatch={}</em>, <em>topologyfiles=[]</em>, <em>configfiles=[]</em>, <em>logfiles=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Parser.Parser.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses all runs of a certain bucket.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> &#8211; Basepath of all runs in this bucket.</li>
+<li><strong>runmatch</strong> &#8211; For run autodiscovery: dict of regular expressions matching relative paths from bucket root as
+keys and named group replacements as values.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-iago.Reader">
+<span id="iago-reader-module"></span><h2>iago.Reader module<a class="headerlink" href="#module-iago.Reader" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="iago.Reader.CP2KReader">
+<em class="property">class </em><code class="descclassname">iago.Reader.</code><code class="descname">CP2KReader</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.CP2KReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iago.Reader.Reader" title="iago.Reader.Reader"><code class="xref py py-class docutils literal"><span class="pre">iago.Reader.Reader</span></code></a></p>
+<p>Parses CP2K Quickstep runs.</p>
+<dl class="method">
+<dt id="iago.Reader.CP2KReader.claims">
+<code class="descname">claims</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.CP2KReader.claims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether this run is indeed a CP2K run.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if this certainly is a CP2K run.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.CP2KReader.get_input">
+<code class="descname">get_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.CP2KReader.get_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.CP2KReader.get_options">
+<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.CP2KReader.get_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.CP2KReader.get_output">
+<code class="descname">get_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.CP2KReader.get_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="iago.Reader.CP2KReader.inputnames">
+<code class="descname">inputnames</code><em class="property"> = None</em><a class="headerlink" href="#iago.Reader.CP2KReader.inputnames" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of filenames to test for input files. Precedence in order of the list.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iago.Reader.CP2KReader.logs">
+<code class="descname">logs</code><em class="property"> = None</em><a class="headerlink" href="#iago.Reader.CP2KReader.logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of logfiles to test for input files. Precedence in order of the list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.CP2KReader.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.CP2KReader.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="iago.Reader.CP2KReader.topologies">
+<code class="descname">topologies</code><em class="property"> = None</em><a class="headerlink" href="#iago.Reader.CP2KReader.topologies" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of topologies to test for input files. Precedence in order of the list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="iago.Reader.EmptyUniverse">
+<em class="property">class </em><code class="descclassname">iago.Reader.</code><code class="descname">EmptyUniverse</code><a class="headerlink" href="#iago.Reader.EmptyUniverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Class for calculations that do not have trajectory data.</p>
+<p>Mimics the &#8216;MDAnalysis.Universe&#8217; interface as far as necessary to be a drop-in replacement for an empty Universe.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="iago.Reader.NAMDReader">
+<em class="property">class </em><code class="descclassname">iago.Reader.</code><code class="descname">NAMDReader</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.NAMDReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iago.Reader.Reader" title="iago.Reader.Reader"><code class="xref py py-class docutils literal"><span class="pre">iago.Reader.Reader</span></code></a></p>
+<p>Parses NAMD runs.</p>
+<dl class="method">
+<dt id="iago.Reader.NAMDReader.claims">
+<code class="descname">claims</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.NAMDReader.claims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether this run is indeed a NAMD run.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if this certainly is a NAMD run.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.NAMDReader.get_input">
+<code class="descname">get_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.NAMDReader.get_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.NAMDReader.get_options">
+<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.NAMDReader.get_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.NAMDReader.get_output">
+<code class="descname">get_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.NAMDReader.get_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="iago.Reader.NAMDReader.inputnames">
+<code class="descname">inputnames</code><em class="property"> = None</em><a class="headerlink" href="#iago.Reader.NAMDReader.inputnames" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of filenames to test for input files. Precedence in order of the list.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iago.Reader.NAMDReader.logs">
+<code class="descname">logs</code><em class="property"> = None</em><a class="headerlink" href="#iago.Reader.NAMDReader.logs" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of logfiles to test for input files. Precedence in order of the list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.NAMDReader.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.NAMDReader.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="iago.Reader.Reader">
+<em class="property">class </em><code class="descclassname">iago.Reader.</code><code class="descname">Reader</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Base class for any reader. Defines the API the rest of iago is expecting.</p>
+<dl class="method">
+<dt id="iago.Reader.Reader.claims">
+<code class="descname">claims</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.Reader.claims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether the run path specified when creating the Reader instance looks like a valid run for this code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the reader is sure it can handle this run given the filename options.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.Reader.get_input">
+<code class="descname">get_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.Reader.get_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch the parsed input file data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a> like or <a class="reference internal" href="#iago.utils.Map" title="iago.utils.Map"><code class="xref py py-class docutils literal"><span class="pre">iago.utils.Map</span></code></a> instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.Reader.get_options">
+<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.Reader.get_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lists all available options supported by this reader subclass.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of strings.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.Reader.get_output">
+<code class="descname">get_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.Reader.get_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch the parsed output file data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference external" href="http://pandas-docs.github.io/pandas-docs-travis/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.21.0.dev+8.gd50f981.dirty)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.Reader.get_trajectory_frames">
+<code class="descname">get_trajectory_frames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.Reader.get_trajectory_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a list of frame numbers for the trajectory.</p>
+<p>Particularly helpful if the log file and the trajectory data are written in different intervals. Frame numbers
+should be consistently one-based or zero-based. Frame numbers coincide with time steps from molecular dynamics
+calculations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Iterable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.Reader.get_universe">
+<code class="descname">get_universe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.Reader.get_universe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch the trajectory data.</p>
+<p>When no trajectory data is present, this function must return an <a class="reference internal" href="#iago.Reader.EmptyUniverse" title="iago.Reader.EmptyUniverse"><code class="xref py py-class docutils literal"><span class="pre">iago.Reader.EmptyUniverse</span></code></a> instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference external" href="http://pythonhosted.org/MDAnalysis/documentation_pages/core/AtomGroup.html#MDAnalysis.core.AtomGroup.Universe" title="(in MDAnalysis v0.15)"><code class="xref py py-class docutils literal"><span class="pre">MDAnalysis.core.AtomGroup.Universe</span></code></a> instance or <a class="reference internal" href="#iago.Reader.EmptyUniverse" title="iago.Reader.EmptyUniverse"><code class="xref py py-class docutils literal"><span class="pre">iago.Reader.EmptyUniverse</span></code></a> instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.Reader.Reader.read">
+<code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.Reader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the input and output as well as load the trajectory.</p>
+<p>Any data accessible in the run directory should be stored in attributes of the subclass.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="iago.Reader.UniverseFactory">
+<em class="property">class </em><code class="descclassname">iago.Reader.</code><code class="descname">UniverseFactory</code><span class="sig-paren">(</span><em>topology</em>, <em>trajectory</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.Reader.UniverseFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-iago.cp2k">
+<span id="iago-cp2k-module"></span><h2>iago.cp2k module<a class="headerlink" href="#module-iago.cp2k" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="iago.cp2k.LogFile">
+<em class="property">class </em><code class="descclassname">iago.cp2k.</code><code class="descname">LogFile</code><span class="sig-paren">(</span><em>fh</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.cp2k.LogFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="iago.cp2k.LogFile.parse">
+<code class="descname">parse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.cp2k.LogFile.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the input line by line.</p>
+<p>Works by identifying frames first. Actual parsing is offloaded to <code class="xref py py-func docutils literal"><span class="pre">iago.cp1k.LogFile._readframe()</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference external" href="http://pandas-docs.github.io/pandas-docs-travis/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.21.0.dev+8.gd50f981.dirty)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a> with quantities in columns and index in the order of occurrence.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-iago.iago">
+<span id="iago-iago-module"></span><h2>iago.iago module<a class="headerlink" href="#module-iago.iago" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="iago.iago.get_location_group">
+<code class="descclassname">iago.iago.</code><code class="descname">get_location_group</code><span class="sig-paren">(</span><em>conffile=None</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.iago.get_location_group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-iago.utils">
+<span id="iago-utils-module"></span><h2>iago.utils module<a class="headerlink" href="#module-iago.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="iago.utils.Map">
+<em class="property">class </em><code class="descclassname">iago.utils.</code><code class="descname">Map</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.Map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></p>
+<dl class="method">
+<dt id="iago.utils.Map.traverse">
+<code class="descname">traverse</code><span class="sig-paren">(</span><em>keys</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.Map.traverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="iago.utils.SafeDict">
+<em class="property">class </em><code class="descclassname">iago.utils.</code><code class="descname">SafeDict</code><span class="sig-paren">(</span><em>other=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.SafeDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></p>
+<dl class="staticmethod">
+<dt id="iago.utils.SafeDict.from_dataframe">
+<em class="property">static </em><code class="descname">from_dataframe</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.SafeDict.from_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds a SafeDict instance from a pandas DataFrame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; DataFrame instance with keys in columns.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.utils.SafeDict.to_dataframe">
+<code class="descname">to_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.SafeDict.to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents the SafeDict instance as a pandas DataFrame.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="iago.utils.SafeDict.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>other=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.SafeDict.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="iago.utils.annotated_data_frame">
+<code class="descclassname">iago.utils.</code><code class="descname">annotated_data_frame</code><span class="sig-paren">(</span><em>definition</em>, <em>datadict=None</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.annotated_data_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iago.utils.compare">
+<code class="descclassname">iago.utils.</code><code class="descname">compare</code><span class="sig-paren">(</span><em>reference</em>, <em>other=None</em>, <em>labels=None</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares two or more dictionaries in the ipython / jupyter context.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="iago.utils.fit_plane">
+<code class="descclassname">iago.utils.</code><code class="descname">fit_plane</code><span class="sig-paren">(</span><em>positions</em>, <em>normal=None</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.fit_plane" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates a fitted plane given atom positions.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Not suited for wrapped trajectories. Imagine points on a plane that is not parallel to any of the simulation
+box surfaces. Any point outside the box will work fine for unwrapped trajectories but will give results other
+than the expected.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>positions</strong> &#8211; <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a> with atom positions.</li>
+<li><strong>normal</strong> &#8211; Tuple of the preferred normal vector orientation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple of normal vector and center of geometry as <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.12)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="iago.utils.is_plane_selector">
+<code class="descclassname">iago.utils.</code><code class="descname">is_plane_selector</code><span class="sig-paren">(</span><em>selector</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.is_plane_selector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iago.utils.parse_ndx">
+<code class="descclassname">iago.utils.</code><code class="descname">parse_ndx</code><span class="sig-paren">(</span><em>lines</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.parse_ndx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a GROMACS ndx file.
+:param lines: Iterable of strings.
+:return: Dictionary with group names as key, list of 0-based atom indices as value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="iago.utils.path_to_html">
+<code class="descclassname">iago.utils.</code><code class="descname">path_to_html</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.path_to_html" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iago.utils.plane_point_distance">
+<code class="descclassname">iago.utils.</code><code class="descname">plane_point_distance</code><span class="sig-paren">(</span><em>normal_vector</em>, <em>plane_point</em>, <em>data_point</em><span class="sig-paren">)</span><a class="headerlink" href="#iago.utils.plane_point_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-iago">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-iago" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../api.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../datastructure.html" class="btn btn-neutral" title="Data Structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Guido Falk von Rudorff.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Selection Syntax &mdash; iago 0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="iago 0.0 documentation" href="index.html"/>
+        <link rel="next" title="Data Structure" href="datastructure.html"/>
+        <link rel="prev" title="Features" href="supported.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> iago
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="supported.html">Features</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Selection Syntax</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#atom-selectors">Atom Selectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plane-selector">Plane Selector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#frame-selector">Frame Selector</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="datastructure.html">Data Structure</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="iago/iago.html">iago package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">iago</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Selection Syntax</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/selectors.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="selection-syntax">
+<h1>Selection Syntax<a class="headerlink" href="#selection-syntax" title="Permalink to this headline">¶</a></h1>
+<p>For many operations, it is crucial to know to which atoms or <a class="reference internal" href="gettingstarted.html#term-frame"><span class="xref std std-term">frames</span></a> to apply it to. This selection
+is based on strings that are of relevance to the <a class="reference internal" href="gettingstarted.html#term-analyser"><span class="xref std std-term">analyser</span></a> in <code class="file docutils literal"><span class="pre">iago-analysis.py</span></code> where all operations on
+raw data are defined. For each kind of selector, a subsection describes the supported syntax. The different kinds of
+selectors are not interchangeable. This means that each operation asks for either of them at appropriate places. The
+documentation of each <a class="reference internal" href="supported.html#supported-calculation"><span class="std std-ref">supported calculation</span></a> highlights the required types.</p>
+<div class="section" id="atom-selectors">
+<span id="selection-atom"></span><h2>Atom Selectors<a class="headerlink" href="#atom-selectors" title="Permalink to this headline">¶</a></h2>
+<p>For atom selectors, the superset of the CHARMM
+<a class="reference external" href="http://www.mdanalysis.org/mdanalysis/documentation_pages/selections.html">selection syntax</a> as supported by
+<em>MDAnalysis</em> is accepted.</p>
+</div>
+<div class="section" id="plane-selector">
+<span id="selection-plane"></span><h2>Plane Selector<a class="headerlink" href="#plane-selector" title="Permalink to this headline">¶</a></h2>
+<p>To select a plane where applicable, simply use <em>plane planename</em>. The following complete example creates a plane based
+on three atoms, and then calculates the distance of a fourth atom to said plane.</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">iago</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">class</span> <span class="nc">Analyser</span><span class="p">(</span><span class="n">iago</span><span class="o">.</span><span class="n">Analyser</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">define_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">static_group</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">calculated_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_plane</span><span class="p">(</span><span class="s1">&#39;myplane&#39;</span><span class="p">,</span> <span class="s1">&#39;group test&#39;</span><span class="p">,</span> <span class="n">normal</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                        <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;Plane in all frames.&#39;</span><span class="p">)</span>
+<span class="hll">                <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_distance</span><span class="p">(</span><span class="s1">&#39;mydist&#39;</span><span class="p">,</span> <span class="s1">&#39;atom 5&#39;</span><span class="p">,</span> <span class="s1">&#39;plane myplane&#39;</span><span class="p">)</span>
+</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Analyser</span><span class="p">()</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="frame-selector">
+<span id="selection-frame"></span><h2>Frame Selector<a class="headerlink" href="#frame-selector" title="Permalink to this headline">¶</a></h2>
+<p>Frame selectors are regular python <code class="xref py py-func docutils literal"><span class="pre">slice()</span></code> objects. When used in any of the <a class="reference internal" href="iago/iago.html#iago.Analyser.Analyser" title="iago.Analyser.Analyser"><code class="xref py py-class docutils literal"><span class="pre">iago.Analyser.Analyser</span></code></a>
+functions, the selector will be applied to all frames of the bucket, not only to a certain run. The order is defined by
+the frame numbers as obtained from the raw data through the <a class="reference internal" href="iago/iago.html#iago.Reader.Reader" title="iago.Reader.Reader"><code class="xref py py-class docutils literal"><span class="pre">iago.Reader.Reader</span></code></a> subclasses.</p>
+<p>As an example, a bucket with two runs (<em>run-1</em> and <em>run-2</em>) with 25 frames each is to be parsed. The following snipped
+will fit four planes:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">iago</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">class</span> <span class="nc">Analyser</span><span class="p">(</span><span class="n">iago</span><span class="o">.</span><span class="n">Analyser</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">define_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">static_group</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">calculated_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="hll">                <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_plane</span><span class="p">(</span><span class="s1">&#39;plane_A&#39;</span><span class="p">,</span> <span class="s1">&#39;group test&#39;</span><span class="p">,</span> <span class="n">normal</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+</span><span class="hll">                        <span class="n">framesel</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;Plane in all frames.&#39;</span><span class="p">)</span>
+</span><span class="hll">                <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_plane</span><span class="p">(</span><span class="s1">&#39;plane_B&#39;</span><span class="p">,</span> <span class="s1">&#39;group test&#39;</span><span class="p">,</span> <span class="n">normal</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+</span><span class="hll">                        <span class="n">framesel</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;Plane in the first two frames.&#39;</span><span class="p">)</span>
+</span><span class="hll">                <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_plane</span><span class="p">(</span><span class="s1">&#39;plane_C&#39;</span><span class="p">,</span> <span class="s1">&#39;group test&#39;</span><span class="p">,</span> <span class="n">normal</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+</span><span class="hll">                        <span class="n">framesel</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;Plane in frames 2-50.&#39;</span><span class="p">)</span>
+</span><span class="hll">                <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_plane</span><span class="p">(</span><span class="s1">&#39;plane_D&#39;</span><span class="p">,</span> <span class="s1">&#39;group test&#39;</span><span class="p">,</span> <span class="n">normal</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+</span><span class="hll">                        <span class="n">framesel</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;Plane after frame 25.&#39;</span><span class="p">)</span>
+</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Analyser</span><span class="p">()</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<p>The first plane, <em>plane_A</em>, has no frame selection specified via the <em>framesel</em> parameter, meaning an individual plane
+will be fitted for each frame of the whole bucket, i.e. for both runs (<em>run-1</em> and <em>run-2</em>). For <em>plane_B</em>, only the
+first two frames will be analysed, while <em>plane_C</em> selects the range from frame 2 to 50. This means that frames 2-25 of
+<em>run-1</em> will be included, followed by all frames of the second run. If the second parameter to <code class="xref py py-func docutils literal"><span class="pre">slice()</span></code> is <em>None</em>,
+as in the last example <em>plane_D</em>, then all frames until the end of the trajectory are taken into account. Note that
+<a class="reference internal" href="iago/iago.html#iago.Analyser.Analyser.dynamic_plane" title="iago.Analyser.Analyser.dynamic_plane"><code class="xref py py-func docutils literal"><span class="pre">iago.Analyser.Analyser.dynamic_plane()</span></code></a> fits a plane in each frame, not an averaged plane over multiple frames.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="datastructure.html" class="btn btn-neutral float-right" title="Data Structure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="supported.html" class="btn btn-neutral" title="Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Guido Falk von Rudorff.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

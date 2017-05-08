@@ -1,0 +1,86 @@
+iago package
+============
+
+Submodules
+----------
+
+iago\.Analyser module
+---------------------
+
+.. automodule:: iago.Analyser
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+iago\.DatabaseProvider module
+-----------------------------
+
+.. automodule:: iago.DatabaseProvider
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+iago\.LocationProvider module
+-----------------------------
+
+.. automodule:: iago.LocationProvider
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+iago\.PandasPatch module
+------------------------
+
+.. automodule:: iago.PandasPatch
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+iago\.Parser module
+-------------------
+
+.. automodule:: iago.Parser
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+iago\.Reader module
+-------------------
+
+.. automodule:: iago.Reader
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+iago\.cp2k module
+-----------------
+
+.. automodule:: iago.cp2k
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+iago\.iago module
+-----------------
+
+.. automodule:: iago.iago
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+iago\.utils module
+------------------
+
+.. automodule:: iago.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: iago
+    :members:
+    :undoc-members:
+    :show-inheritance:
