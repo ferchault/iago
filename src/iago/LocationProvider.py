@@ -107,6 +107,9 @@ class LocationGroup(object):
 		return bucket_list
 
 	def _get_bucket_from_name_or_id(self, bucket):
+		if self._buckets is None:
+			self.get_bucket_list()
+
 		if bucket in self._buckets.id.values:
 			rows = self._buckets[self._buckets.id == bucket]
 		elif bucket in self._buckets.name.values:

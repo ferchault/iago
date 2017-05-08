@@ -87,6 +87,11 @@ class TestUtils(TestCase):
 
 		# Run test file
 		lg = iago.get_location_group(filename)
+		try:
+			db = lg.fetch_database('debug')
+		except AttributeError:
+			self.fail('List of available buckets not populated.')
+
 		lg.get_bucket_list()
 		db = lg.fetch_database('debug')
 		self.assertIsInstance(db.input, u.Map)
